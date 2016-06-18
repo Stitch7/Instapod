@@ -1,6 +1,6 @@
 # Overview
 
-Instapod is an open source podcast client for iOS, heavily inspired by the abandoned Instacast app.  
+Instapod is an open source podcast client for iOS, heavily inspired by the abandoned Instacast app.
 
 # Status
 
@@ -49,7 +49,6 @@ UI for feed importing is not completed yet. Press the + button and then cancel o
 [![Podcast list](https://reitz.re/static/Instapod/7_small.png)](https://reitz.re/static/Instapod/7.png)
 [![Podcast list](https://reitz.re/static/Instapod/8_small.png)](https://reitz.re/static/Instapod/8.png)
 [![Podcast list](https://reitz.re/static/Instapod/9_small.png)](https://reitz.re/static/Instapod/9.png)
-
 
 # License
 
