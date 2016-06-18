@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="87" id="paK-aQ-7du" customClass="PodcastTableViewCell" customModule="Instapod" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="457" height="64"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="paK-aQ-7du" id="XJH-Cw-Pyb">
+                <rect key="frame" x="0.0" y="0.0" width="457" height="63"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultLogo56" translatesAutoresizingMaskIntoConstraints="NO" id="58Q-Gs-ESM">
+                        <rect key="frame" x="10" y="4" width="56" height="56"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="56" id="9yZ-Mv-rhW"/>
+                            <constraint firstAttribute="height" constant="56" id="oEb-la-Dhv"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wFs-dJ-oCY">
+                        <rect key="frame" x="74" y="8" width="375" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkI-hU-zwE">
+                        <rect key="frame" x="74" y="26" width="375" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episodes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mov-4n-dHD">
+                        <rect key="frame" x="74" y="43" width="375" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="hkI-hU-zwE" firstAttribute="top" secondItem="wFs-dJ-oCY" secondAttribute="bottom" id="0l6-7b-7se"/>
+                    <constraint firstItem="mov-4n-dHD" firstAttribute="leading" secondItem="58Q-Gs-ESM" secondAttribute="trailing" constant="8" id="89m-ig-ANp"/>
+                    <constraint firstItem="mov-4n-dHD" firstAttribute="top" secondItem="hkI-hU-zwE" secondAttribute="bottom" constant="2" id="OeJ-l2-ksk"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="mov-4n-dHD" secondAttribute="trailing" id="PN9-uc-5CX"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="hkI-hU-zwE" secondAttribute="trailing" id="c9b-qR-PDu"/>
+                    <constraint firstItem="wFs-dJ-oCY" firstAttribute="top" secondItem="XJH-Cw-Pyb" secondAttribute="topMargin" id="dxQ-zO-OQM"/>
+                    <constraint firstItem="wFs-dJ-oCY" firstAttribute="trailing" secondItem="XJH-Cw-Pyb" secondAttribute="trailingMargin" id="f23-1o-Emb"/>
+                    <constraint firstItem="58Q-Gs-ESM" firstAttribute="leading" secondItem="XJH-Cw-Pyb" secondAttribute="leading" constant="10" id="lcS-x0-gP9"/>
+                    <constraint firstItem="wFs-dJ-oCY" firstAttribute="leading" secondItem="58Q-Gs-ESM" secondAttribute="trailing" constant="8" id="nCA-UE-uf2"/>
+                    <constraint firstItem="hkI-hU-zwE" firstAttribute="leading" secondItem="58Q-Gs-ESM" secondAttribute="trailing" constant="8" id="uJX-m0-L6C"/>
+                    <constraint firstItem="58Q-Gs-ESM" firstAttribute="centerY" secondItem="XJH-Cw-Pyb" secondAttribute="centerY" id="wuX-XA-0zh"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="authorLabel" destination="hkI-hU-zwE" id="3mc-f5-TXr"/>
+                <outlet property="logoImageView" destination="58Q-Gs-ESM" id="pc6-GM-mbr"/>
+                <outlet property="titleLabel" destination="wFs-dJ-oCY" id="PoE-eE-Rmz"/>
+                <outlet property="unheardEpisodesLabel" destination="mov-4n-dHD" id="vFp-AO-dVq"/>
+            </connections>
+            <point key="canvasLocation" x="843.5" y="459"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="defaultLogo56" width="56" height="56"/>
+    </resources>
+</document>
