@@ -40,13 +40,17 @@ class ImageOperation: AsynchronousOperation {
             }
             guard let imageData = data else {
                 let domain = NSBundle.mainBundle().bundleIdentifier!
-                let error = NSError(domain: domain, code: 23, userInfo: [NSLocalizedDescriptionKey: "No image data"])
+                let error = NSError(domain: domain,
+                                    code: 23,
+                                    userInfo: [NSLocalizedDescriptionKey: "No image data"])
                 strongSelf.delegate?.imageOperation(strongSelf, didFinishWithError: error)
                 return
             }
             guard let tempImage = UIImage(data: imageData) else {
                 let domain = NSBundle.mainBundle().bundleIdentifier!
-                let error = NSError(domain: domain, code: 42, userInfo: [NSLocalizedDescriptionKey: "Could not generate image"])
+                let error = NSError(domain: domain,
+                                    code: 42,
+                                    userInfo: [NSLocalizedDescriptionKey: "Could not generate image"])
                 strongSelf.delegate?.imageOperation(strongSelf, didFinishWithError: error)
                 return
             }
@@ -60,7 +64,19 @@ class ImageOperation: AsynchronousOperation {
             }
 
             strongSelf.image.isFetched = true
-            strongSelf.delegate?.imageOperation(strongSelf, didFinishWithImage: strongSelf.image, ofFeed: strongSelf.feed, episode: strongSelf.episode)
+
+            if strongSelf.episode != nil {
+                strongSelf.episode!.image = strongSelf.image
+                strongSelf.feed.updateEpisode(with: strongSelf.episode!)
+            }
+            else {
+                strongSelf.feed.image = strongSelf.image
+            }
+
+            strongSelf.delegate?.imageOperation(strongSelf,
+                                                didFinishWithImage: strongSelf.image,
+                                                ofFeed: strongSelf.feed,
+                                                episode: strongSelf.episode)
         }
     }
 

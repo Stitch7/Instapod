@@ -180,16 +180,23 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel)  { (action) in // TODO: i18n
-            guard let _ = feedUrlTextField?.text else { return }
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            guard
+                let path = NSBundle.mainBundle().pathForResource("subscriptions", ofType: "opml"),
+                let data = try? NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe)
+                else {
+                    print("Failed loading subscriptions.opml")
+                    return
+            }
+
             self.loadingHUD(show: true, dimsBackground: true)
 
-            let feedImporter = FeedImporter()
+            let datasource = FeedImporterDatasourceAEXML(data: data)
+            let feedImporter = FeedImporter(datasource: datasource)
             feedImporter.delegate = self
             feedImporter.start()
         }
         let okAction = UIAlertAction(title: "Add", style: .Default) { (action) in // TODO: i18n
-//            guard let entry = feedUrlTextField?.text else { return }
+            guard let _ = feedUrlTextField?.text else { return }
 //            self.tableView.reloadData()
         }
         alertController.addAction(cancelAction)

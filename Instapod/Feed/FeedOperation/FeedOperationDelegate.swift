@@ -10,6 +10,5 @@ import Foundation
 
 protocol FeedOperationDelegate: class {
     func feedOperation(feedOperation: FeedOperation, didFinishWithFeed feed: Feed)
-    func feedOperation(feedOperation: FeedOperation, didFinishWithEpisode episode: FeedEpisode)
     func feedOperation(feedOperation: FeedOperation, didFinishWithError error: ErrorType?)
 }

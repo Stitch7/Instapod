@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-final class Feed {
+struct Feed {
     var url: NSURL
     var nextPage: NSURL?
     var author: String?
@@ -41,7 +41,18 @@ final class Feed {
                 return false
             }
         }
+        
         return true
+    }
+
+    mutating func updateEpisode(with newEpisode: FeedEpisode) {
+        if let episodes = self.episodes {
+            for (key, episode) in episodes.enumerate() {
+                if episode.title == newEpisode.title && episode.desc == newEpisode.desc {
+                    self.episodes![key] = newEpisode
+                }
+            }
+        }
     }
 
     func createPodcast(fromContext context: NSManagedObjectContext) -> Podcast {
@@ -71,7 +82,7 @@ final class Feed {
     }
 }
 
-final class FeedEpisode {
+struct FeedEpisode {
     var author: String?
     var content: String?
     var desc: String?
@@ -104,7 +115,7 @@ final class FeedEpisode {
     }
 }
 
-final class FeedImage {
+struct FeedImage {
     var url: NSURL
     var data: NSData?
     var date: NSDate?
@@ -133,7 +144,7 @@ final class FeedImage {
     }
 }
 
-final class FeedAudioFile {
+struct FeedAudioFile {
     var length: String?
     var type: String?
     var url: String?

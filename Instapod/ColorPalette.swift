@@ -13,7 +13,6 @@ struct ColorPalette {
     static let Background = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1.0)
 
     struct TableView {
-//        static let Background = UIColor(red: 0.94, green: 0.94, blue: 0.96, alpha: 1.0)
         static let Background = ColorPalette.Background
 
         struct Cell {

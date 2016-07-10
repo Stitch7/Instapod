@@ -34,9 +34,10 @@ UI for feed importing is not completed yet. Press the + button and then cancel o
 - Background feed updating and notifications
 - Episode play status
 - Searching
-- Playlists
+- Playlists & Bookmark Management
 - Night Theme
 - Overall polishing
+- ...
 
 # Screenshots
 

@@ -7,93 +7,51 @@
 //
 
 import Foundation
-import AEXML
 
 class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
 
+
+    private var IMGCount = 0
+
+
     // MARK: - Properties
 
+    var datasource: FeedImporterDatasource
     var delegate: FeedImporterDelegate?
+    var feed: Feed?
 
     private var operationsCount = 0
     private var parserErrors = [String: ErrorType]()
 
+    private var _queue: NSOperationQueue?
     private var queue: NSOperationQueue {
+        if let queue = _queue { return queue }
+
         let queue = NSOperationQueue()
         queue.qualityOfService = .UserInitiated
         queue.maxConcurrentOperationCount = 5
+        _queue = queue
         return queue
     }
 
-    var favs = [String]()
-
     // MARK: - Initializer
 
-    init() {
-        let path = NSBundle.mainBundle().pathForResource("subscriptions", ofType: "opml")
-        let data = try! NSData(contentsOfFile: path!, options: .DataReadingMappedIfSafe)
-        let xml = try! AEXMLDocument(xmlData: data)
-
-        if let outlines = xml.root["body"]["outline"].all {
-            for outline in outlines {
-                guard let url = outline.attributes["xmlUrl"] else { continue }
-                favs.append(url)
-            }
-        }
+    init(datasource: FeedImporterDatasource) {
+        self.datasource = datasource
     }
 
     func start() {
-        for fav in favs {
-            guard let url = NSURL(string: fav) else { continue }
-
-            let operation = FeedOperation(feed: Feed(url: url), url: url, session: NSURLSession.sharedSession())
-            operation.delegate = self
-            operationsCount += 1
-            queue.addOperation(operation)
-        }
+        _ = datasource.urls?.map{ createFeedOperation(url: $0) }
     }
 
-    // MARK: - FeedOperationDelegate
-
-    func feedOperation(feedOperation: FeedOperation, didFinishWithFeed feed: Feed) {
-        if let nextPage = feed.nextPage {
-            let nextPageOperation = FeedOperation(feed: feed, url: nextPage, session: NSURLSession.sharedSession())
-            nextPageOperation.delegate = self
-            queue.addOperation(nextPageOperation)
-            return
-        }
-
-        dispatch_async(dispatch_get_main_queue()) {
-            print("📦✅: \(feed.url)")
-            self.importImage(feed: feed, episode: nil)
-
-            if let feedEpisodes = feed.episodes {
-                for feedEpisode in feedEpisodes {
-                    self.importImage(feed: feed, episode: feedEpisode)
-                }
-            }
-
-            self.finishEventually()
-        }
+    func createFeedOperation(url url: NSURL) {
+        let operation = FeedOperation(url: url, parser: FeedParserAEXML())
+        operation.delegate = self
+        operationsCount += 1
+        queue.addOperation(operation)
     }
 
-    func feedOperation(feedOperation: FeedOperation, didFinishWithEpisode episode: FeedEpisode) {
-    }
-
-    // MARK: - ImageOperationDelegate
-
-    func importImage(feed feed: Feed, episode: FeedEpisode?) {
-
-        var image: FeedImage?
-        if let episode = episode {
-            if let episodeImage = episode.image {
-                image = episodeImage
-            }
-        }
-        else {
-            image = feed.image
-        }
-
+    func createImageOperation(image image: FeedImage?, feed: Feed, episode: FeedEpisode?) {
         guard let img = image else { return }
 
         let imageOperation = ImageOperation(image: img, session: NSURLSession.sharedSession(), feed: feed, episode: episode)
@@ -101,11 +59,55 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
 
         queue.addOperation(imageOperation)
         operationsCount += 1
+
+
+
+        IMGCount += 1
+    }
+    
+    // MARK: - FeedOperationDelegate
+
+    func feedOperation(feedOperation: FeedOperation, didFinishWithFeed feed: Feed) {
+        if self.feed != nil {
+            if let newEpisodes = feed.episodes {
+                _ = newEpisodes.map{
+                    self.feed?.episodes?.append($0)
+                    self.createImageOperation(image: $0.image, feed: feed, episode: $0)
+                }
+            }
+        }
+        else {
+            self.feed = feed
+        }
+
+        if let nextPage = feed.nextPage {
+            operationsCount -= 1
+            createFeedOperation(url: nextPage)
+            return
+        }
+
+        dispatch_async(dispatch_get_main_queue()) {
+            print("📦✅: \(feed.url)")
+            self.createImageOperation(image: feed.image, feed: feed, episode: nil)
+
+            if let feedEpisodes = feed.episodes {
+                for feedEpisode in feedEpisodes {
+                    self.createImageOperation(image: feedEpisode.image, feed: feed, episode: feedEpisode)
+                }
+            }
+
+            self.finishEventually()
+        }
     }
 
+    // MARK: - ImageOperationDelegate
+
     func feedOperation(feedOperation: FeedOperation, didFinishWithError error: ErrorType?) {
-        if let err = error {
-            parserErrors[feedOperation.feed.url.absoluteString] = err
+        if let error = error {
+            print("💣💣💣 Feed Parser Error:")
+            print(feedOperation.url)
+            print(error)
+            print("---")
         }
 
         finishEventually()
@@ -116,12 +118,20 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
             print("🖼✅: \(image.url.absoluteString)")
 
             if let episode = episode {
-                episode.image = image
-            } else {
-                feed.image = image
+//                episode.image = image
+                self.feed?.updateEpisode(with: episode)
+            }
+            else {
+                self.feed!.image = image
             }
 
-            if feed.allImagesAreFetched {
+            self.IMGCount -= 1
+            if self.IMGCount == 0 {
+                let ERGEBNIS = self.feed!.allImagesAreFetched
+                print(ERGEBNIS)
+            }
+
+            if self.feed!.allImagesAreFetched {
                 self.delegate?.feedImporter(self, didFinishWithFeed: feed)
             }
 
@@ -150,8 +160,7 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
         if parserErrors.count > 0 {
             print("💣💣💣 AEXMLDocument Error:")
             for (urlString, error) in parserErrors {
-                print(urlString)
-                print(error)
+                print(urlString, error)
             }
         }
     }

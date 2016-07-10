@@ -118,7 +118,7 @@ class EffectButton: UIButton {
 
         sendSubviewToBack(backgroundView)
 
-        let minSideSize = min(self.bounds.size.width, self.bounds.size.height)
+        let minSideSize = min(bounds.size.width, bounds.size.height)
 
         backgroundView.frame = bounds
 
