@@ -98,6 +98,22 @@ class CoreDataStore {
         }
     }
 
+    func deleteAllData(entity: String) {
+        print("truncating table \(entity) ...")
+        let fetchRequest = NSFetchRequest(entityName: entity)
+        fetchRequest.returnsObjectsAsFaults = false
+
+        do {
+            let results = try managedObjectContext.executeFetchRequest(fetchRequest)
+            for managedObject in results {
+                let managedObjectData = managedObject as! NSManagedObject
+                managedObjectContext.deleteObject(managedObjectData)
+            }
+        } catch let error as NSError {
+            print("Detele all data in \(entity) error : \(error) \(error.userInfo)")
+        }
+    }
+
     // MARK: - Core Data Saving support
 
     func saveContext () {

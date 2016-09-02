@@ -46,24 +46,22 @@ struct FeedParserAEXML: FeedParser {
         return url
     }
 
-    func parseFeed(url url: NSURL, xmlData: NSData) throws -> Feed {
-        var feed: Feed
+    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Feed {
         let xmlDocument = try AEXMLDocument(xmlData: xmlData)
         let channel = xmlDocument.root["channel"]
 
-        var newFeed = Feed(url: url)
-        newFeed.author = channel["itunes:author"].string
-        newFeed.category = channel["itunes:category"].string
-        newFeed.desc = channel["description"].string
-        newFeed.explicit = channel["explicit"].string == "yes"
-        newFeed.generator = channel["generator"].string
-        newFeed.language = channel["language"].string
-        newFeed.lastBuildDate = dateFormatter.dateFromString(channel["lastBuildDate"].string ?? "")
-        newFeed.pubDate = dateFormatter.dateFromString(channel["pubDate"].string ?? "")
-        newFeed.subtitle = channel["itunes:subtitle"].string
-        newFeed.summary = channel["itunes:summary"].string
-        newFeed.title = channel["title"].string
-        feed = newFeed
+        var feed = Feed(uuid: uuid, url: url)
+        feed.author = channel["itunes:author"].string
+        feed.category = channel["itunes:category"].string
+        feed.desc = channel["description"].string
+        feed.explicit = channel["explicit"].string == "yes"
+        feed.generator = channel["generator"].string
+        feed.language = channel["language"].string
+        feed.lastBuildDate = dateFormatter.dateFromString(channel["lastBuildDate"].string ?? "")
+        feed.pubDate = dateFormatter.dateFromString(channel["pubDate"].string ?? "")
+        feed.subtitle = channel["itunes:subtitle"].string
+        feed.summary = channel["itunes:summary"].string
+        feed.title = channel["title"].string
 
         return feed
     }

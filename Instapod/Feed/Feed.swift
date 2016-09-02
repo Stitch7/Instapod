@@ -10,6 +10,8 @@ import UIKit
 import CoreData
 
 struct Feed {
+
+    let uuid: String
     var url: NSURL
     var nextPage: NSURL?
     var author: String?
@@ -27,7 +29,8 @@ struct Feed {
     var episodes: [FeedEpisode]?
     var image: FeedImage?
 
-    init(url: NSURL) {
+    init(uuid: String, url: NSURL) {
+        self.uuid = uuid
         self.url = url
     }
 
@@ -83,6 +86,7 @@ struct Feed {
 }
 
 struct FeedEpisode {
+
     var author: String?
     var content: String?
     var desc: String?
@@ -116,6 +120,7 @@ struct FeedEpisode {
 }
 
 struct FeedImage {
+
     var url: NSURL
     var data: NSData?
     var date: NSDate?
@@ -145,6 +150,7 @@ struct FeedImage {
 }
 
 struct FeedAudioFile {
+    
     var length: String?
     var type: String?
     var url: String?

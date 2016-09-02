@@ -10,15 +10,11 @@ import Foundation
 
 class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
 
-
-    private var IMGCount = 0
-
-
     // MARK: - Properties
 
     var datasource: FeedImporterDatasource
     var delegate: FeedImporterDelegate?
-    var feed: Feed?
+    var feeds = [String: Feed]()
 
     private var operationsCount = 0
     private var parserErrors = [String: ErrorType]()
@@ -41,11 +37,12 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     }
 
     func start() {
-        _ = datasource.urls?.map{ createFeedOperation(url: $0) }
+        let
+        _ = datasource.urls?.map { createFeedOperation(uuid: NSUUID().UUIDString, url: $0) }
     }
 
-    func createFeedOperation(url url: NSURL) {
-        let operation = FeedOperation(url: url, parser: FeedParserAEXML())
+    func createFeedOperation(uuid uuid: String, url: NSURL) {
+        let operation = FeedOperation(uuid: uuid, url: url, parser: FeedParserAEXML())
         operation.delegate = self
         operationsCount += 1
         queue.addOperation(operation)
@@ -54,45 +51,46 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     func createImageOperation(image image: FeedImage?, feed: Feed, episode: FeedEpisode?) {
         guard let img = image else { return }
 
-        let imageOperation = ImageOperation(image: img, session: NSURLSession.sharedSession(), feed: feed, episode: episode)
+        let imageOperation = ImageOperation(image: img,
+                                            session: NSURLSession.sharedSession(),
+                                            feed: feed,
+                                            episode: episode)
         imageOperation.delegate = self
 
         queue.addOperation(imageOperation)
         operationsCount += 1
-
-
-
-        IMGCount += 1
     }
     
     // MARK: - FeedOperationDelegate
 
     func feedOperation(feedOperation: FeedOperation, didFinishWithFeed feed: Feed) {
-        if self.feed != nil {
+        if feeds[feed.uuid] != nil {
             if let newEpisodes = feed.episodes {
-                _ = newEpisodes.map{
-                    self.feed?.episodes?.append($0)
-                    self.createImageOperation(image: $0.image, feed: feed, episode: $0)
+                for episode in newEpisodes {
+                    self.feeds[feed.uuid]!.episodes?.append(episode)
                 }
             }
         }
         else {
-            self.feed = feed
+            print(feed.uuid)
+            feeds[feed.uuid] = feed
         }
 
         if let nextPage = feed.nextPage {
             operationsCount -= 1
-            createFeedOperation(url: nextPage)
+            createFeedOperation(uuid: feed.uuid, url: nextPage)
             return
         }
 
         dispatch_async(dispatch_get_main_queue()) {
             print("📦✅: \(feed.url)")
-            self.createImageOperation(image: feed.image, feed: feed, episode: nil)
+            self.createImageOperation(image: feed.image, feed: self.feeds[feed.uuid]!, episode: nil)
 
-            if let feedEpisodes = feed.episodes {
+            if let feedEpisodes = self.feeds[feed.uuid]!.episodes {
                 for feedEpisode in feedEpisodes {
-                    self.createImageOperation(image: feedEpisode.image, feed: feed, episode: feedEpisode)
+                    self.createImageOperation(image: feedEpisode.image,
+                                              feed: feed,
+                                              episode: feedEpisode)
                 }
             }
 
@@ -118,21 +116,14 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
             print("🖼✅: \(image.url.absoluteString)")
 
             if let episode = episode {
-//                episode.image = image
-                self.feed?.updateEpisode(with: episode)
+                self.feeds[feed.uuid]?.updateEpisode(with: episode)
             }
             else {
-                self.feed!.image = image
+                self.feeds[feed.uuid]!.image = image
             }
 
-            self.IMGCount -= 1
-            if self.IMGCount == 0 {
-                let ERGEBNIS = self.feed!.allImagesAreFetched
-                print(ERGEBNIS)
-            }
-
-            if self.feed!.allImagesAreFetched {
-                self.delegate?.feedImporter(self, didFinishWithFeed: feed)
+            if self.feeds[feed.uuid]!.allImagesAreFetched {
+                self.delegate?.feedImporter(self, didFinishWithFeed: self.feeds[feed.uuid]!)
             }
 
             self.finishEventually()
@@ -141,7 +132,8 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
 
     func imageOperation(imageOperation: ImageOperation, didFinishWithError error: ErrorType?) {
         if let err = error {
-            parserErrors[imageOperation.image.url.absoluteString] = err
+            let key = imageOperation.image.url.absoluteString
+            parserErrors[key] = err
         }
 
         finishEventually()

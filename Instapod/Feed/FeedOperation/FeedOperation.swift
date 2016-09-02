@@ -12,6 +12,7 @@ class FeedOperation: AsynchronousOperation {
 
     // MARK: - Properties
 
+    let uuid: String
     var url: NSURL
     var parser: FeedParser
     var task: NSURLSessionTask!
@@ -20,7 +21,8 @@ class FeedOperation: AsynchronousOperation {
 
     // MARK: - Initializer
 
-    init(url: NSURL, parser: FeedParser) {
+    init(uuid: String, url: NSURL, parser: FeedParser) {
+        self.uuid = uuid
         self.parser = parser
         self.url = url
         super.init()
@@ -46,7 +48,7 @@ class FeedOperation: AsynchronousOperation {
 
             do {
                 let parser = strongSelf.parser
-                var feed = try parser.parseFeed(url: strongSelf.url, xmlData: xmlData)
+                var feed = try parser.parseFeed(uuid: strongSelf.uuid, url: strongSelf.url, xmlData: xmlData)
                 feed.nextPage = try parser.nextPage(xmlData)
                 feed.image = try parser.parseImage(xmlData)
                 feed.episodes = try parser.parseEpisodes(xmlData)

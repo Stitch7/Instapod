@@ -101,17 +101,19 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
     }
 
     func configureSplitViewController() {
-        guard let split = self.splitViewController else { return }
+        guard let splitVC = self.splitViewController else { return }
 
-        let controllers = split.viewControllers
-        if let navigationController = controllers[controllers.count - 1] as? UINavigationController {
-            detailViewController = navigationController.topViewController as? EpisodesViewController
+        let controllers = splitVC.viewControllers
+        if let nc = controllers[controllers.count - 1] as? UINavigationController {
+            detailViewController = nc.topViewController as? EpisodesViewController
         }
     }
 
     func configureNavigationBar() {
         navigationItem.leftBarButtonItem = self.editButtonItem()
-        let addFeedButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(addFeedButtonPressed(_:)))
+        let addFeedButton = UIBarButtonItem(barButtonSystemItem: .Add,
+                                            target: self,
+                                            action: #selector(addFeedButtonPressed(_:)))
         navigationItem.rightBarButtonItem = addFeedButton
     }
 
@@ -183,9 +185,9 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
             guard
                 let path = NSBundle.mainBundle().pathForResource("subscriptions", ofType: "opml"),
                 let data = try? NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe)
-                else {
-                    print("Failed loading subscriptions.opml")
-                    return
+            else {
+                print("Failed loading subscriptions.opml")
+                return
             }
 
             self.loadingHUD(show: true, dimsBackground: true)
@@ -373,10 +375,10 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
         let podcast = podcasts[indexPath.row]
         let navigationController = segue.destinationViewController as! UINavigationController
-        let episodesTableViewController = navigationController.topViewController as! EpisodesViewController
-        episodesTableViewController.podcast = podcast
+        let episodesTVC = navigationController.topViewController as! EpisodesViewController
+        episodesTVC.podcast = podcast
 
-        episodesTableViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
-        episodesTableViewController.navigationItem.leftItemsSupplementBackButton = true
+        episodesTVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        episodesTVC.navigationItem.leftItemsSupplementBackButton = true
     }
 }

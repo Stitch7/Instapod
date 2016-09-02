@@ -40,6 +40,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     private func initCoreData() {
         coreDataStore = CoreDataStore(storeName: "Model")
+
+        cleanDB()
+    }
+
+    private func cleanDB() {
+        coreDataStore.deleteAllData("Podcast")
+        coreDataStore.deleteAllData("Episode")
+        coreDataStore.deleteAllData("Image")
+        coreDataStore.deleteAllData("AudioFile")
+        coreDataStore.deleteAllData("Chapter")
     }
 
     private func initAudioSession() {
@@ -70,9 +80,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // MARK: - UISplitViewControllerDelegate
 
     func splitViewController(
-            splitViewController: UISplitViewController,
-            collapseSecondaryViewController secondaryViewController: UIViewController,
-            ontoPrimaryViewController primaryViewController: UIViewController
+        splitViewController: UISplitViewController,
+        collapseSecondaryViewController secondaryViewController: UIViewController,
+        ontoPrimaryViewController primaryViewController: UIViewController
     ) -> Bool {
         guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
         guard let topAsDetailController = secondaryAsNavController.topViewController as? EpisodesViewController else { return false }

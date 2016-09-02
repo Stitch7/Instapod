@@ -7,29 +7,29 @@
 </head>
 <body>
     <outline text="Freak Show" type="rss" xmlUrl="http://freakshow.fm/feed/m4a" htmlUrl="http://freakshow.fm" />
-<!--    <outline text="Alternativlos" type="rss" xmlUrl="http://alternativlos.org/alternativlos.rss" htmlUrl="http://www.alternativlos.org/" />-->
-<!--    <outline text="CRE: Technik, Kultur, Gesellschaft" type="rss" xmlUrl="http://cre.fm/feed/m4a" htmlUrl="http://cre.fm" />-->
-<!--	<outline text="Staatsbürgerkunde" type="rss" xmlUrl="http://www.staatsbuergerkunde-podcast.de/feed/aac-rss/" htmlUrl="http://www.staatsbuergerkunde-podcast.de" />-->
-<!--    <outline text="Bits und so" type="rss" xmlUrl="http://www.bitsundso.de/feed/" htmlUrl="http://www.bitsundso.de" />-->
-<!--	<outline text="The Talk Show With John Gruber" type="rss" xmlUrl="http://daringfireball.net/thetalkshow/rss" htmlUrl="http://daringfireball.net/thetalkshow" />-->
-<!--	<outline text="Accidental Tech Podcast" type="rss" xmlUrl="http://atp.fm/episodes?format=rss" htmlUrl="http://atp.fm/" />-->
-<!--	<outline text="Aufwachen!" type="rss" xmlUrl="http://feed.aufwachen-podcast.de/mp3" htmlUrl="http://aufwachen-podcast.de" />-->
-<!--    <outline text="Die Sonderschule für Film und Fernsehen" type="rss" xmlUrl="https://feeds.feedburner.com/SofifeBerlin" htmlUrl="https://sofifeberlin.wordpress.com/" />-->
-<!--    <outline text="1337@kultur:~$" type="rss" xmlUrl="https://1337kultur.de/feed/podcast-aac/" htmlUrl="http://1337kultur.de" />-->
-<!--	<outline text="Fanboys" type="rss" xmlUrl="http://www.fanboys.fm/episodes.page0001.m4a.rss" htmlUrl="http://fanboys.fm" />-->
-<!--	<outline text="Damals (tm) Podcast" type="rss" xmlUrl="http://damals-tm-podcast.de/?feed=damalstm-mp3" htmlUrl="http://damals-tm-podcast.de" />-->
-<!--	<outline text="Debug" type="rss" xmlUrl="http://feeds.feedburner.com/debugshow" htmlUrl="http://www.imore.com/debug/" />-->
-<!--	<outline text="Logbuch:Netzpolitik" type="rss" xmlUrl="http://logbuch-netzpolitik.de/feed/m4a/?redirect=no" htmlUrl="http://logbuch-netzpolitik.de" />-->
-<!--	<outline text="WRINT" type="rss" xmlUrl="http://www.wrint.de/feed/podcast/" htmlUrl="http://www.wrint.de" />-->
-<!--	<outline text="Küchenradio" type="rss" xmlUrl="http://www.kuechenstud.io/kuechenradio/feed/mp3-alles" htmlUrl="http://www.kuechenstud.io/kuechenradio" />-->
-<!--	<outline text="Die Sprechkabine" type="rss" xmlUrl="http://www.sprechkabine.de/feed/podcast" htmlUrl="http://sprechkabine.de/feed/podcast" />-->
-<!--	<outline text="Trekcast – Der Star Trek Podcast" type="rss" xmlUrl="http://www.startrek-index.de/trekcast/feed/podcast/" htmlUrl="http://www.startrek-index.de/trekcast" />-->
-<!--	<outline text="Der Lautsprecher" type="rss" xmlUrl="http://feeds.metaebene.me/lautsprecher/m4a" htmlUrl="http://der-lautsprecher.de" />-->
-<!--	<outline text="Rewatch Podcast" type="rss" xmlUrl="http://voyager.klirrr.de/vrp/mp3" htmlUrl="http://rewatch-podcast.de" />-->
-<!--    <outline text="Leitmotiv" type="rss" xmlUrl="http://feeds.feedburner.com/leitmotiv-m4a" htmlUrl="http://leitmotiv.cc" />-->
-<!--	<outline text="Not Safe For Work" type="rss" xmlUrl="http://not-safe-for-work.de/feed/m4a/" htmlUrl="http://not-safe-for-work.de" />-->
-<!--	<outline text="Wir. Müssen Reden" type="rss" xmlUrl="http://wir.muessenreden.de/feed/podcast/" htmlUrl="http://wir.muessenreden.de" />-->
-<!--	<outline text="nerds.fm" type="rss" xmlUrl="http://nerds.fm/feed/m4a/" htmlUrl="http://nerds.fm" />-->
+    <outline text="Alternativlos" type="rss" xmlUrl="http://alternativlos.org/alternativlos.rss" htmlUrl="http://www.alternativlos.org/" />
+    <outline text="CRE: Technik, Kultur, Gesellschaft" type="rss" xmlUrl="http://cre.fm/feed/m4a" htmlUrl="http://cre.fm" />
+	<outline text="Staatsbürgerkunde" type="rss" xmlUrl="http://www.staatsbuergerkunde-podcast.de/feed/aac-rss/" htmlUrl="http://www.staatsbuergerkunde-podcast.de" />
+    <outline text="Bits und so" type="rss" xmlUrl="http://www.bitsundso.de/feed/" htmlUrl="http://www.bitsundso.de" />
+	<outline text="The Talk Show With John Gruber" type="rss" xmlUrl="http://daringfireball.net/thetalkshow/rss" htmlUrl="http://daringfireball.net/thetalkshow" />
+	<outline text="Accidental Tech Podcast" type="rss" xmlUrl="http://atp.fm/episodes?format=rss" htmlUrl="http://atp.fm/" />
+	<outline text="Aufwachen!" type="rss" xmlUrl="http://feed.aufwachen-podcast.de/mp3" htmlUrl="http://aufwachen-podcast.de" />
+    <outline text="Die Sonderschule für Film und Fernsehen" type="rss" xmlUrl="https://feeds.feedburner.com/SofifeBerlin" htmlUrl="https://sofifeberlin.wordpress.com/" />
+    <outline text="1337@kultur:~$" type="rss" xmlUrl="https://1337kultur.de/feed/podcast-aac/" htmlUrl="http://1337kultur.de" />
+	<outline text="Fanboys" type="rss" xmlUrl="http://www.fanboys.fm/episodes.page0001.m4a.rss" htmlUrl="http://fanboys.fm" />
+	<outline text="Damals (tm) Podcast" type="rss" xmlUrl="http://damals-tm-podcast.de/?feed=damalstm-mp3" htmlUrl="http://damals-tm-podcast.de" />
+	<outline text="Debug" type="rss" xmlUrl="http://feeds.feedburner.com/debugshow" htmlUrl="http://www.imore.com/debug/" />
+	<outline text="Logbuch:Netzpolitik" type="rss" xmlUrl="http://logbuch-netzpolitik.de/feed/m4a/?redirect=no" htmlUrl="http://logbuch-netzpolitik.de" />
+	<outline text="WRINT" type="rss" xmlUrl="http://www.wrint.de/feed/podcast/" htmlUrl="http://www.wrint.de" />
+	<outline text="Küchenradio" type="rss" xmlUrl="http://www.kuechenstud.io/kuechenradio/feed/mp3-alles" htmlUrl="http://www.kuechenstud.io/kuechenradio" />
+	<outline text="Die Sprechkabine" type="rss" xmlUrl="http://www.sprechkabine.de/feed/podcast" htmlUrl="http://sprechkabine.de/feed/podcast" />
+	<outline text="Trekcast – Der Star Trek Podcast" type="rss" xmlUrl="http://www.startrek-index.de/trekcast/feed/podcast/" htmlUrl="http://www.startrek-index.de/trekcast" />
+	<outline text="Der Lautsprecher" type="rss" xmlUrl="http://feeds.metaebene.me/lautsprecher/m4a" htmlUrl="http://der-lautsprecher.de" />
+	<outline text="Rewatch Podcast" type="rss" xmlUrl="http://voyager.klirrr.de/vrp/mp3" htmlUrl="http://rewatch-podcast.de" />
+    <outline text="Leitmotiv" type="rss" xmlUrl="http://feeds.feedburner.com/leitmotiv-m4a" htmlUrl="http://leitmotiv.cc" />
+	<outline text="Not Safe For Work" type="rss" xmlUrl="http://not-safe-for-work.de/feed/m4a/" htmlUrl="http://not-safe-for-work.de" />
+	<outline text="Wir. Müssen Reden" type="rss" xmlUrl="http://wir.muessenreden.de/feed/podcast/" htmlUrl="http://wir.muessenreden.de" />
+	<outline text="nerds.fm" type="rss" xmlUrl="http://nerds.fm/feed/m4a/" htmlUrl="http://nerds.fm" />
 <!--    <outline text="Happyday Podcast" type="rss" xmlUrl="http://rss.happydaypodcast.de/happyday.rss" htmlUrl="http://www.facebook.com/topic.php?uid=10744195565&amp;topic=7276#!/pages/Happy-DAy-Podcast/161354913900453" />-->
 <!--	<outline text="Padmen" type="rss" xmlUrl="http://feeds.feedburner.com/Padmen" htmlUrl="http://padmen.com" />-->
 <!--	<outline text="Celluleute Podcast" type="rss" xmlUrl="http://cdn.celluleute.de/celluleuterss/celluleute.rss" htmlUrl="http://www.celluleute.de/" />-->
