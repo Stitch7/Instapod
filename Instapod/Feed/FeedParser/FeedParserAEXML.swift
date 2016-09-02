@@ -46,11 +46,11 @@ struct FeedParserAEXML: FeedParser {
         return url
     }
 
-    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Podcast {
+    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Feed {
         let xmlDocument = try AEXMLDocument(xmlData: xmlData)
         let channel = xmlDocument.root["channel"]
 
-        var podcast = Podcast(uuid: uuid, url: url)
+        var podcast = Feed(uuid: uuid, url: url)
         podcast.author = channel["itunes:author"].string
         podcast.category = channel["itunes:category"].string
         podcast.desc = channel["description"].string

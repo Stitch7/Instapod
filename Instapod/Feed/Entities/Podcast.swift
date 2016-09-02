@@ -8,7 +8,7 @@
 
 import CoreData
 
-struct Podcast {
+struct Feed {
 
     let uuid: String
     var url: NSURL

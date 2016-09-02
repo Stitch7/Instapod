@@ -10,7 +10,7 @@ import Foundation
 
 protocol FeedParser {
     func nextPage(xmlData: NSData) throws -> NSURL?
-    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Podcast
+    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Feed
     func parseImage(xmlData: NSData) throws -> Image?
     func parseEpisodes(xmlData: NSData) throws -> [Episode]?
 }

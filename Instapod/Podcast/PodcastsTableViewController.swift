@@ -216,7 +216,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     // MARK: - FeedUpdaterDelegate
 
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: Episode, ofFeed feed: Podcast) {
+    func feedUpdater(feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: Episode, ofFeed feed: Feed) {
         if let
             refreshControl = refreshControl,
             feedTitle = feed.title,
@@ -255,7 +255,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     // MARK: - FeedImporterDelegate
 
-    func feedImporter(feedImporter: FeedImporter, didFinishWithFeed feed: Podcast) {
+    func feedImporter(feedImporter: FeedImporter, didFinishWithFeed feed: Feed) {
         feed.createPodcast(fromContext: coreDataContext)
         try! coreDataContext.save()
         coreDataContext.reset()

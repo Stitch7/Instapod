@@ -99,7 +99,9 @@ class CoreDataStore {
     }
 
     func deleteAllData(entity: String) {
+
         print("truncating table \(entity) ...")
+
         let fetchRequest = NSFetchRequest(entityName: entity)
         fetchRequest.returnsObjectsAsFaults = false
 

@@ -411,7 +411,8 @@
 				308801C21C8CD67300894995 /* Cell */,
 				30B0EF871C766F8700A1698F /* PodcastsTableViewController.swift */,
 			);
-			path = Podcast;
+			name = Podcast;
+			path = ../Podcast;
 			sourceTree = "<group>";
 		};
 		3085B5801C95A47D00CD0112 /* Shownotes */ = {
@@ -523,6 +524,7 @@
 		30AFBFC31C8774BD00EF3492 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				3085B55B1C95748D00CD0112 /* Podcast */,
 				30B0EF901C766F8700A1698F /* LaunchScreen.storyboard */,
 				30B0EF8B1C766F8700A1698F /* Main.storyboard */,
 			);
@@ -569,7 +571,6 @@
 				308801C11C8CD65D00894995 /* Extensions */,
 				300988C51CAFD99D000686C1 /* Feed */,
 				308801C41C8E00F300894995 /* Player */,
-				3085B55B1C95748D00CD0112 /* Podcast */,
 				3085B5801C95A47D00CD0112 /* Shownotes */,
 				30AFBFC31C8774BD00EF3492 /* Storyboards */,
 				30574F181D79ACE60058B8E5 /* CoreData */,

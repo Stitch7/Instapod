@@ -14,13 +14,13 @@ class ImageOperation: AsynchronousOperation {
 
     var image: Image
     var task: NSURLSessionTask!
-    var feed: Podcast
+    var feed: Feed
     var episode: Episode?
     var delegate: ImageOperationDelegate?
 
     // MARK: - Initializer
 
-    init(image: Image, session: NSURLSession, feed: Podcast, episode: Episode?) {
+    init(image: Image, session: NSURLSession, feed: Feed, episode: Episode?) {
         self.image = image
         self.feed = feed
         self.episode = episode

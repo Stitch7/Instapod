@@ -14,7 +14,7 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
 
     var datasource: FeedImporterDatasource
     var delegate: FeedImporterDelegate?
-    var feeds = [String: Podcast]()
+    var feeds = [String: Feed]()
 
     private var operationsCount = 0
     private var parserErrors = [String: ErrorType]()
@@ -47,7 +47,7 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
         queue.addOperation(operation)
     }
 
-    func createImageOperation(image image: Image?, feed: Podcast, episode: Episode?) {
+    func createImageOperation(image image: Image?, feed: Feed, episode: Episode?) {
         guard let img = image else { return }
 
         let imageOperation = ImageOperation(image: img,
@@ -62,7 +62,7 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     
     // MARK: - FeedOperationDelegate
 
-    func feedOperation(feedOperation: FeedOperation, didFinishWithFeed feed: Podcast) {
+    func feedOperation(feedOperation: FeedOperation, didFinishWithFeed feed: Feed) {
         if feeds[feed.uuid] != nil {
             if let newEpisodes = feed.episodes {
                 for episode in newEpisodes {
@@ -109,7 +109,7 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
         finishEventually()
     }
 
-    func imageOperation(imageOperation: ImageOperation, didFinishWithImage image: Image, ofFeed feed: Podcast, episode: Episode?) {
+    func imageOperation(imageOperation: ImageOperation, didFinishWithImage image: Image, ofFeed feed: Feed, episode: Episode?) {
         dispatch_async(dispatch_get_main_queue()) {
             print("🖼✅: \(image.url.absoluteString)")
 
