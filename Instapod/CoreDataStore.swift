@@ -109,6 +109,8 @@ class CoreDataStore {
                 let managedObjectData = managedObject as! NSManagedObject
                 managedObjectContext.deleteObject(managedObjectData)
             }
+            try managedObjectContext.save()
+            managedObjectContext.reset()
         } catch let error as NSError {
             print("Detele all data in \(entity) error : \(error) \(error.userInfo)")
         }

@@ -96,7 +96,7 @@ struct FeedEpisode {
     var subtitle: String?
     var summary: String?
     var title: String?
-    var chapters: NSSet?
+//    var chapters: NSSet?
     var image: FeedImage?
     var audioFile: FeedAudioFile?
 
@@ -111,7 +111,7 @@ struct FeedEpisode {
         episode.subtitle = subtitle
         episode.summary = summary
         episode.title = title
-        episode.chapters = chapters
+//        episode.chapters = chapters
         episode.image = image?.createImage(fromContext: context)
         episode.audioFile = audioFile?.createAudioFile(fromContext: context)
 

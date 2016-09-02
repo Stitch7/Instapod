@@ -58,7 +58,6 @@
 		308801CE1C90BCF200894995 /* ChapterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 308801CD1C90BCF200894995 /* ChapterTableViewCell.xib */; };
 		308D70E41C941A810039A5FF /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 308D70E21C941A810039A5FF /* Model.xcdatamodeld */; };
 		308D70E61C941AFE0039A5FF /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308D70E51C941AFE0039A5FF /* CoreDataStore.swift */; };
-		308D70F21C942DBE0039A5FF /* Chapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308D70E81C942DBE0039A5FF /* Chapter.swift */; };
 		308D70F31C942DBE0039A5FF /* Episode+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308D70E91C942DBE0039A5FF /* Episode+CoreDataProperties.swift */; };
 		308D70F41C942DBE0039A5FF /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308D70EA1C942DBE0039A5FF /* Episode.swift */; };
 		308D70F51C942DBE0039A5FF /* Podcast+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308D70EB1C942DBE0039A5FF /* Podcast+CoreDataProperties.swift */; };
@@ -171,7 +170,6 @@
 		308801CD1C90BCF200894995 /* ChapterTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChapterTableViewCell.xib; sourceTree = "<group>"; };
 		308D70E31C941A810039A5FF /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		308D70E51C941AFE0039A5FF /* CoreDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStore.swift; sourceTree = "<group>"; };
-		308D70E81C942DBE0039A5FF /* Chapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chapter.swift; sourceTree = "<group>"; };
 		308D70E91C942DBE0039A5FF /* Episode+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Episode+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		308D70EA1C942DBE0039A5FF /* Episode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		308D70EB1C942DBE0039A5FF /* Podcast+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Podcast+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -485,7 +483,6 @@
 			children = (
 				308D70EF1C942DBE0039A5FF /* AudioFile+CoreDataProperties.swift */,
 				308D70F01C942DBE0039A5FF /* AudioFile.swift */,
-				308D70E81C942DBE0039A5FF /* Chapter.swift */,
 				308D70E91C942DBE0039A5FF /* Episode+CoreDataProperties.swift */,
 				308D70EA1C942DBE0039A5FF /* Episode.swift */,
 				308D70ED1C942DBE0039A5FF /* Image+CoreDataProperties.swift */,
@@ -946,7 +943,6 @@
 				308D70E41C941A810039A5FF /* Model.xcdatamodeld in Sources */,
 				3065B08B1CCC095000004217 /* ParallaxHeaderView.swift in Sources */,
 				300988CB1CB023B9000686C1 /* Feed.swift in Sources */,
-				308D70F21C942DBE0039A5FF /* Chapter.swift in Sources */,
 				304A7D2E1CB82601002D529D /* FeedUpdater.swift in Sources */,
 				300988C91CAFEB3A000686C1 /* FeedOperation.swift in Sources */,
 				308D71071C94B3AB0039A5FF /* CircleView.swift in Sources */,

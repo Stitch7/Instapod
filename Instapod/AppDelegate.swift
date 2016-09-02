@@ -49,7 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         coreDataStore.deleteAllData("Episode")
         coreDataStore.deleteAllData("Image")
         coreDataStore.deleteAllData("AudioFile")
-        coreDataStore.deleteAllData("Chapter")
     }
 
     private func initAudioSession() {

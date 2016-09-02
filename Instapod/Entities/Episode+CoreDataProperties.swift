@@ -24,7 +24,6 @@ extension Episode {
     @NSManaged var summary: String?
     @NSManaged var title: String?
     @NSManaged var audioFile: AudioFile?
-    @NSManaged var chapters: NSSet?
     @NSManaged var image: Image?
     @NSManaged var podcast: Podcast?
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15G1004" minimumToolsVersion="Xcode 7.0">
     <entity name="AudioFile" representedClassName=".AudioFile" syncable="YES">
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
@@ -8,12 +8,6 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="episode" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Episode" inverseName="audioFile" inverseEntity="Episode" syncable="YES"/>
-    </entity>
-    <entity name="Chapter" representedClassName=".Chapter" syncable="YES">
-        <attribute name="no" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="start" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="episode" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Episode" inverseName="chapters" inverseEntity="Episode" syncable="YES"/>
     </entity>
     <entity name="Episode" representedClassName=".Episode" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
@@ -26,7 +20,6 @@
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="audioFile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AudioFile" inverseName="episode" inverseEntity="AudioFile" syncable="YES"/>
-        <relationship name="chapters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Chapter" inverseName="episode" inverseEntity="Chapter" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="episodes" inverseEntity="Image" syncable="YES"/>
         <relationship name="podcast" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Podcast" inverseName="episodes" inverseEntity="Podcast" syncable="YES"/>
     </entity>
@@ -60,8 +53,7 @@
     </entity>
     <elements>
         <element name="AudioFile" positionX="117" positionY="-7" width="128" height="148"/>
-        <element name="Chapter" positionX="169" positionY="99" width="128" height="103"/>
-        <element name="Episode" positionX="-65" positionY="-25" width="128" height="238"/>
+        <element name="Episode" positionX="-65" positionY="-25" width="128" height="225"/>
         <element name="Image" positionX="117" positionY="225" width="128" height="178"/>
         <element name="Podcast" positionX="-263" positionY="-12" width="128" height="268"/>
     </elements>
