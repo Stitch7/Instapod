@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00766E7716185BA2D650CBA6 /* Pods_InstapodTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79AF2675050006D0616256D6 /* Pods_InstapodTests.framework */; };
-		0A7043F59045C1E572950302 /* Pods_Instapod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E600DC3AA09518EA3B3E7D1 /* Pods_Instapod.framework */; };
 		30091D8B1D293FA6000F77D8 /* cre.xml in Resources */ = {isa = PBXBuildFile; fileRef = 30091D8A1D293FA6000F77D8 /* cre.xml */; };
 		300988C71CAFE25C000686C1 /* ImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300988C61CAFE25C000686C1 /* ImageOperation.swift */; };
 		300988C91CAFEB3A000686C1 /* FeedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300988C81CAFEB3A000686C1 /* FeedOperation.swift */; };
@@ -100,6 +99,9 @@
 		30B3E5171CC3E4400043AFEE /* PlayerSleepTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B3E5161CC3E4400043AFEE /* PlayerSleepTimer.swift */; };
 		30D712A71CB90B5C00452223 /* UIViewController+coreDataContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D712A61CB90B5C00452223 /* UIViewController+coreDataContext.swift */; };
 		30D712A91CB9404000452223 /* ImageOperationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D712A81CB9404000452223 /* ImageOperationDelegate.swift */; };
+		30E49C5E1D7A30BA00247F1D /* PodcastsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E49C5D1D7A30BA00247F1D /* PodcastsCollectionViewController.swift */; };
+		30E49C601D7A363D00247F1D /* PodcastCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30E49C5F1D7A363D00247F1D /* PodcastCollectionViewCell.xib */; };
+		30E49C621D7A37A900247F1D /* PodcastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E49C611D7A37A900247F1D /* PodcastCollectionViewCell.swift */; };
 		8CB5442EE7618B3D874C0DB2 /* Pods_InstapodUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B74114B0E7E1E68D85BDA6A /* Pods_InstapodUITests.framework */; };
 		A8E1AA043AA75DAAAD64CB0F /* Pods_Instapod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07F0451AE169D3F274E90CE /* Pods_Instapod.framework */; };
 /* End PBXBuildFile section */
@@ -221,6 +223,9 @@
 		30B3E5161CC3E4400043AFEE /* PlayerSleepTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerSleepTimer.swift; sourceTree = "<group>"; };
 		30D712A61CB90B5C00452223 /* UIViewController+coreDataContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+coreDataContext.swift"; sourceTree = "<group>"; };
 		30D712A81CB9404000452223 /* ImageOperationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageOperationDelegate.swift; sourceTree = "<group>"; };
+		30E49C5D1D7A30BA00247F1D /* PodcastsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastsCollectionViewController.swift; sourceTree = "<group>"; };
+		30E49C5F1D7A363D00247F1D /* PodcastCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PodcastCollectionViewCell.xib; sourceTree = "<group>"; };
+		30E49C611D7A37A900247F1D /* PodcastCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastCollectionViewCell.swift; sourceTree = "<group>"; };
 		504272E24365ABD8DA4110F9 /* Pods-InstapodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstapodTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-InstapodTests/Pods-InstapodTests.release.xcconfig"; sourceTree = "<group>"; };
 		66EEA074AAA8FA221B2F59D4 /* Pods-Instapod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Instapod.release.xcconfig"; path = "Pods/Target Support Files/Pods-Instapod/Pods-Instapod.release.xcconfig"; sourceTree = "<group>"; };
 		6D5500146FA23A1AB8793CB8 /* Pods-Instapod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Instapod.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Instapod/Pods-Instapod.debug.xcconfig"; sourceTree = "<group>"; };
@@ -239,7 +244,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8E1AA043AA75DAAAD64CB0F /* Pods_Instapod.framework in Frameworks */,
-				0A7043F59045C1E572950302 /* Pods_Instapod.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,9 +414,9 @@
 			children = (
 				308801C21C8CD67300894995 /* Cell */,
 				30B0EF871C766F8700A1698F /* PodcastsTableViewController.swift */,
+				30E49C5D1D7A30BA00247F1D /* PodcastsCollectionViewController.swift */,
 			);
-			name = Podcast;
-			path = ../Podcast;
+			path = Podcast;
 			sourceTree = "<group>";
 		};
 		3085B5801C95A47D00CD0112 /* Shownotes */ = {
@@ -451,6 +455,8 @@
 			children = (
 				309B9A911C8CA2310001C80C /* PodcastTableViewCell.swift */,
 				309B9A8F1C8CA2020001C80C /* PodcastTableViewCell.xib */,
+				30E49C611D7A37A900247F1D /* PodcastCollectionViewCell.swift */,
+				30E49C5F1D7A363D00247F1D /* PodcastCollectionViewCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -524,7 +530,6 @@
 		30AFBFC31C8774BD00EF3492 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				3085B55B1C95748D00CD0112 /* Podcast */,
 				30B0EF901C766F8700A1698F /* LaunchScreen.storyboard */,
 				30B0EF8B1C766F8700A1698F /* Main.storyboard */,
 			);
@@ -571,6 +576,7 @@
 				308801C11C8CD65D00894995 /* Extensions */,
 				300988C51CAFD99D000686C1 /* Feed */,
 				308801C41C8E00F300894995 /* Player */,
+				3085B55B1C95748D00CD0112 /* Podcast */,
 				3085B5801C95A47D00CD0112 /* Shownotes */,
 				30AFBFC31C8774BD00EF3492 /* Storyboards */,
 				30574F181D79ACE60058B8E5 /* CoreData */,
@@ -766,6 +772,7 @@
 				3085B57F1C95A47000CD0112 /* ShownotesView.xib in Resources */,
 				306C3C271CA29C0000EA247D /* subscriptions.opml in Resources */,
 				309B9A901C8CA2020001C80C /* PodcastTableViewCell.xib in Resources */,
+				30E49C601D7A363D00247F1D /* PodcastCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -937,6 +944,7 @@
 				304C2D261D15B615003C8139 /* FeedParser.swift in Sources */,
 				30574F0E1D79A93D0058B8E5 /* AudioFileManagedObject.swift in Sources */,
 				30574F0D1D79A93D0058B8E5 /* AudioFileManagedObject+CoreDataProperties.swift in Sources */,
+				30E49C621D7A37A900247F1D /* PodcastCollectionViewCell.swift in Sources */,
 				30B3E5101CC2DD660043AFEE /* MarqueeLabel.swift in Sources */,
 				304C2D281D15B632003C8139 /* FeedParserAEXML.swift in Sources */,
 				30574F121D79AC1B0058B8E5 /* AudioFile.swift in Sources */,
@@ -946,6 +954,7 @@
 				308D71021C949F1C0039A5FF /* EpisodeTableViewCell.swift in Sources */,
 				30B02DC41CCD212200CECD69 /* UINavigationController+ childViewControllerForStatusBarHidden.swift in Sources */,
 				304A7D301CB82FBC002D529D /* FeedUpdaterDelegate.swift in Sources */,
+				30E49C5E1D7A30BA00247F1D /* PodcastsCollectionViewController.swift in Sources */,
 				300988CF1CB02F54000686C1 /* FeedOperationDelegate.swift in Sources */,
 				30AFBFC61C877DC000EF3492 /* EpisodesViewController.swift in Sources */,
 				304D88DD1CA91B7600F3FB7C /* PopupItem.swift in Sources */,
