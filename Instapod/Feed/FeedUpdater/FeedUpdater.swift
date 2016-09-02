@@ -13,7 +13,7 @@ class FeedUpdater {
 
     // MARK: - Properties
 
-    var podcasts: [Podcast]
+    var podcasts: [PodcastManagedObject]
     var delegate: FeedUpdaterDelegate?
 //
 //    private let session = NSURLSession.sharedSession()
@@ -35,7 +35,7 @@ class FeedUpdater {
 
     // MARK: - Initializer
 
-    init(podcasts: [Podcast]) {
+    init(podcasts: [PodcastManagedObject]) {
         self.podcasts = podcasts
     }
 //

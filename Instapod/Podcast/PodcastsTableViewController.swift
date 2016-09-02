@@ -15,8 +15,8 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     let refreshControlTitle = "Pull to refresh …" // TODO: i18n
     var detailViewController: EpisodesViewController?
-    var podcasts = [Podcast]()
-    var filteredData = [Podcast]()
+    var podcasts = [PodcastManagedObject]()
+    var filteredData = [PodcastManagedObject]()
     let podcastCountLabel = UILabel()
     var searchController: UISearchController!
 
@@ -28,7 +28,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
             fetchRequest.sortDescriptors = [
                 NSSortDescriptor(key: "sortIndex", ascending: true)
             ]
-            podcasts = try context.executeFetchRequest(fetchRequest) as! [Podcast]
+            podcasts = try context.executeFetchRequest(fetchRequest) as! [PodcastManagedObject]
 
             tableView.reloadData()
         } catch let error as NSError {
@@ -216,7 +216,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     // MARK: - FeedUpdaterDelegate
 
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: FeedEpisode, ofFeed feed: Feed) {
+    func feedUpdater(feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: Episode, ofFeed feed: Podcast) {
         if let
             refreshControl = refreshControl,
             feedTitle = feed.title,
@@ -225,7 +225,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
             refreshControl.attributedTitle = NSAttributedString(string: "Found \(feedTitle) - \(episodeTitle)") // TODO: i18n
         }
 
-        var affected: Podcast?
+        var affected: PodcastManagedObject?
         for podcast in podcasts {
             if podcast.title == feed.title {
                 affected = podcast
@@ -255,7 +255,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     // MARK: - FeedImporterDelegate
 
-    func feedImporter(feedImporter: FeedImporter, didFinishWithFeed feed: Feed) {
+    func feedImporter(feedImporter: FeedImporter, didFinishWithFeed feed: Podcast) {
         feed.createPodcast(fromContext: coreDataContext)
         try! coreDataContext.save()
         coreDataContext.reset()

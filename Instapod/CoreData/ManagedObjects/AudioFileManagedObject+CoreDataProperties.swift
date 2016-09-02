@@ -1,8 +1,8 @@
 //
-//  AudioFile+CoreDataProperties.swift
+//  AudioFileManagedObject+CoreDataProperties.swift
 //  
 //
-//  Created by Christopher Reitz on 23.03.16.
+//  Created by Christopher Reitz on 02.09.16.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -12,7 +12,7 @@
 import Foundation
 import CoreData
 
-extension AudioFile {
+extension AudioFileManagedObject {
 
     @NSManaged var data: NSData?
     @NSManaged var date: NSDate?
@@ -20,6 +20,6 @@ extension AudioFile {
     @NSManaged var length: String?
     @NSManaged var type: String?
     @NSManaged var url: String?
-    @NSManaged var episode: Episode?
+    @NSManaged var episode: EpisodeManagedObject?
 
 }

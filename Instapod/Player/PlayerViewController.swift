@@ -14,7 +14,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
 
     // MARK: - Properties
 
-    var episode: Episode? {
+    var episode: EpisodeManagedObject? {
         didSet {
             guard let episode = self.episode else { return }
 
@@ -456,7 +456,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         timerButton.setTitle(title, forState: .Normal)
     }
 
-    func shareEpisode() -> Episode {
+    func shareEpisode() -> EpisodeManagedObject {
         return self.episode! // TODO
     }
 

@@ -12,7 +12,7 @@ class ShownotesView: ViewFromNib {
 
     // MARK: - Properties 
 
-    var episode: Episode? {
+    var episode: EpisodeManagedObject? {
         didSet {
             guard let episode = self.episode else { return }
 
@@ -80,7 +80,7 @@ class ShownotesView: ViewFromNib {
         podcastLabel.numberOfLines = 0
     }
 
-    func injectContent(episode: Episode) {
+    func injectContent(episode: EpisodeManagedObject) {
         let content = episode.content ?? episode.desc ?? episode.summary ?? ""
 
         do {

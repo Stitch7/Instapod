@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     private func initCoreData() {
         coreDataStore = CoreDataStore(storeName: "Model")
 
-        cleanDB()
+//        cleanDB()
     }
 
     private func cleanDB() {

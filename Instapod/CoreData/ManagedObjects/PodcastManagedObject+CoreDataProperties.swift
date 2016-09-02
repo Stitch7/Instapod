@@ -1,8 +1,8 @@
 //
-//  Podcast+CoreDataProperties.swift
+//  PodcastManagedObject+CoreDataProperties.swift
 //  
 //
-//  Created by Christopher Reitz on 06.04.16.
+//  Created by Christopher Reitz on 02.09.16.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -12,7 +12,7 @@
 import Foundation
 import CoreData
 
-extension Podcast {
+extension PodcastManagedObject {
 
     @NSManaged var author: String?
     @NSManaged var category: String?
@@ -28,6 +28,6 @@ extension Podcast {
     @NSManaged var title: String?
     @NSManaged var url: String?
     @NSManaged var episodes: NSSet?
-    @NSManaged var image: Image?
+    @NSManaged var image: ImageManagedObject?
 
 }

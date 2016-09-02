@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15G1004" minimumToolsVersion="Xcode 7.0">
-    <entity name="AudioFile" representedClassName=".AudioFile" syncable="YES">
+    <entity name="AudioFile" representedClassName=".AudioFileManagedObject" syncable="YES">
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
@@ -9,7 +9,7 @@
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="episode" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Episode" inverseName="audioFile" inverseEntity="Episode" syncable="YES"/>
     </entity>
-    <entity name="Episode" representedClassName=".Episode" syncable="YES">
+    <entity name="Episode" representedClassName=".EpisodeManagedObject" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
@@ -23,7 +23,7 @@
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="episodes" inverseEntity="Image" syncable="YES"/>
         <relationship name="podcast" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Podcast" inverseName="episodes" inverseEntity="Podcast" syncable="YES"/>
     </entity>
-    <entity name="Image" representedClassName=".Image" syncable="YES">
+    <entity name="Image" representedClassName=".ImageManagedObject" syncable="YES">
         <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
@@ -34,7 +34,7 @@
         <relationship name="episodes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Episode" inverseName="image" inverseEntity="Episode" syncable="YES"/>
         <relationship name="podcast" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Podcast" inverseName="image" inverseEntity="Podcast" syncable="YES"/>
     </entity>
-    <entity name="Podcast" representedClassName=".Podcast" syncable="YES">
+    <entity name="Podcast" representedClassName=".PodcastManagedObject" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
@@ -52,9 +52,9 @@
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Image" inverseName="podcast" inverseEntity="Image" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AudioFile" positionX="117" positionY="-7" width="128" height="148"/>
+        <element name="AudioFile" positionX="117" positionY="-7" width="128" height="150"/>
         <element name="Episode" positionX="-65" positionY="-25" width="128" height="225"/>
-        <element name="Image" positionX="117" positionY="225" width="128" height="178"/>
-        <element name="Podcast" positionX="-263" positionY="-12" width="128" height="268"/>
+        <element name="Image" positionX="117" positionY="225" width="128" height="180"/>
+        <element name="Podcast" positionX="-263" positionY="-12" width="128" height="270"/>
     </elements>
 </model>

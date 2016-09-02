@@ -14,9 +14,9 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
 
     // MARK: - Properties
 
-    var podcast: Podcast? {
+    var podcast: PodcastManagedObject? {
         didSet {
-            if let episodes = podcast?.episodes?.allObjects as? [Episode] {
+            if let episodes = podcast?.episodes?.allObjects as? [EpisodeManagedObject] {
                 self.episodes = episodes.sort {
                     $0.pubDate?.compare($1.pubDate!) == NSComparisonResult.OrderedDescending
                 }
@@ -42,7 +42,7 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    var episodes: [Episode]?
+    var episodes: [EpisodeManagedObject]?
 
     @IBOutlet weak var tableView: UITableView!
 

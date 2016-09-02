@@ -46,28 +46,28 @@ struct FeedParserAEXML: FeedParser {
         return url
     }
 
-    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Feed {
+    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Podcast {
         let xmlDocument = try AEXMLDocument(xmlData: xmlData)
         let channel = xmlDocument.root["channel"]
 
-        var feed = Feed(uuid: uuid, url: url)
-        feed.author = channel["itunes:author"].string
-        feed.category = channel["itunes:category"].string
-        feed.desc = channel["description"].string
-        feed.explicit = channel["explicit"].string == "yes"
-        feed.generator = channel["generator"].string
-        feed.language = channel["language"].string
-        feed.lastBuildDate = dateFormatter.dateFromString(channel["lastBuildDate"].string ?? "")
-        feed.pubDate = dateFormatter.dateFromString(channel["pubDate"].string ?? "")
-        feed.subtitle = channel["itunes:subtitle"].string
-        feed.summary = channel["itunes:summary"].string
-        feed.title = channel["title"].string
+        var podcast = Podcast(uuid: uuid, url: url)
+        podcast.author = channel["itunes:author"].string
+        podcast.category = channel["itunes:category"].string
+        podcast.desc = channel["description"].string
+        podcast.explicit = channel["explicit"].string == "yes"
+        podcast.generator = channel["generator"].string
+        podcast.language = channel["language"].string
+        podcast.lastBuildDate = dateFormatter.dateFromString(channel["lastBuildDate"].string ?? "")
+        podcast.pubDate = dateFormatter.dateFromString(channel["pubDate"].string ?? "")
+        podcast.subtitle = channel["itunes:subtitle"].string
+        podcast.summary = channel["itunes:summary"].string
+        podcast.title = channel["title"].string
 
-        return feed
+        return podcast
     }
 
-    func parseImage(xmlData: NSData) throws -> FeedImage? {
-        var feedImage: FeedImage?
+    func parseImage(xmlData: NSData) throws -> Image? {
+        var feedImage: Image?
         let xmlDocument = try AEXMLDocument(xmlData: xmlData)
         let channel = xmlDocument.root["channel"]
 
@@ -75,22 +75,22 @@ struct FeedParserAEXML: FeedParser {
             imageUrlString = channel["itunes:image"].attributes["href"],
             url = NSURL(string: imageUrlString)
         {
-            feedImage = FeedImage(url: url)
+            feedImage = Image(url: url)
         }
 
         return feedImage
     }
 
-    func parseEpisodes(xmlData: NSData) throws -> [FeedEpisode]? {
-        var feedEpisodes: [FeedEpisode]?
+    func parseEpisodes(xmlData: NSData) throws -> [Episode]? {
+        var feedEpisodes: [Episode]?
         let xmlDocument = try AEXMLDocument(xmlData: xmlData)
         let channel = xmlDocument.root["channel"]
 
         guard let items = channel["item"].all else { return [] }
 
-        feedEpisodes = [FeedEpisode]()
+        feedEpisodes = [Episode]()
         for item in items {
-            var episode = FeedEpisode()
+            var episode = Episode()
             episode.author = item["itunes:author"].string
             episode.content = item["content:encoded"].string
             episode.desc = item["description"].string
@@ -113,12 +113,12 @@ struct FeedParserAEXML: FeedParser {
 //                    }
 //                }
 //                else {
-                    episode.image = FeedImage(url: episodeImageUrl)
+                    episode.image = Image(url: episodeImageUrl)
 //                }
             }
 
             let enclosure = item["enclosure"]
-            var audioFile = FeedAudioFile()
+            var audioFile = AudioFile()
             audioFile.length = enclosure.attributes["length"] ?? ""
             audioFile.type = enclosure.attributes["type"] ?? ""
             audioFile.url = enclosure.attributes["url"] ?? ""
