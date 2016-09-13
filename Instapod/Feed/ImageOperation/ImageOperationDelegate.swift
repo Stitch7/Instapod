@@ -7,6 +7,6 @@
 //
 
 protocol ImageOperationDelegate: class {
-    func imageOperation(imageOperation: ImageOperation, didFinishWithImage image: Image, ofFeed feed: Feed, episode: Episode?)
+    func imageOperation(imageOperation: ImageOperation, didFinishWithImage image: Image, ofPodcast podcast: Podcast, episode: Episode?)
     func imageOperation(imageOperation: ImageOperation, didFinishWithError error: ErrorType?)
 }

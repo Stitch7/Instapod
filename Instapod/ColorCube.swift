@@ -8,6 +8,27 @@
 
 import UIKit
 
+extension UIImage {
+    var colorCube: UIColor {
+        var color = UIColor.blackColor()
+
+        let cube = ColorCube()
+        let imageColors = cube.extractColorsFromImage(self, flags: [.AvoidWhite, .AvoidBlack])
+        if let mainColor = imageColors.first {
+            color = mainColor
+        }
+
+        return color
+    }
+}
+
+extension NSData {
+    var colorCube: UIColor {
+        guard let image = UIImage(data: self) else { return UIColor.blackColor() }
+        return image.colorCube
+    }
+}
+
 struct ColorCubeFlags: OptionSetType {
     let rawValue: Int
     static let None               = ColorCubeFlags(rawValue: 0)

@@ -12,7 +12,7 @@ class ShownotesView: ViewFromNib {
 
     // MARK: - Properties 
 
-    var episode: EpisodeManagedObject? {
+    var episode: Episode? {
         didSet {
             guard let episode = self.episode else { return }
 
@@ -36,7 +36,7 @@ class ShownotesView: ViewFromNib {
             }
 
             if let image = episode.image ?? episode.podcast?.image {
-                if let tintColor = image.color as? UIColor {
+                if let tintColor = image.color {
                     circleView.color = tintColor
                 }
             }
@@ -80,7 +80,7 @@ class ShownotesView: ViewFromNib {
         podcastLabel.numberOfLines = 0
     }
 
-    func injectContent(episode: EpisodeManagedObject) {
+    func injectContent(episode: Episode) {
         let content = episode.content ?? episode.desc ?? episode.summary ?? ""
 
         do {

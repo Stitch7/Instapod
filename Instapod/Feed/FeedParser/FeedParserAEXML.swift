@@ -8,7 +8,7 @@
 
 import AEXML
 
-struct FeedParserAEXML: FeedParser {
+class FeedParserAEXML: FeedParser {
 
     // MARK: - Properties
 
@@ -46,11 +46,11 @@ struct FeedParserAEXML: FeedParser {
         return url
     }
 
-    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Feed {
+    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Podcast {
         let xmlDocument = try AEXMLDocument(xmlData: xmlData)
         let channel = xmlDocument.root["channel"]
 
-        var podcast = Feed(uuid: uuid, url: url)
+        var podcast = Podcast(uuid: uuid, url: url)
         podcast.author = channel["itunes:author"].string
         podcast.category = channel["itunes:category"].string
         podcast.desc = channel["description"].string
@@ -119,9 +119,16 @@ struct FeedParserAEXML: FeedParser {
 
             let enclosure = item["enclosure"]
             var audioFile = AudioFile()
-            audioFile.length = enclosure.attributes["length"] ?? ""
-            audioFile.type = enclosure.attributes["type"] ?? ""
-            audioFile.url = enclosure.attributes["url"] ?? ""
+            audioFile.length = enclosure.attributes["length"]
+            audioFile.type = enclosure.attributes["type"]
+
+            if let
+                urlString = enclosure.attributes["url"],
+                url = NSURL(string: urlString)
+            {
+                audioFile.url = url
+            }
+
             episode.audioFile = audioFile
 
             feedEpisodes!.append(episode)

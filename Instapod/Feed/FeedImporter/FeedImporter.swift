@@ -13,8 +13,8 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     // MARK: - Properties
 
     var datasource: FeedImporterDatasource
-    var delegate: FeedImporterDelegate?
-    var feeds = [String: Feed]()
+    var delegates = MulticastDelegate<FeedImporterDelegate>()
+    var podcasts = [String: Podcast]()
 
     private var operationsCount = 0
     private var parserErrors = [String: ErrorType]()
@@ -47,12 +47,12 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
         queue.addOperation(operation)
     }
 
-    func createImageOperation(image image: Image?, feed: Feed, episode: Episode?) {
+    func createImageOperation(image image: Image?, podcast: Podcast, episode: Episode? = nil) {
         guard let img = image else { return }
 
         let imageOperation = ImageOperation(image: img,
                                             session: NSURLSession.sharedSession(),
-                                            feed: feed,
+                                            podcast: podcast,
                                             episode: episode)
         imageOperation.delegate = self
 
@@ -62,32 +62,34 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     
     // MARK: - FeedOperationDelegate
 
-    func feedOperation(feedOperation: FeedOperation, didFinishWithFeed feed: Feed) {
-        if feeds[feed.uuid] != nil {
-            if let newEpisodes = feed.episodes {
+    func feedOperation(feedOperation: FeedOperation, didFinishWithPodcast podcast: Podcast) {
+        if podcasts[podcast.uuid] != nil {
+            if let newEpisodes = podcast.episodes {
                 for episode in newEpisodes {
-                    self.feeds[feed.uuid]!.episodes?.append(episode)
+                    self.podcasts[podcast.uuid]!.episodes?.append(episode)
                 }
             }
         }
         else {
-            feeds[feed.uuid] = feed
+            podcasts[podcast.uuid] = podcast
         }
 
-        if let nextPage = feed.nextPage {
+        if let nextPage = podcast.nextPage {
             operationsCount -= 1
-            createFeedOperation(uuid: feed.uuid, url: nextPage)
+            createFeedOperation(uuid: podcast.uuid, url: nextPage)
             return
         }
 
         dispatch_async(dispatch_get_main_queue()) {
-            print("📦✅: \(feed.url)")
-            self.createImageOperation(image: feed.image, feed: self.feeds[feed.uuid]!, episode: nil)
+            print("📦✅: \(podcast.url)")
+            self.createImageOperation(image: podcast.image,
+                                      podcast: self.podcasts[podcast.uuid]!)
 
-            if let feedEpisodes = self.feeds[feed.uuid]!.episodes {
+            if let feedEpisodes = self.podcasts[podcast.uuid]!.episodes {
                 for feedEpisode in feedEpisodes {
+                    guard feedEpisode.image?.url != podcast.image?.url else { continue }
                     self.createImageOperation(image: feedEpisode.image,
-                                              feed: feed,
+                                              podcast: podcast,
                                               episode: feedEpisode)
                 }
             }
@@ -99,29 +101,33 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     // MARK: - ImageOperationDelegate
 
     func feedOperation(feedOperation: FeedOperation, didFinishWithError error: ErrorType?) {
-        if let error = error {
+        if let err = error {
             print("💣💣💣 Feed Parser Error:")
             print(feedOperation.url)
-            print(error)
+            print(err)
             print("---")
         }
 
         finishEventually()
     }
 
-    func imageOperation(imageOperation: ImageOperation, didFinishWithImage image: Image, ofFeed feed: Feed, episode: Episode?) {
+    func imageOperation(imageOperation: ImageOperation, didFinishWithImage image: Image, ofPodcast podcast: Podcast, episode: Episode?) {
         dispatch_async(dispatch_get_main_queue()) {
             print("🖼✅: \(image.url.absoluteString)")
+            guard self.podcasts[podcast.uuid] != nil else { return }
 
             if let episode = episode {
-                self.feeds[feed.uuid]?.updateEpisode(with: episode)
+                self.podcasts[podcast.uuid]!.updateEpisode(with: episode)
             }
             else {
-                self.feeds[feed.uuid]!.image = image
+                self.podcasts[podcast.uuid]!.image = image
             }
 
-            if self.feeds[feed.uuid]!.allImagesAreFetched {
-                self.delegate?.feedImporter(self, didFinishWithFeed: self.feeds[feed.uuid]!)
+            if self.podcasts[podcast.uuid]!.allImagesAreFetched {
+                self.delegates.invoke {
+                    $0.feedImporter(self, didFinishWithFeed: self.podcasts[podcast.uuid]!)
+                }
+                self.podcasts.removeValueForKey(podcast.uuid)
             }
 
             self.finishEventually()
@@ -140,7 +146,9 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     private func finishEventually() {
         operationsCount -= 1
         if 0 >= operationsCount {
-            delegate?.feedImporterDidFinishWithAllFeeds(self)
+            delegates.invoke {
+                $0.feedImporterDidFinishWithAllFeeds(self)
+            }
             printSummary()
         }
     }

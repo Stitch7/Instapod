@@ -10,20 +10,20 @@ import UIKit
 import AVKit
 import AVFoundation
 
-class EpisodesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class EpisodesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CoreDataContextInjectable {
 
     // MARK: - Properties
 
-    var podcast: PodcastManagedObject? {
+    var podcast: Podcast? {
         didSet {
-            if let episodes = podcast?.episodes?.allObjects as? [EpisodeManagedObject] {
+            if let episodes = podcast?.episodes {
                 self.episodes = episodes.sort {
                     $0.pubDate?.compare($1.pubDate!) == NSComparisonResult.OrderedDescending
                 }
             }
             
             if let imageData = podcast?.image?.data {
-                if let podcastColor = podcast?.image?.color as? UIColor {
+                if let podcastColor = podcast?.image?.color {
                     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                     appDelegate.window?.tintColor = podcastColor
                     view.tintColor = podcastColor
@@ -42,7 +42,9 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    var episodes: [EpisodeManagedObject]?
+    var episodes: [Episode]?
+
+    let dateFormatter = NSDateFormatter()
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -55,6 +57,10 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         title = podcast?.title
 
         configureTableView()
+
+        dateFormatter.dateStyle = .ShortStyle
+        dateFormatter.timeStyle = .ShortStyle
+        dateFormatter.doesRelativeDateFormatting = true
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -66,7 +72,7 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         }
 
         if let
-            podcastColor = podcast?.image?.color as? UIColor,
+            podcastColor = podcast?.image?.color,
             navigationController = self.navigationController {
 //                navigationController.view.tintColor = podcastColor
 //                navigationController.navigationBar.tintColor = podcastColor
@@ -160,10 +166,6 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
             cell.summaryLabel?.attributedText = summaryeWithHyphens
         }
 
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .ShortStyle
-        dateFormatter.timeStyle = .ShortStyle
-        dateFormatter.doesRelativeDateFormatting = true
         if let pubDate = episode.pubDate {
             cell.pubDateLabel?.text = dateFormatter.stringFromDate(pubDate)
         }
@@ -192,10 +194,21 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
 
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            let context = appDelegate.coreDataStore.managedObjectContext
-            context.deleteObject(deleted)
-            try! context.save()
+            let context = self.coreDataContext
+            guard let
+                id = deleted.id,
+                coordinator = context.persistentStoreCoordinator,
+                objectID = coordinator.managedObjectIDForURIRepresentation(id)
+            else { return }
+
+            do {
+                let objectToDelete = try context.existingObjectWithID(objectID)
+                context.deleteObject(objectToDelete)
+                try context.save()
+            }
+            catch {
+                print("Can't find episode to delete \(error)")
+            }
         })
     }
 
@@ -238,8 +251,7 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
             guard let
                 indexPath = tableView.indexPathForSelectedRow,
                 episode = episodes?[indexPath.row],
-                urlString = episode.audioFile?.url,
-                url = NSURL(string: urlString),
+                url = episode.audioFile?.url,
                 destination = segue.destinationViewController as? AVPlayerViewController
             else { return }
 

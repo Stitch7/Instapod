@@ -12,14 +12,22 @@ struct AudioFile {
 
     var length: String?
     var type: String?
-    var url: String?
+    var url: NSURL?
 
     func createAudioFile(fromContext context: NSManagedObjectContext) -> AudioFileManagedObject {
         let audioFile = context.createEntityWithName("AudioFile") as! AudioFileManagedObject
         audioFile.length = length
         audioFile.type = type
-        audioFile.url = url
+        audioFile.url = url?.absoluteString
 
         return audioFile
+    }
+}
+
+extension AudioFile {
+    init(managedObject: AudioFileManagedObject) {
+        length = managedObject.length
+        type = managedObject.type
+        url = NSURL(string: managedObject.url!)
     }
 }

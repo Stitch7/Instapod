@@ -14,7 +14,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
 
     // MARK: - Properties
 
-    var episode: EpisodeManagedObject? {
+    var episode: Episode? {
         didSet {
             guard let episode = self.episode else { return }
 
@@ -24,7 +24,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
             remoteView.titleLabel.text = title
             remoteView.authorLabel.text = artist
 
-            if let color = episode.image?.color as? UIColor {
+            if let color = episode.image?.color {
                 view.tintColor = color
                 remoteView.tintColor = color
                 navigationController?.navigationBar.tintColor = color
@@ -189,8 +189,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         guard let
             episode = self.episode,
             audioFile = episode.audioFile,
-            urlString = audioFile.url,
-            url = NSURL(string: urlString)
+            url = audioFile.url
         else {
             return
         }
@@ -456,7 +455,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         timerButton.setTitle(title, forState: .Normal)
     }
 
-    func shareEpisode() -> EpisodeManagedObject {
+    func shareEpisode() -> Episode {
         return self.episode! // TODO
     }
 

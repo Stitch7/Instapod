@@ -27,6 +27,7 @@
         <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="thumbnail" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="thumbnail56" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="thumbnail72" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
@@ -54,7 +55,7 @@
     <elements>
         <element name="AudioFile" positionX="117" positionY="-7" width="128" height="150"/>
         <element name="Episode" positionX="-65" positionY="-25" width="128" height="225"/>
-        <element name="Image" positionX="117" positionY="225" width="128" height="180"/>
+        <element name="Image" positionX="117" positionY="225" width="128" height="195"/>
         <element name="Podcast" positionX="-263" positionY="-12" width="128" height="270"/>
     </elements>
 </model>

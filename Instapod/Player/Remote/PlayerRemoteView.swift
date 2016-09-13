@@ -205,7 +205,7 @@ class PlayerRemoteView: ViewFromNib {
     func shareButtonPressed(sender: UIBarButtonItem) {
         let episode = self.delegate?.shareEpisode()
         let text = "Check out this awesome Podcast:"
-        let url = NSURL(string: (episode?.audioFile?.url)!)! // TODO: We need the episode url here
+        let url = episode!.audioFile!.url! // TODO: We need the episode url here
         let activityItems = [text, url]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
 

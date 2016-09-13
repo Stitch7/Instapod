@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         initSplitViewController()
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        playerViewController = storyboard.instantiateViewControllerWithIdentifier("Player") as! PlayerViewController
+        playerViewController = storyboard.instantiate()
         // TODO: load last played episode
 //        playerViewController.episode = episode
 

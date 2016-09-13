@@ -16,6 +16,7 @@
 		300988CF1CB02F54000686C1 /* FeedOperationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300988CE1CB02F54000686C1 /* FeedOperationDelegate.swift */; };
 		3013D6C51D0416200066B986 /* Dictionary+merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3013D6C41D0416200066B986 /* Dictionary+merge.swift */; };
 		302E62A31C8B83B200B58B30 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E62A21C8B83B200B58B30 /* PlayerViewController.swift */; };
+		303C28551D861F4B0049714A /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C28541D861F4B0049714A /* MulticastDelegate.swift */; };
 		304A7D2E1CB82601002D529D /* FeedUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304A7D2D1CB82601002D529D /* FeedUpdater.swift */; };
 		304A7D301CB82FBC002D529D /* FeedUpdaterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304A7D2F1CB82FBC002D529D /* FeedUpdaterDelegate.swift */; };
 		304A7D331CB835E1002D529D /* FeedImporterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304A7D321CB835E1002D529D /* FeedImporterDelegate.swift */; };
@@ -53,6 +54,7 @@
 		306C3C2D1CA2ECF000EA247D /* UIColor+isBright.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306C3C2C1CA2ECF000EA247D /* UIColor+isBright.swift */; };
 		306C3C2F1CA323A600EA247D /* ColorCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306C3C2E1CA323A600EA247D /* ColorCube.swift */; };
 		306C3C311CA35D6B00EA247D /* UIColor+hexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306C3C301CA35D6B00EA247D /* UIColor+hexString.swift */; };
+		3070D2FC1D8870B4007DE926 /* PodcastListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3070D2FB1D8870B4007DE926 /* PodcastListDelegate.swift */; };
 		30753B091D291E6800FE47A7 /* FeedParserAEXMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30753B081D291E6800FE47A7 /* FeedParserAEXMLTests.swift */; };
 		307D63011CA927AB00E15D19 /* UINavigationController+PopupSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307D63001CA927AB00E15D19 /* UINavigationController+PopupSupport.swift */; };
 		3081696B1CA00D6C002DBAAA /* shownotes.html in Resources */ = {isa = PBXBuildFile; fileRef = 3081696A1CA00D6C002DBAAA /* shownotes.html */; };
@@ -99,9 +101,16 @@
 		30B3E5171CC3E4400043AFEE /* PlayerSleepTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B3E5161CC3E4400043AFEE /* PlayerSleepTimer.swift */; };
 		30D712A71CB90B5C00452223 /* UIViewController+coreDataContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D712A61CB90B5C00452223 /* UIViewController+coreDataContext.swift */; };
 		30D712A91CB9404000452223 /* ImageOperationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D712A81CB9404000452223 /* ImageOperationDelegate.swift */; };
+		30D9C1821D7E31B800FE5C3F /* PodcastListSortMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9C1811D7E31B800FE5C3F /* PodcastListSortMode.swift */; };
+		30D9C1841D7E37A700FE5C3F /* EnumIteratable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9C1831D7E37A700FE5C3F /* EnumIteratable.swift */; };
+		30D9C1861D7E3E0A00FE5C3F /* PodcastListViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9C1851D7E3E0A00FE5C3F /* PodcastListViewMode.swift */; };
+		30D9C1881D7E54A000FE5C3F /* PodcastListEditingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D9C1871D7E54A000FE5C3F /* PodcastListEditingMode.swift */; };
 		30E49C5E1D7A30BA00247F1D /* PodcastsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E49C5D1D7A30BA00247F1D /* PodcastsCollectionViewController.swift */; };
 		30E49C601D7A363D00247F1D /* PodcastCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30E49C5F1D7A363D00247F1D /* PodcastCollectionViewCell.xib */; };
 		30E49C621D7A37A900247F1D /* PodcastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E49C611D7A37A900247F1D /* PodcastCollectionViewCell.swift */; };
+		30E49C641D7A4A6900247F1D /* PodcastsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E49C631D7A4A6900247F1D /* PodcastsViewController.swift */; };
+		30E49C691D7B039700247F1D /* UIImage+createThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E49C681D7B039700247F1D /* UIImage+createThumbnail.swift */; };
+		30E49C6B1D7CEC9800247F1D /* UIStoryboard+instantiate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E49C6A1D7CEC9800247F1D /* UIStoryboard+instantiate.swift */; };
 		8CB5442EE7618B3D874C0DB2 /* Pods_InstapodUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B74114B0E7E1E68D85BDA6A /* Pods_InstapodUITests.framework */; };
 		A8E1AA043AA75DAAAD64CB0F /* Pods_Instapod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07F0451AE169D3F274E90CE /* Pods_Instapod.framework */; };
 /* End PBXBuildFile section */
@@ -134,6 +143,7 @@
 		300988CE1CB02F54000686C1 /* FeedOperationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedOperationDelegate.swift; sourceTree = "<group>"; };
 		3013D6C41D0416200066B986 /* Dictionary+merge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+merge.swift"; sourceTree = "<group>"; };
 		302E62A21C8B83B200B58B30 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		303C28541D861F4B0049714A /* MulticastDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
 		304A7D2D1CB82601002D529D /* FeedUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedUpdater.swift; sourceTree = "<group>"; };
 		304A7D2F1CB82FBC002D529D /* FeedUpdaterDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedUpdaterDelegate.swift; sourceTree = "<group>"; };
 		304A7D321CB835E1002D529D /* FeedImporterDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedImporterDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +181,7 @@
 		306C3C2C1CA2ECF000EA247D /* UIColor+isBright.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+isBright.swift"; sourceTree = "<group>"; };
 		306C3C2E1CA323A600EA247D /* ColorCube.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCube.swift; sourceTree = "<group>"; };
 		306C3C301CA35D6B00EA247D /* UIColor+hexString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+hexString.swift"; sourceTree = "<group>"; };
+		3070D2FB1D8870B4007DE926 /* PodcastListDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastListDelegate.swift; sourceTree = "<group>"; };
 		30753B081D291E6800FE47A7 /* FeedParserAEXMLTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedParserAEXMLTests.swift; sourceTree = "<group>"; };
 		307D63001CA927AB00E15D19 /* UINavigationController+PopupSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+PopupSupport.swift"; sourceTree = "<group>"; };
 		3081696A1CA00D6C002DBAAA /* shownotes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = shownotes.html; sourceTree = "<group>"; };
@@ -223,9 +234,16 @@
 		30B3E5161CC3E4400043AFEE /* PlayerSleepTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerSleepTimer.swift; sourceTree = "<group>"; };
 		30D712A61CB90B5C00452223 /* UIViewController+coreDataContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+coreDataContext.swift"; sourceTree = "<group>"; };
 		30D712A81CB9404000452223 /* ImageOperationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageOperationDelegate.swift; sourceTree = "<group>"; };
+		30D9C1811D7E31B800FE5C3F /* PodcastListSortMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastListSortMode.swift; sourceTree = "<group>"; };
+		30D9C1831D7E37A700FE5C3F /* EnumIteratable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumIteratable.swift; sourceTree = "<group>"; };
+		30D9C1851D7E3E0A00FE5C3F /* PodcastListViewMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastListViewMode.swift; sourceTree = "<group>"; };
+		30D9C1871D7E54A000FE5C3F /* PodcastListEditingMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PodcastListEditingMode.swift; path = TableView/PodcastListEditingMode.swift; sourceTree = "<group>"; };
 		30E49C5D1D7A30BA00247F1D /* PodcastsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastsCollectionViewController.swift; sourceTree = "<group>"; };
 		30E49C5F1D7A363D00247F1D /* PodcastCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PodcastCollectionViewCell.xib; sourceTree = "<group>"; };
 		30E49C611D7A37A900247F1D /* PodcastCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastCollectionViewCell.swift; sourceTree = "<group>"; };
+		30E49C631D7A4A6900247F1D /* PodcastsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastsViewController.swift; sourceTree = "<group>"; };
+		30E49C681D7B039700247F1D /* UIImage+createThumbnail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+createThumbnail.swift"; sourceTree = "<group>"; };
+		30E49C6A1D7CEC9800247F1D /* UIStoryboard+instantiate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+instantiate.swift"; sourceTree = "<group>"; };
 		504272E24365ABD8DA4110F9 /* Pods-InstapodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstapodTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-InstapodTests/Pods-InstapodTests.release.xcconfig"; sourceTree = "<group>"; };
 		66EEA074AAA8FA221B2F59D4 /* Pods-Instapod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Instapod.release.xcconfig"; path = "Pods/Target Support Files/Pods-Instapod/Pods-Instapod.release.xcconfig"; sourceTree = "<group>"; };
 		6D5500146FA23A1AB8793CB8 /* Pods-Instapod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Instapod.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Instapod/Pods-Instapod.debug.xcconfig"; sourceTree = "<group>"; };
@@ -389,13 +407,14 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		30574F181D79ACE60058B8E5 /* CoreData */ = {
+		30574F181D79ACE60058B8E5 /* Database */ = {
 			isa = PBXGroup;
 			children = (
 				30AFBFC21C8774B100EF3492 /* ManagedObjects */,
 				308D70E51C941AFE0039A5FF /* CoreDataStore.swift */,
 				308D70E21C941A810039A5FF /* Model.xcdatamodeld */,
 			);
+			name = Database;
 			path = CoreData;
 			sourceTree = "<group>";
 		};
@@ -412,9 +431,13 @@
 		3085B55B1C95748D00CD0112 /* Podcast */ = {
 			isa = PBXGroup;
 			children = (
-				308801C21C8CD67300894995 /* Cell */,
-				30B0EF871C766F8700A1698F /* PodcastsTableViewController.swift */,
-				30E49C5D1D7A30BA00247F1D /* PodcastsCollectionViewController.swift */,
+				30E49C661D7AED5500247F1D /* CollectionView */,
+				30E49C651D7AED4400247F1D /* TableView */,
+				30D9C1871D7E54A000FE5C3F /* PodcastListEditingMode.swift */,
+				30D9C1811D7E31B800FE5C3F /* PodcastListSortMode.swift */,
+				30D9C1851D7E3E0A00FE5C3F /* PodcastListViewMode.swift */,
+				3070D2FB1D8870B4007DE926 /* PodcastListDelegate.swift */,
+				30E49C631D7A4A6900247F1D /* PodcastsViewController.swift */,
 			);
 			path = Podcast;
 			sourceTree = "<group>";
@@ -441,8 +464,10 @@
 				306C3C301CA35D6B00EA247D /* UIColor+hexString.swift */,
 				306C3C2C1CA2ECF000EA247D /* UIColor+isBright.swift */,
 				309B9A931C8CC6140001C80C /* UIImage+averageColor.swift */,
+				30E49C681D7B039700247F1D /* UIImage+createThumbnail.swift */,
 				3065B08C1CCC0A0E00004217 /* UIImage+imageEffects.swift */,
 				30B02DC31CCD212200CECD69 /* UINavigationController+ childViewControllerForStatusBarHidden.swift */,
+				30E49C6A1D7CEC9800247F1D /* UIStoryboard+instantiate.swift */,
 				3081696C1CA0953D002DBAAA /* UIViewController+configureAppNavigationBar.swift */,
 				30D712A61CB90B5C00452223 /* UIViewController+coreDataContext.swift */,
 				309B9A8D1C8C99A30001C80C /* UIViewController+loadingHUD.swift */,
@@ -455,8 +480,6 @@
 			children = (
 				309B9A911C8CA2310001C80C /* PodcastTableViewCell.swift */,
 				309B9A8F1C8CA2020001C80C /* PodcastTableViewCell.xib */,
-				30E49C611D7A37A900247F1D /* PodcastCollectionViewCell.swift */,
-				30E49C5F1D7A363D00247F1D /* PodcastCollectionViewCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -572,6 +595,7 @@
 		30B0EF841C766F8700A1698F /* Instapod */ = {
 			isa = PBXGroup;
 			children = (
+				30574F181D79ACE60058B8E5 /* Database */,
 				3085B55A1C95747D00CD0112 /* Episode */,
 				308801C11C8CD65D00894995 /* Extensions */,
 				300988C51CAFD99D000686C1 /* Feed */,
@@ -579,7 +603,6 @@
 				3085B55B1C95748D00CD0112 /* Podcast */,
 				3085B5801C95A47D00CD0112 /* Shownotes */,
 				30AFBFC31C8774BD00EF3492 /* Storyboards */,
-				30574F181D79ACE60058B8E5 /* CoreData */,
 				30AFBFC41C8774CA00EF3492 /* Supporting Files */,
 				30027EA51D31536A00080766 /* Vendor */,
 				30B0EF851C766F8700A1698F /* AppDelegate.swift */,
@@ -588,6 +611,8 @@
 				306C3C2E1CA323A600EA247D /* ColorCube.swift */,
 				308801BF1C8CD12D00894995 /* ColorPalette.swift */,
 				30B3E5111CC3B0440043AFEE /* EffectButton.swift */,
+				30D9C1831D7E37A700FE5C3F /* EnumIteratable.swift */,
+				303C28541D861F4B0049714A /* MulticastDelegate.swift */,
 				309B9A8B1C8C86D40001C80C /* ViewFromNib.swift */,
 			);
 			path = Instapod;
@@ -620,6 +645,33 @@
 				30B3E5131CC3D57C0043AFEE /* PlayerSleepTimerDuration.swift */,
 			);
 			path = SleepTimer;
+			sourceTree = "<group>";
+		};
+		30E49C651D7AED4400247F1D /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				308801C21C8CD67300894995 /* Cell */,
+				30B0EF871C766F8700A1698F /* PodcastsTableViewController.swift */,
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		30E49C661D7AED5500247F1D /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				30E49C671D7AED5D00247F1D /* Cell */,
+				30E49C5D1D7A30BA00247F1D /* PodcastsCollectionViewController.swift */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
+		30E49C671D7AED5D00247F1D /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				30E49C611D7A37A900247F1D /* PodcastCollectionViewCell.swift */,
+				30E49C5F1D7A363D00247F1D /* PodcastCollectionViewCell.xib */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		A76D5A9A1E0F03C05D0A2DD0 /* Frameworks */ = {
@@ -941,6 +993,7 @@
 				304C2D241D15ACC6003C8139 /* FeedImporterDatasourceAEXML.swift in Sources */,
 				3085B57B1C95A3B400CD0112 /* ShownotesViewController.swift in Sources */,
 				3013D6C51D0416200066B986 /* Dictionary+merge.swift in Sources */,
+				30D9C1861D7E3E0A00FE5C3F /* PodcastListViewMode.swift in Sources */,
 				304C2D261D15B615003C8139 /* FeedParser.swift in Sources */,
 				30574F0E1D79A93D0058B8E5 /* AudioFileManagedObject.swift in Sources */,
 				30574F0D1D79A93D0058B8E5 /* AudioFileManagedObject+CoreDataProperties.swift in Sources */,
@@ -963,13 +1016,18 @@
 				306C3C311CA35D6B00EA247D /* UIColor+hexString.swift in Sources */,
 				30B3E5171CC3E4400043AFEE /* PlayerSleepTimer.swift in Sources */,
 				308801CA1C8F824700894995 /* CMTime+stringValue.swift in Sources */,
+				30E49C6B1D7CEC9800247F1D /* UIStoryboard+instantiate.swift in Sources */,
 				304D88C91CA42FAE00F3FB7C /* PlayerViewChaptersDataSource.swift in Sources */,
 				304D88DC1CA91B7600F3FB7C /* PopupController.swift in Sources */,
 				300988CD1CB02F1D000686C1 /* AEXMLElement+string.swift in Sources */,
 				304D88DE1CA91B7600F3FB7C /* PopupItemDelegate.swift in Sources */,
+				3070D2FC1D8870B4007DE926 /* PodcastListDelegate.swift in Sources */,
+				30E49C691D7B039700247F1D /* UIImage+createThumbnail.swift in Sources */,
+				30D9C1821D7E31B800FE5C3F /* PodcastListSortMode.swift in Sources */,
 				304C2D221D15AC11003C8139 /* FeedImporterDatasource.swift in Sources */,
 				306C3C2D1CA2ECF000EA247D /* UIColor+isBright.swift in Sources */,
 				309B9A8C1C8C86D40001C80C /* ViewFromNib.swift in Sources */,
+				303C28551D861F4B0049714A /* MulticastDelegate.swift in Sources */,
 				300988C71CAFE25C000686C1 /* ImageOperation.swift in Sources */,
 				30574F101D79A93D0058B8E5 /* EpisodeManagedObject.swift in Sources */,
 				304D88DB1CA91B7600F3FB7C /* PopupControllerLongPressGestureDelegate.swift in Sources */,
@@ -986,6 +1044,7 @@
 				309B9A921C8CA2310001C80C /* PodcastTableViewCell.swift in Sources */,
 				30B3E5141CC3D57C0043AFEE /* PlayerSleepTimerDuration.swift in Sources */,
 				30D712A71CB90B5C00452223 /* UIViewController+coreDataContext.swift in Sources */,
+				30D9C1841D7E37A700FE5C3F /* EnumIteratable.swift in Sources */,
 				302E62A31C8B83B200B58B30 /* PlayerViewController.swift in Sources */,
 				308801CC1C90BCDE00894995 /* ChapterTableViewCell.swift in Sources */,
 				308801C61C8E0D6600894995 /* PlayerRemoteProgressSlider.swift in Sources */,
@@ -998,8 +1057,10 @@
 				306C3C291CA29C5E00EA247D /* FeedImporter.swift in Sources */,
 				30B3E5121CC3B0440043AFEE /* EffectButton.swift in Sources */,
 				306C3C2F1CA323A600EA247D /* ColorCube.swift in Sources */,
+				30D9C1881D7E54A000FE5C3F /* PodcastListEditingMode.swift in Sources */,
 				309B9A941C8CC6140001C80C /* UIImage+averageColor.swift in Sources */,
 				30B0EF881C766F8700A1698F /* PodcastsTableViewController.swift in Sources */,
+				30E49C641D7A4A6900247F1D /* PodcastsViewController.swift in Sources */,
 				304D88E11CA91B7600F3FB7C /* PopupContentView.swift in Sources */,
 				30574F041D79A4740058B8E5 /* PodcastManagedObject.swift in Sources */,
 				3081696D1CA0953D002DBAAA /* UIViewController+configureAppNavigationBar.swift in Sources */,

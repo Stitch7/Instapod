@@ -27,7 +27,7 @@ extension PodcastManagedObject {
     @NSManaged var summary: String?
     @NSManaged var title: String?
     @NSManaged var url: String?
-    @NSManaged var episodes: NSSet?
+    @NSManaged var episodes: Set<EpisodeManagedObject>?
     @NSManaged var image: ImageManagedObject?
 
 }

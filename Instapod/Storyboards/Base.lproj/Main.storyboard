@@ -13,7 +13,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="xgx-EU-QwB" kind="relationship" relationship="rootViewController" id="b2P-Iy-wEY"/>
+                        <segue destination="tbR-O8-IYv" kind="relationship" relationship="rootViewController" id="MXf-oC-tBK"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8fS-aE-onr" sceneMemberID="firstResponder"/>
@@ -23,7 +23,7 @@
         <!--Player View Controller-->
         <scene sceneID="JW8-eN-QGP">
             <objects>
-                <viewController storyboardIdentifier="Player" id="LPc-K1-z5Q" customClass="PlayerViewController" customModule="Instapod" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PlayerViewController" id="LPc-K1-z5Q" customClass="PlayerViewController" customModule="Instapod" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="QEn-a3-Wm8"/>
                         <viewControllerLayoutGuide type="bottom" id="PgP-nu-riu"/>
@@ -137,7 +137,7 @@
         <!--Master-->
         <scene sceneID="smW-Zh-WAh">
             <objects>
-                <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="PodcastsTableViewController" customModule="Instapod" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="PodcastsTableViewController" title="Master" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="PodcastsTableViewController" customModule="Instapod" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="r7i-6Z-zg0">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -175,12 +175,20 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="797" y="-1390"/>
+            <point key="canvasLocation" x="723" y="-842"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="Ni5-Jp-BFO">
+            <objects>
+                <pageViewController storyboardIdentifier="UIPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="hLp-cT-zeD" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1zo-I4-OMj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1485" y="-1598"/>
         </scene>
         <!--Podcasts Collection View Controller-->
         <scene sceneID="rVp-f6-ToV">
             <objects>
-                <collectionViewController id="xgx-EU-QwB" customClass="PodcastsCollectionViewController" customModule="Instapod" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="PodcastsCollectionViewController" id="xgx-EU-QwB" customClass="PodcastsCollectionViewController" customModule="Instapod" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="EVK-eC-v8i">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -192,7 +200,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PodcastCell" id="5IW-tk-P19" customClass="PodcastCollectionViewCell" customModule="Instapod" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -213,7 +221,26 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5fw-tm-gLh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1471" y="-630"/>
+            <point key="canvasLocation" x="1485" y="-842"/>
+        </scene>
+        <!--Podcasts View Controller-->
+        <scene sceneID="Sa1-ml-emQ">
+            <objects>
+                <viewController id="tbR-O8-IYv" customClass="PodcastsViewController" customModule="Instapod" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="H52-Kz-U8O"/>
+                        <viewControllerLayoutGuide type="bottom" id="Z1T-Qt-xtt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Mm4-gi-SQx">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="K4t-3N-4tp"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uup-AE-TxC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="723" y="-1598"/>
         </scene>
         <!--Episodes View Controller-->
         <scene sceneID="jOR-ja-DmS">
@@ -273,7 +300,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="8aH-5q-SLc"/>
+        <segue reference="PKu-bB-HxH"/>
         <segue reference="zLM-e4-wA5"/>
     </inferredMetricsTieBreakers>
 </document>

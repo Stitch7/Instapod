@@ -14,15 +14,15 @@ class ImageOperation: AsynchronousOperation {
 
     var image: Image
     var task: NSURLSessionTask!
-    var feed: Feed
+    var podcast: Podcast
     var episode: Episode?
     var delegate: ImageOperationDelegate?
 
     // MARK: - Initializer
 
-    init(image: Image, session: NSURLSession, feed: Feed, episode: Episode?) {
+    init(image: Image, session: NSURLSession, podcast: Podcast, episode: Episode?) {
         self.image = image
-        self.feed = feed
+        self.podcast = podcast
         self.episode = episode
 
         super.init()
@@ -57,25 +57,26 @@ class ImageOperation: AsynchronousOperation {
 
             strongSelf.image.data = imageData
 
-            if let thumbnail56 = strongSelf.createThumbnail(image: tempImage, size: 56.0) {
+            if let thumbnail56 = tempImage.createThumbnail(size: 56.0) {
                 strongSelf.image.thumbnail56 = thumbnail56
-                strongSelf.image.thumbnail72 = strongSelf.createThumbnail(image: tempImage, size: 72.0)
-                strongSelf.image.color = strongSelf.extractColors(image: UIImage(data: thumbnail56)!)
+                strongSelf.image.thumbnail72 = tempImage.createThumbnail(size: 72.0)
+                strongSelf.image.thumbnail = tempImage.createThumbnail(size: 100.0)
+                strongSelf.image.color = thumbnail56.colorCube
             }
 
             strongSelf.image.isFetched = true
 
             if strongSelf.episode != nil {
                 strongSelf.episode!.image = strongSelf.image
-                strongSelf.feed.updateEpisode(with: strongSelf.episode!)
+                strongSelf.podcast.updateEpisode(with: strongSelf.episode!)
             }
             else {
-                strongSelf.feed.image = strongSelf.image
+                strongSelf.podcast.image = strongSelf.image
             }
 
             strongSelf.delegate?.imageOperation(strongSelf,
                                                 didFinishWithImage: strongSelf.image,
-                                                ofFeed: strongSelf.feed,
+                                                ofPodcast: strongSelf.podcast,
                                                 episode: strongSelf.episode)
         }
     }
@@ -90,39 +91,5 @@ class ImageOperation: AsynchronousOperation {
     override func cancel() {
         task.cancel()
         super.cancel()
-    }
-
-    // MARK: - Fetching
-
-    private func createThumbnail(image image: UIImage, size baseSize: CGFloat) -> NSData? {
-        let length = UIScreen.mainScreen().scale * baseSize
-        let size = CGSizeMake(length, length)
-
-        UIGraphicsBeginImageContext(size)
-        image.drawInRect(CGRectMake(0.0, 0.0, size.width, size.height))
-        let thumbnailImage = UIGraphicsGetImageFromCurrentImageContext()
-
-        var thumbnailData: NSData?
-        if let png = UIImagePNGRepresentation(thumbnailImage) {
-            thumbnailData = NSData(data: png)
-        }
-        else if let jpeg = UIImageJPEGRepresentation(thumbnailImage, 1.0) {
-            thumbnailData = NSData(data: jpeg)
-        }
-        UIGraphicsEndImageContext()
-
-        return thumbnailData
-    }
-
-    private func extractColors(image image: UIImage) -> UIColor {
-        var color = UIColor.blackColor()
-
-        let cube = ColorCube()
-        let imageColors = cube.extractColorsFromImage(image, flags: [.AvoidWhite, .AvoidBlack])
-        if let mainColor = imageColors.first {
-            color = mainColor
-        }
-
-        return color
     }
 }

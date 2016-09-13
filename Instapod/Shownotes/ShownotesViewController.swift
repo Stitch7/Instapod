@@ -13,7 +13,7 @@ class ShownotesViewController: UIViewController, UIWebViewDelegate {
 
     // MARK: - Properties
 
-    var episode: EpisodeManagedObject?
+    var episode: Episode?
 
     private var targetViewController: UIViewController {
         var targetViewController: UIViewController = self

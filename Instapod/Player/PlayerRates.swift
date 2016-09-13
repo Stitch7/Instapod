@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum PlayerRates: Float {
+enum PlayerRates: Float, EnumIteratable {
     case Half = 0.5
     case Normal = 1.0
     case OneAndAHalf = 1.5

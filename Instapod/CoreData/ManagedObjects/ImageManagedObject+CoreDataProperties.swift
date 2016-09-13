@@ -2,7 +2,7 @@
 //  ImageManagedObject+CoreDataProperties.swift
 //  
 //
-//  Created by Christopher Reitz on 02.09.16.
+//  Created by Christopher Reitz on 08.09.16.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -21,7 +21,8 @@ extension ImageManagedObject {
     @NSManaged var thumbnail72: NSData?
     @NSManaged var title: String?
     @NSManaged var url: String?
-    @NSManaged var episodes: NSSet?
+    @NSManaged var thumbnail: NSData?
+    @NSManaged var episodes: Set<EpisodeManagedObject>?
     @NSManaged var podcast: PodcastManagedObject?
 
 }

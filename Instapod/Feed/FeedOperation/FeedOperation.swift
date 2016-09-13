@@ -48,11 +48,13 @@ class FeedOperation: AsynchronousOperation {
 
             do {
                 let parser = strongSelf.parser
-                var feed = try parser.parseFeed(uuid: strongSelf.uuid, url: strongSelf.url, xmlData: xmlData)
-                feed.nextPage = try parser.nextPage(xmlData)
-                feed.image = try parser.parseImage(xmlData)
-                feed.episodes = try parser.parseEpisodes(xmlData)
-                strongSelf.delegate?.feedOperation(strongSelf, didFinishWithFeed: feed)
+                var podcast = try parser.parseFeed(uuid: strongSelf.uuid,
+                                                   url: strongSelf.url,
+                                                   xmlData: xmlData)
+                podcast.nextPage = try parser.nextPage(xmlData)
+                podcast.image = try parser.parseImage(xmlData)
+                podcast.episodes = try parser.parseEpisodes(xmlData)
+                strongSelf.delegate?.feedOperation(strongSelf, didFinishWithPodcast: podcast)
             } catch {
                 strongSelf.delegate?.feedOperation(strongSelf, didFinishWithError: error)
             }

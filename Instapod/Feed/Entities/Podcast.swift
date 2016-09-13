@@ -8,11 +8,15 @@
 
 import CoreData
 
-struct Feed {
+struct Podcast {
 
+    // MARK: - Properties
+
+    var id: NSURL?
     let uuid: String
-    var url: NSURL
     var nextPage: NSURL?
+    
+    var url: NSURL
     var author: String?
     var category: String?
     var desc: String?
@@ -27,6 +31,8 @@ struct Feed {
     var title: String?
     var episodes: [Episode]?
     var image: Image?
+
+    // MARK: - Initializers
 
     init(uuid: String, url: NSURL) {
         self.uuid = uuid
@@ -84,5 +90,34 @@ struct Feed {
     }
 }
 
+extension Podcast {
+    init(managedObject: PodcastManagedObject) {
+        id = managedObject.objectID.URIRepresentation()
+        uuid = NSUUID().UUIDString
 
+        url = NSURL(string: managedObject.url!)!
+        author = managedObject.author
+        category = managedObject.category
+        desc = managedObject.desc
+        explicit = managedObject.explicit
+        generator = managedObject.generator
+        language = managedObject.language
+        lastBuildDate = managedObject.lastBuildDate
+        pubDate = managedObject.pubDate
+        sortIndex = managedObject.sortIndex
+        subtitle = managedObject.subtitle
+        summary = managedObject.summary
+        title = managedObject.title
 
+        episodes = [Episode]()
+        if let managedEpisodes = managedObject.episodes {
+            for managedEpisode in managedEpisodes {
+                episodes?.append(Episode(managedObject: managedEpisode))
+            }
+        }
+
+        if let managedImage = managedObject.image {
+            image = Image(managedObject: managedImage)
+        }
+    }
+}

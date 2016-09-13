@@ -9,54 +9,39 @@
 import UIKit
 import CoreData
 
-class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating, CoreDataContextInjectable, FeedUpdaterDelegate, FeedImporterDelegate {
+class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating, CoreDataContextInjectable, FeedUpdaterDelegate {
 
     // MARK: - Properties
 
-    let refreshControlTitle = "Pull to refresh …" // TODO: i18n
     var detailViewController: EpisodesViewController?
-    var podcasts = [PodcastManagedObject]()
-    var filteredData = [PodcastManagedObject]()
-    let podcastCountLabel = UILabel()
+    var delegate: PodcastListDelegate?
     var searchController: UISearchController!
+    var podcasts = [Podcast]()
+    var filteredData = [Podcast]()
+    let refreshControlTitle = "Pull to refresh …" // TODO: i18n
+    let podcastCountLabel = UILabel()
 
     // MARK: - UIViewController
-
-    func loadData(fromContext context: NSManagedObjectContext) {
-        do {
-            let fetchRequest = NSFetchRequest(entityName: "Podcast")
-            fetchRequest.sortDescriptors = [
-                NSSortDescriptor(key: "sortIndex", ascending: true)
-            ]
-            podcasts = try context.executeFetchRequest(fetchRequest) as! [PodcastManagedObject]
-
-            tableView.reloadData()
-        } catch let error as NSError {
-            print("Fetch failed: \(error.localizedDescription)")
-        }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Podcasts" // TODO: i18n
         view.backgroundColor = ColorPalette.Background
+        edgesForExtendedLayout = .None
+        automaticallyAdjustsScrollViewInsets = false
 
         configureSplitViewController()
-        configureAppNavigationBar()
-        configureNavigationBar()
         configureTableView()
+        configureRefreshControl()
         configureSearchBar()
         configureToolBar()
-
-        loadData(fromContext: coreDataContext)
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         // Workaround for clearsSelectionOnViewWillAppear still buggy on gesture
-        clearsSelectionOnViewWillAppear = splitViewController!.collapsed
+//        clearsSelectionOnViewWillAppear = splitViewController!.collapsed
         if let indexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRowAtIndexPath(indexPath, animated: false)
         }
@@ -64,28 +49,11 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 //        navigationController?.view.tintColor = ColorPalette.Main
         navigationController?.navigationBar.barTintColor = ColorPalette.Main
 
-        if let appDelegate = UIApplication.sharedApplication().delegate {
-            if let window = appDelegate.window {
-                window!.tintColor = ColorPalette.Main
-            }
-        }
-
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let playerViewController = storyboard.instantiateViewControllerWithIdentifier("Player") as! PlayerViewController
-
-        var targetViewController: UIViewController = self
-        if let navigationController = self.navigationController {
-            targetViewController = navigationController
-            if let rootNavigationController = navigationController.navigationController {
-                targetViewController = rootNavigationController
-            }
-        }
-
-        if targetViewController.popupContentViewController == nil {
-            targetViewController.presentPopupBarWithContentViewController(playerViewController, openPopup: false, animated: false) {
-//                targetViewController.closePopupAnimated(false)
-                targetViewController.dismissPopupBarAnimated(false)
-            }
+        if let
+            appDelegate = UIApplication.sharedApplication().delegate,
+            window = appDelegate.window
+        {
+            window!.tintColor = ColorPalette.Main
         }
     }
 
@@ -109,22 +77,19 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
         }
     }
 
-    func configureNavigationBar() {
-        navigationItem.leftBarButtonItem = self.editButtonItem()
-        let addFeedButton = UIBarButtonItem(barButtonSystemItem: .Add,
-                                            target: self,
-                                            action: #selector(addFeedButtonPressed(_:)))
-        navigationItem.rightBarButtonItem = addFeedButton
-    }
-
     func configureTableView() {
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
+        
         tableView.registerNib(UINib(nibName: "PodcastTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.backgroundColor = ColorPalette.TableView.Background
         tableView.backgroundView = UIView()
+    }
 
+    func configureRefreshControl() {
         let refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: refreshControlTitle)
-        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(handleRefresh), forControlEvents: .ValueChanged)
         self.refreshControl = refreshControl
         tableView.addSubview(refreshControl)
         tableView.sendSubviewToBack(refreshControl)
@@ -160,123 +125,28 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     func handleRefresh(refreshControl: UIRefreshControl) {
         refreshControl.attributedTitle = NSAttributedString(string: "Searching for new episodes …") // TODO: i18n
-
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-
-        let updater = FeedUpdater(podcasts: podcasts)
-        updater.delegate = self
-        updater.update()
-    }
-
-    func addFeedButtonPressed(sender: AnyObject) {
-        let alertController = UIAlertController(
-            title: "Add new Podcast", // TODO: i18n
-            message: nil,
-            preferredStyle: .Alert
-        )
-
-        var feedUrlTextField: UITextField?
-        alertController.addTextFieldWithConfigurationHandler { (textField) in
-            textField.placeholder = "Feed URL" // TODO: i18n
-            feedUrlTextField = textField
-        }
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel)  { (action) in // TODO: i18n
-            guard
-                let path = NSBundle.mainBundle().pathForResource("subscriptions", ofType: "opml"),
-                let data = try? NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe)
-            else {
-                print("Failed loading subscriptions.opml")
-                return
-            }
-
-            self.loadingHUD(show: true, dimsBackground: true)
-
-            let datasource = FeedImporterDatasourceAEXML(data: data)
-            let feedImporter = FeedImporter(datasource: datasource)
-            feedImporter.delegate = self
-            feedImporter.start()
-        }
-        let okAction = UIAlertAction(title: "Add", style: .Default) { (action) in // TODO: i18n
-            guard let _ = feedUrlTextField?.text else { return }
-//            self.tableView.reloadData()
-        }
-        alertController.addAction(cancelAction)
-        alertController.addAction(okAction)
-        presentViewController(alertController, animated: true, completion: nil)
-//        alertController.view.tintColor = ColorPalette.
+        delegate?.updateFeeds()
     }
 
     func updateSortIndizes() {
-        for (index, podcast) in podcasts.enumerate() {
-            podcast.sortIndex = index
-        }
-        try! coreDataContext.save()
-    }
+        guard let coordinator = coreDataContext.persistentStoreCoordinator else { return }
+        do {
+            for (index, podcast) in podcasts.enumerate() {
+                guard let
+                    id = podcast.id,
+                    objectID = coordinator.managedObjectIDForURIRepresentation(id),
+                    managedPodcast = try coreDataContext.existingObjectWithID(objectID) as? PodcastManagedObject
+                else { continue }
 
-    // MARK: - FeedUpdaterDelegate
-
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: Episode, ofFeed feed: Feed) {
-        if let
-            refreshControl = refreshControl,
-            feedTitle = feed.title,
-            episodeTitle = foundEpisode.title
-        {
-            refreshControl.attributedTitle = NSAttributedString(string: "Found \(feedTitle) - \(episodeTitle)") // TODO: i18n
-        }
-
-        var affected: PodcastManagedObject?
-        for podcast in podcasts {
-            if podcast.title == feed.title {
-                affected = podcast
-                break
+                managedPodcast.sortIndex = index
             }
+            try coreDataContext.save()
+        } catch {
+            print("Can't find podcast to delete \(error)")
         }
-        guard let affectedPodcast = affected else { return }
-
-        let newEpisode = foundEpisode.createEpisode(fromContext: coreDataContext)
-        affectedPodcast.addObject(newEpisode, forKey: "episodes")
-        try! coreDataContext.save()
     }
 
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithNumberOfEpisodes numberOfEpisodes: Int) {
-        tableView.reloadData()
-        tableView.layoutIfNeeded()
-
-        if let refreshControl = refreshControl {
-            refreshControl.endRefreshing()
-            refreshControl.attributedTitle = NSAttributedString(string: refreshControlTitle)
-        }
-
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-
-        var hearts = ""; for _ in 0..<numberOfEpisodes { hearts += "♥️" }; print(hearts)
-    }
-
-    // MARK: - FeedImporterDelegate
-
-    func feedImporter(feedImporter: FeedImporter, didFinishWithFeed feed: Feed) {
-        feed.createPodcast(fromContext: coreDataContext)
-        try! coreDataContext.save()
-        coreDataContext.reset()
-        loadData(fromContext: coreDataContext)
-    }
-
-    func feedImporterDidFinishWithAllFeeds(feedImporter: FeedImporter) {
-        loadingHUD(show: false)
-    }
-
-    // MARK: - UITableViewController
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = podcasts.count
-        podcastCountLabel.text = "\(count) Subscriptions" // TODO: i18n
-        return count
-    }
+    // MARK: - UITableViewDelegate
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 67.0
@@ -288,6 +158,31 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
+    }
+
+    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
+        return "Unsubscribe" // TODO: i18n
+    }
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        performSegueWithIdentifier("ShowFeed", sender: indexPath)
+    }
+
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        if self.tableView.editing { return .Delete }
+        return .None
+    }
+
+    // MARK: - UITableViewDataSource
+
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let count = podcasts.count
+        podcastCountLabel.text = "\(count) Subscriptions" // TODO: i18n
+        return count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -305,7 +200,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
         cell.titleLabel!.text = podcast.title
         cell.authorLabel!.text = podcast.author
-        let episodesCount = podcast.episodes?.allObjects.count ?? 0
+        let episodesCount = podcast.episodes?.count ?? 0
         cell.unheardEpisodesLabel!.text = "\(episodesCount) Episodes" // TODO: i18n
 
         let separatorLineView = UIView(frame: CGRectMake(0.0, cell.bounds.size.height - 1.0, cell.bounds.size.width, 0.5))
@@ -313,10 +208,6 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
         cell.contentView.addSubview(separatorLineView)
 
         return cell
-    }
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("ShowFeed", sender: indexPath)
     }
 
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -341,13 +232,22 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
 
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
-            self.coreDataContext.deleteObject(deleted)
-            try! self.coreDataContext.save()
-        })
-    }
+            let context = self.coreDataContext
+            guard let
+                id = deleted.id,
+                coordinator = context.persistentStoreCoordinator,
+                objectID = coordinator.managedObjectIDForURIRepresentation(id)
+            else { return }
 
-    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
-        return "Unsubscribe" // TODO: i18n
+            do {
+                let objectToDelete = try context.existingObjectWithID(objectID)
+                context.deleteObject(objectToDelete)
+                try context.save()
+            }
+            catch {
+                print("Can't find podcast to delete \(error)")
+            }
+        })
     }
 
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
@@ -365,6 +265,28 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 //        })
 
         tableView.reloadData()
+    }
+
+    // MARK: - FeedUpdaterDelegate
+
+    func feedUpdater(feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: Episode, ofPodcast podcast: Podcast) {
+        if let
+            refreshControl = refreshControl,
+            feedTitle = podcast.title,
+            episodeTitle = foundEpisode.title
+        {
+            refreshControl.attributedTitle = NSAttributedString(string: "Found \(feedTitle) - \(episodeTitle)") // TODO: i18n
+        }
+    }
+
+    func feedUpdater(feedupdater: FeedUpdater, didFinishWithNumberOfEpisodes numberOfEpisodes: Int) {
+        tableView.reloadData()
+        tableView.layoutIfNeeded()
+
+        if let refreshControl = refreshControl {
+            refreshControl.endRefreshing()
+            refreshControl.attributedTitle = NSAttributedString(string: refreshControlTitle)
+        }
     }
 
     // MARK: - Segues

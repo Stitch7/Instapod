@@ -14,7 +14,7 @@ class FeedParserAEXMLTests: XCTestCase {
     // MARK: - Helper
 
     let parser: FeedParser = FeedParserAEXML()
-    var feed: Feed?
+    var feed: Podcast?
     var feedData: NSData!
 
     // MARK: - XCTestCase
