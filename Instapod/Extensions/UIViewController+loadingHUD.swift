@@ -10,20 +10,20 @@ import UIKit
 import PKHUD
 
 extension UIViewController {
-    func loadingHUD(show show: Bool, dimsBackground: Bool = false) {
+    func loadingHUD(show: Bool, dimsBackground: Bool = false) {
         if show {
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             PKHUD.sharedHUD.dimsBackground = dimsBackground
             PKHUD.sharedHUD.userInteractionOnUnderlyingViewsEnabled = !dimsBackground
-            HUD.show(.Progress)
+            HUD.show(.progress)
         }
         else {
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             HUD.hide(animated: true)
         }
     }
 
     func errorHUD() {
-        HUD.show(.Error)
+        HUD.show(.error)
     }
 }

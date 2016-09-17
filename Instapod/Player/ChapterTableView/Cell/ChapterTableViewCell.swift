@@ -25,21 +25,21 @@ class ChapterTableViewCell: UITableViewCell {
     }
 
     func initialize() {
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
         preservesSuperviewLayoutMargins = false
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        noLabel.textAlignment = .Right
-        noLabel.textColor = UIColor.grayColor()
+        noLabel.textAlignment = .right
+        noLabel.textColor = UIColor.gray
 
         titleLabel.numberOfLines = 0
-        titleLabel.textColor = UIColor.darkGrayColor()
+        titleLabel.textColor = UIColor.darkGray
 
-        timeLabel.textAlignment = .Right
-        timeLabel.textColor = UIColor.grayColor()
+        timeLabel.textAlignment = .right
+        timeLabel.textColor = UIColor.gray
     }
 }

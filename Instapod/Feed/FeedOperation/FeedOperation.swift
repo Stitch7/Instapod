@@ -13,15 +13,15 @@ class FeedOperation: AsynchronousOperation {
     // MARK: - Properties
 
     let uuid: String
-    var url: NSURL
+    var url: URL
     var parser: FeedParser
-    var task: NSURLSessionTask!
+    var task: URLSessionTask!
     var delegate: FeedOperationDelegate?
-    var session = NSURLSession.sharedSession()
+    var session = URLSession.shared
 
     // MARK: - Initializer
 
-    init(uuid: String, url: NSURL, parser: FeedParser) {
+    init(uuid: String, url: URL, parser: FeedParser) {
         self.uuid = uuid
         self.parser = parser
         self.url = url
@@ -29,8 +29,8 @@ class FeedOperation: AsynchronousOperation {
         configureTask()
     }
 
-    private func configureTask() {
-        task = session.dataTaskWithURL(url) { [weak self] (data, response, error) in
+    fileprivate func configureTask() {
+        task = session.dataTask(with: url, completionHandler: { [weak self] (data, response, error) in
             guard let strongSelf = self else { return }
 
             defer {
@@ -58,7 +58,7 @@ class FeedOperation: AsynchronousOperation {
             } catch {
                 strongSelf.delegate?.feedOperation(strongSelf, didFinishWithError: error)
             }
-        }
+        }) 
     }
 
     // MARK: - NSOperation

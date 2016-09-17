@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     // MARK: - UIApplicationDelegate
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         initCoreData()
         initAudioSession()
         initSplitViewController()
@@ -33,25 +33,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         return true
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         guard let coreDataStore = self.coreDataStore else { return }
         coreDataStore.saveContext()
     }
 
-    private func initCoreData() {
+    fileprivate func initCoreData() {
         coreDataStore = CoreDataStore(storeName: "Model")
 
 //        cleanDB()
     }
 
-    private func cleanDB() {
+    fileprivate func cleanDB() {
         coreDataStore.deleteAllData("Podcast")
         coreDataStore.deleteAllData("Episode")
         coreDataStore.deleteAllData("Image")
         coreDataStore.deleteAllData("AudioFile")
     }
 
-    private func initAudioSession() {
+    fileprivate func initAudioSession() {
         do {
             let audioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(AVAudioSessionCategoryPlayback)
@@ -62,16 +62,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
     }
 
-    private func initSplitViewController() {
+    fileprivate func initSplitViewController() {
         guard let window = self.window else { return }
         guard let splitViewController = window.rootViewController as? UISplitViewController else { return }
 
         let index = splitViewController.viewControllers.count - 1
         if let
             navigationController = splitViewController.viewControllers[index] as? UINavigationController,
-            topViewController = navigationController.topViewController
+            let topViewController = navigationController.topViewController
         {
-            topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
+            topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
             splitViewController.delegate = self
         }
     }
@@ -79,9 +79,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // MARK: - UISplitViewControllerDelegate
 
     func splitViewController(
-        splitViewController: UISplitViewController,
-        collapseSecondaryViewController secondaryViewController: UIViewController,
-        ontoPrimaryViewController primaryViewController: UIViewController
+        _ splitViewController: UISplitViewController,
+        collapseSecondary secondaryViewController: UIViewController,
+        onto primaryViewController: UIViewController
     ) -> Bool {
         guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
         guard let topAsDetailController = secondaryAsNavController.topViewController as? EpisodesViewController else { return false }

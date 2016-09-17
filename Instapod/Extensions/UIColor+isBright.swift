@@ -10,11 +10,11 @@ import UIKit
 
 extension UIColor {
     func isBright() -> Bool {
-        let count = CGColorGetNumberOfComponents(CGColor)
-        let componentColors = CGColorGetComponents(CGColor)
-        let r = componentColors[0] * 255.0
-        let g = componentColors[1] * 255.0
-        let b = componentColors[2] * 255.0
+        let count = cgColor.numberOfComponents
+        let componentColors = cgColor.components
+        let r = (componentColors?[0])! * 255.0
+        let g = (componentColors?[1])! * 255.0
+        let b = (componentColors?[2])! * 255.0
 
         var brightnessScore: CGFloat = 0.0
         if count == 2 {

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlayerRemoteView" customModule="Instapod" customModuleProvider="target">
@@ -27,24 +28,20 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aPo-5W-tyf">
-                    <rect key="frame" x="0.0" y="177" width="320" height="42"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="volumeMin" translatesAutoresizingMaskIntoConstraints="NO" id="i4P-fl-LQo">
-                            <rect key="frame" x="20" y="23" width="17" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="2do-UH-OOe"/>
                                 <constraint firstAttribute="width" constant="17" id="Zd8-rb-aI0"/>
                             </constraints>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2tg-Ty-wix" customClass="MPVolumeView">
-                            <rect key="frame" x="47" y="22" width="216" height="30"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="Sje-3y-LKZ"/>
                             </constraints>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="volumeMax" translatesAutoresizingMaskIntoConstraints="NO" id="yZN-1a-M3H">
-                            <rect key="frame" x="283" y="23" width="17" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="17" id="TVv-6H-BCA"/>
                                 <constraint firstAttribute="height" constant="17" id="qNU-a7-rpZ"/>
@@ -63,7 +60,6 @@
                     </constraints>
                 </view>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ARf-Bc-o7u">
-                    <rect key="frame" x="0.0" y="239" width="320" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="FYb-fG-aud"/>
                     </constraints>
@@ -79,11 +75,8 @@
                         <barButtonItem systemItem="action" id="kcq-RB-j9S"/>
                     </items>
                 </toolbar>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="frP-Bw-EeC" customClass="PlayerRemoteProgressSlider" customModule="Instapod" customModuleProvider="target">
-                    <rect key="frame" x="-2" y="0.0" width="324" height="31"/>
-                </slider>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="frP-Bw-EeC" customClass="PlayerRemoteProgressSlider" customModule="Instapod" customModuleProvider="target"/>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FAf-3P-t8e">
-                    <rect key="frame" x="65" y="130" width="27" height="27"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="27" id="3xF-u5-PUM"/>
                         <constraint firstAttribute="width" constant="27" id="O2n-TJ-J8F"/>
@@ -91,7 +84,6 @@
                     <state key="normal" title="Button" image="previousTrack"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k3x-Z5-6t6">
-                    <rect key="frame" x="147" y="130" width="27" height="27"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="27" id="hlM-hc-xSH"/>
                         <constraint firstAttribute="height" constant="27" id="ugw-vB-Tin"/>
@@ -99,7 +91,6 @@
                     <state key="normal" title="Button" image="play"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRn-2b-yPj">
-                    <rect key="frame" x="229" y="130" width="27" height="27"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="27" id="6FK-CR-WiV"/>
                         <constraint firstAttribute="width" constant="27" id="PY1-dQ-TPw"/>
@@ -107,39 +98,35 @@
                     <state key="normal" title="Button" image="nextTrack"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dpm-17-Ojy">
-                    <rect key="frame" x="15" y="30" width="55" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="qOl-kU-7KS"/>
                         <constraint firstAttribute="width" constant="55" id="rOu-Q9-ydb"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-00:00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGg-Rs-Wcm">
-                    <rect key="frame" x="250" y="30" width="65" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="bgk-NH-JQp"/>
                         <constraint firstAttribute="width" constant="65" id="xdn-A6-nuE"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0sG-ui-685" customClass="MarqueeLabel" customModule="Instapod" customModuleProvider="target">
-                    <rect key="frame" x="15" y="58" width="290" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0sG-ui-685">
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FAy-vz-xAk" customClass="MarqueeLabel" customModule="Instapod" customModuleProvider="target">
-                    <rect key="frame" x="15" y="84" width="290" height="16"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FAy-vz-xAk">
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="k3x-Z5-6t6" firstAttribute="leading" secondItem="FAf-3P-t8e" secondAttribute="trailing" constant="55" id="4e0-xR-PtL"/>
                 <constraint firstItem="frP-Bw-EeC" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="8ne-NY-L8c"/>
@@ -170,7 +157,6 @@
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
-            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="784" y="442"/>
         </view>
@@ -178,7 +164,7 @@
     <resources>
         <image name="airplay" width="25" height="25"/>
         <image name="nextTrack" width="28" height="28"/>
-        <image name="play" width="28" height="28"/>
+        <image name="play" width="27" height="27"/>
         <image name="previousTrack" width="28" height="28"/>
         <image name="volumeMax" width="17" height="17"/>
         <image name="volumeMin" width="17" height="17"/>

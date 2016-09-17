@@ -12,10 +12,10 @@ extension UIViewController {
     func configureAppNavigationBar() {
         guard let navigationBar = navigationController?.navigationBar else { return }
 
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
-        let navigationBarColor = ColorPalette.Background.colorWithAlphaComponent(0.9)
+        let screenWidth = UIScreen.main.bounds.size.width
+        let navigationBarColor = ColorPalette.Background.withAlphaComponent(0.9)
 
-        navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationBar.shadowImage = UIImage()
         navigationBar.backgroundColor = navigationBarColor
 

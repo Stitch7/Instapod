@@ -12,13 +12,13 @@ struct Episode {
 
     // MARK: - Properties
 
-    var id: NSURL?
+    var id: URL?
     var author: String?
     var content: String?
     var desc: String?
     var duration: String?
     var link: String?
-    var pubDate: NSDate?
+    var pubDate: Date?
     var subtitle: String?
     var summary: String?
     var title: String?
@@ -46,13 +46,13 @@ struct Episode {
 
 extension Episode {
     init(managedObject: EpisodeManagedObject) {
-        id = managedObject.objectID.URIRepresentation()
+        id = managedObject.objectID.uriRepresentation()
         author = managedObject.author
         content = managedObject.content
         desc = managedObject.desc
         duration = managedObject.duration
         link = managedObject.link
-        pubDate = managedObject.pubDate
+        pubDate = managedObject.pubDate as Date?
         subtitle = managedObject.subtitle
         summary = managedObject.summary
         title = managedObject.title

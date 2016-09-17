@@ -12,12 +12,12 @@ class PodcastCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
 
-    var imageData: NSData? {
+    var imageData: Data? {
         didSet {
             guard let data = imageData else { return }
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            DispatchQueue.global(qos: .userInitiated).async {
                 let thumbnailImage = UIImage(data: data)
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.imageView.image = thumbnailImage
                 }
             }

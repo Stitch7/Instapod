@@ -10,62 +10,66 @@ import UIKit
 
 class PopupTransitionCoordinator: NSObject, UIViewControllerTransitionCoordinator {
 
-    func isAnimated() -> Bool {
+    var isAnimated : Bool {
         return false
     }
 
-    func presentationStyle() -> UIModalPresentationStyle {
-        return .None
+    var presentationStyle : UIModalPresentationStyle {
+        return .none
     }
 
-    func initiallyInteractive() -> Bool {
+    var initiallyInteractive : Bool {
         return false
     }
 
-    func isInteractive() -> Bool {
+    var isInterruptible: Bool {
         return false
     }
 
-    func isCancelled() -> Bool {
+    var isInteractive : Bool {
         return false
     }
 
-    func transitionDuration() -> NSTimeInterval {
+    var isCancelled : Bool {
+        return false
+    }
+
+    var transitionDuration : TimeInterval {
         return 0.0
     }
 
-    func percentComplete() -> CGFloat {
+    var percentComplete : CGFloat {
         return 1.0
     }
 
-    func completionVelocity() -> CGFloat {
+    var completionVelocity : CGFloat {
         return 1.0
     }
 
-    func completionCurve() -> UIViewAnimationCurve {
-        return .EaseInOut
+    var completionCurve : UIViewAnimationCurve {
+        return .easeInOut
     }
 
-    func viewControllerForKey(key: String) -> UIViewController? {
+    func viewController(forKey key: UITransitionContextViewControllerKey) -> UIViewController? {
 //        if key == UITransitionContextFromViewControllerKey { }
 //        else if key == UITransitionContextToViewControllerKey { }
         return nil
     }
 
-    func viewForKey(key: String) -> UIView? {
+    func view(forKey key: UITransitionContextViewKey) -> UIView? {
         return nil
     }
 
-    func containerView() -> UIView {
+    var containerView : UIView {
         return UIView() // should nil
     }
 
-    func targetTransform() -> CGAffineTransform {
-        return CGAffineTransformIdentity
+    var targetTransform : CGAffineTransform {
+        return CGAffineTransform.identity
     }
 
-    func animateAlongsideTransition(
-        animation: ((UIViewControllerTransitionCoordinatorContext) -> Void)?,
+    func animate(
+        alongsideTransition animation: ((UIViewControllerTransitionCoordinatorContext) -> Void)?,
         completion: ((UIViewControllerTransitionCoordinatorContext) -> Void)?
     ) -> Bool {
         if let animation = animation {
@@ -78,14 +82,17 @@ class PopupTransitionCoordinator: NSObject, UIViewControllerTransitionCoordinato
         return true
     }
 
-    func animateAlongsideTransitionInView(
-        view: UIView?,
+    func animateAlongsideTransition(
+        in view: UIView?,
         animation: ((UIViewControllerTransitionCoordinatorContext) -> Void)?,
         completion: ((UIViewControllerTransitionCoordinatorContext) -> Void)?
     ) -> Bool {
-        return animateAlongsideTransition(animation, completion: completion)
+        return animate(alongsideTransition: animation, completion: completion)
     }
 
-    func notifyWhenInteractionEndsUsingBlock(handler: (UIViewControllerTransitionCoordinatorContext) -> Void) {
+    func notifyWhenInteractionEnds(_ handler: @escaping (UIViewControllerTransitionCoordinatorContext) -> Void) {
+    }
+
+    func notifyWhenInteractionChanges(_ handler: @escaping (UIViewControllerTransitionCoordinatorContext) -> Void) {
     }
 }

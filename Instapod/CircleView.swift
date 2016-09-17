@@ -30,13 +30,13 @@ class CircleView: UIView {
     }
 
     func initialize() {
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clear
     }
 
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         let ctx = UIGraphicsGetCurrentContext()
-        CGContextAddEllipseInRect(ctx, rect)
-        CGContextSetFillColor(ctx, CGColorGetComponents(color.CGColor))
-        CGContextFillPath(ctx)
+        ctx?.addEllipse(in: rect)
+        ctx?.setFillColor(color.cgColor.components!)
+        ctx?.fillPath()
     }
 }

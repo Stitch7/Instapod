@@ -10,16 +10,16 @@ import UIKit
 
 extension UIImage {
     func averageColor() -> UIColor {
-        let rgba = UnsafeMutablePointer<CUnsignedChar>.alloc(4)
-        let colorSpace = CGColorSpaceCreateDeviceRGB()!
-        let info = CGImageAlphaInfo.PremultipliedLast.rawValue
-        let context = CGBitmapContextCreate(rgba, 1, 1, 8, 4, colorSpace, info)
+        let rgba = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: 4)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let info = CGImageAlphaInfo.premultipliedLast.rawValue
+        let context = CGContext(data: rgba, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: colorSpace, bitmapInfo: info)
         var r: CGFloat
         var g: CGFloat
         var b: CGFloat
         var alpha: CGFloat
 
-        CGContextDrawImage(context, CGRectMake(0, 0, 1, 1), CGImage)
+        context?.draw(cgImage!, in: CGRect(x: 0, y: 0, width: 1, height: 1))
 
         if rgba[3] > 0 {
             alpha = CGFloat(rgba[3]) / 255.0

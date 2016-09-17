@@ -12,16 +12,16 @@ class FeedParserAEXML: FeedParser {
 
     // MARK: - Properties
 
-    var dateFormatter: NSDateFormatter {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "en")
+    var dateFormatter: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en")
         dateFormatter.dateFormat = "EEE, dd MMMM yyyy HH:mm:ss z"
         return dateFormatter
     }
 
-    var dateFormatter2: NSDateFormatter {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "en")
+    var dateFormatter2: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en")
         dateFormatter.dateFormat = "dd MMMM yyyy HH:mm:ss z"
 
         return dateFormatter
@@ -29,16 +29,16 @@ class FeedParserAEXML: FeedParser {
 
     // MARK: - FeedParser
 
-    func nextPage(xmlData: NSData) throws -> NSURL? {
-        var url: NSURL?
-        let xmlDocument = try AEXMLDocument(xmlData: xmlData)
+    func nextPage(_ xmlData: Data) throws -> URL? {
+        var url: URL?
+        let xmlDocument = try AEXMLDocument(xml: xmlData)
         let channel = xmlDocument.root["channel"]
 
         if let links = channel["atom:link"].all {
             for link in links {
                 guard link.attributes["rel"] == "next" else { continue }
                 if let nextPage = link.attributes["href"] {
-                    url = NSURL(string: nextPage)
+                    url = URL(string: nextPage)
                 }
             }
         }
@@ -46,8 +46,8 @@ class FeedParserAEXML: FeedParser {
         return url
     }
 
-    func parseFeed(uuid uuid: String, url: NSURL, xmlData: NSData) throws -> Podcast {
-        let xmlDocument = try AEXMLDocument(xmlData: xmlData)
+    func parseFeed(uuid: String, url: URL, xmlData: Data) throws -> Podcast {
+        let xmlDocument = try AEXMLDocument(xml: xmlData)
         let channel = xmlDocument.root["channel"]
 
         var podcast = Podcast(uuid: uuid, url: url)
@@ -57,8 +57,8 @@ class FeedParserAEXML: FeedParser {
         podcast.explicit = channel["explicit"].string == "yes"
         podcast.generator = channel["generator"].string
         podcast.language = channel["language"].string
-        podcast.lastBuildDate = dateFormatter.dateFromString(channel["lastBuildDate"].string ?? "")
-        podcast.pubDate = dateFormatter.dateFromString(channel["pubDate"].string ?? "")
+        podcast.lastBuildDate = dateFormatter.date(from: channel["lastBuildDate"].string)
+        podcast.pubDate = dateFormatter.date(from: channel["pubDate"].string)
         podcast.subtitle = channel["itunes:subtitle"].string
         podcast.summary = channel["itunes:summary"].string
         podcast.title = channel["title"].string
@@ -66,14 +66,14 @@ class FeedParserAEXML: FeedParser {
         return podcast
     }
 
-    func parseImage(xmlData: NSData) throws -> Image? {
+    func parseImage(_ xmlData: Data) throws -> Image? {
         var feedImage: Image?
-        let xmlDocument = try AEXMLDocument(xmlData: xmlData)
+        let xmlDocument = try AEXMLDocument(xml: xmlData)
         let channel = xmlDocument.root["channel"]
 
         if let
             imageUrlString = channel["itunes:image"].attributes["href"],
-            url = NSURL(string: imageUrlString)
+            let url = URL(string: imageUrlString)
         {
             feedImage = Image(url: url)
         }
@@ -81,9 +81,9 @@ class FeedParserAEXML: FeedParser {
         return feedImage
     }
 
-    func parseEpisodes(xmlData: NSData) throws -> [Episode]? {
+    func parseEpisodes(_ xmlData: Data) throws -> [Episode]? {
         var feedEpisodes: [Episode]?
-        let xmlDocument = try AEXMLDocument(xmlData: xmlData)
+        let xmlDocument = try AEXMLDocument(xml: xmlData)
         let channel = xmlDocument.root["channel"]
 
         guard let items = channel["item"].all else { return [] }
@@ -100,12 +100,12 @@ class FeedParserAEXML: FeedParser {
             episode.summary = item["itunes:summary"].string
             episode.title = item["title"].string
 
-            let pubDate = item["pubDate"].string ?? ""
-            episode.pubDate = dateFormatter.dateFromString(pubDate) ?? dateFormatter2.dateFromString(pubDate)
+            let pubDate = item["pubDate"].string
+            episode.pubDate = dateFormatter.date(from: pubDate) ?? dateFormatter2.date(from: pubDate)
 
             if let
                 episodeImageUrlString = item["itunes:image"].attributes["href"],
-                episodeImageUrl = NSURL(string: episodeImageUrlString)
+                let episodeImageUrl = URL(string: episodeImageUrlString)
             {
 //                if let feedImage = feed.image {
 //                    if feedImage.url.absoluteString != episodeImageUrlString {
@@ -124,7 +124,7 @@ class FeedParserAEXML: FeedParser {
 
             if let
                 urlString = enclosure.attributes["url"],
-                url = NSURL(string: urlString)
+                let url = URL(string: urlString)
             {
                 audioFile.url = url
             }

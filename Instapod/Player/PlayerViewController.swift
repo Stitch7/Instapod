@@ -32,14 +32,14 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
 
             if let
                 imageData = episode.image?.data ?? episode.podcast?.image?.data,
-                image = UIImage(data: imageData)
+                let image = UIImage(data: imageData as Data)
             {
                 if let tableHeaderView = self.tableView.tableHeaderView as? UIImageView {
                     tableHeaderView.image = image
                     self.tableView.reloadData()
                 }
 
-                MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = [
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = [
                     MPMediaItemPropertyTitle: title,
                     MPMediaItemPropertyArtist: artist,
                     MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: image)
@@ -95,7 +95,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
 //        setNeedsStatusBarAppearanceUpdate()
 //    }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         player?.removeObserver(self, forKeyPath: "status")
@@ -108,72 +108,72 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
 
     // MARK: - UIViewController
 
-    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animateAlongsideTransitionInView(popupPresentationContainerViewController!.view,
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animateAlongsideTransition(in: popupPresentationContainerViewController!.view,
             animation: { (context) -> Void in
                 self._setPopupItemButtonsWithTraitCollection(newCollection)
             },
             completion: nil
         )
 
-        super.willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
+        super.willTransition(to: newCollection, with: coordinator)
     }
 
-    func _setPopupItemButtonsWithTraitCollection(collection: UITraitCollection) {
-        if collection.horizontalSizeClass == .Regular { }
+    func _setPopupItemButtonsWithTraitCollection(_ collection: UITraitCollection) {
+        if collection.horizontalSizeClass == .regular { }
         else { }
 
         if player?.rate == 0.0 {
-            let playButton = UIBarButtonItem(image: UIImage(named: "playList"), style: .Plain, target: self, action: #selector(playCommand))
+            let playButton = UIBarButtonItem(image: UIImage(named: "playList"), style: .plain, target: self, action: #selector(playCommand))
             popupItem.rightBarButtonItems = [playButton]
         }
         else {
-            let pauseButton = UIBarButtonItem(image: UIImage(named: "pause"), style: .Plain, target: self, action: #selector(pauseCommand))
+            let pauseButton = UIBarButtonItem(image: UIImage(named: "pause"), style: .plain, target: self, action: #selector(pauseCommand))
             popupItem.rightBarButtonItems = [pauseButton]
         }
     }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
     }
 
-    override func prefersStatusBarHidden() -> Bool {
-        return traitCollection.verticalSizeClass == .Compact
+    override var prefersStatusBarHidden : Bool {
+        return traitCollection.verticalSizeClass == .compact
     }
 
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-        return .Fade
+    override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
+        return .fade
     }
 
     func configureSleepTimerButton() {
-        let app = UIApplication.sharedApplication()
+        let app = UIApplication.shared
 
-        let sleepTimerButton = EffectButton(frame: CGRectZero)
-        sleepTimerButton.addTarget(self, action: #selector(timerButtonPressed), forControlEvents: .TouchUpInside)
+        let sleepTimerButton = EffectButton(frame: CGRect.zero)
+        sleepTimerButton.addTarget(self, action: #selector(timerButtonPressed), for: .touchUpInside)
 
         sleepTimerButton.clipsToBounds = true
         sleepTimerButton.sizeToFit()
 
         var sleepTimerButtonFrame = sleepTimerButton.frame
         sleepTimerButtonFrame.origin.x = app.statusBarFrame.size.width - (sleepTimerButtonFrame.size.width + 12)
-        let yOffset = app.statusBarHidden ? 0 : app.statusBarFrame.size.height
+        let yOffset = app.isStatusBarHidden ? 0 : app.statusBarFrame.size.height
         sleepTimerButtonFrame.origin.y = 12 + yOffset
         sleepTimerButton.frame = sleepTimerButtonFrame
 
-        sleepTimerButton.hidden = true
+        sleepTimerButton.isHidden = true
 
         view.addSubview(sleepTimerButton)
         self.sleepTimerButton = sleepTimerButton
     }
 
     func configureTableView() {
-        tableView.registerNib(UINib(nibName: "ChapterTableViewCell", bundle: nil), forCellReuseIdentifier: "ChapterCell")
+        tableView.register(UINib(nibName: "ChapterTableViewCell", bundle: nil), forCellReuseIdentifier: "ChapterCell")
         tableView.delegate = self
-        tableView.scrollEnabled = false
+        tableView.isScrollEnabled = false
         tableView.rowHeight = UITableViewAutomaticDimension
 
         let imageView = UIImageView(image: UIImage())
@@ -188,27 +188,27 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
     func initPlayer() {
         guard let
             episode = self.episode,
-            audioFile = episode.audioFile,
-            url = audioFile.url
+            let audioFile = episode.audioFile,
+            let url = audioFile.url
         else {
             return
         }
 
         loadingHUD(show: true)
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            self.player = AVPlayer(URL: url)
+        DispatchQueue.global(qos: .default).async {
+            self.player = AVPlayer(url: url as URL)
 
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.player?.addObserver(self, forKeyPath: "status", options: [], context: nil)
 
                 let interval = CMTimeMake(33, 1000)
-                let queue = dispatch_get_main_queue()
+                let queue = DispatchQueue.main
                 let block: (CMTime) -> Void = { (time) -> Void in
                     if self.remoteView.progressSlider.isMoving == false {
                         self.remoteView.currentTime = self.player?.currentTime()
                     }
                 }
-                self.observer = self.player?.addPeriodicTimeObserverForInterval(interval, queue: queue, usingBlock: block)
+                self.observer = self.player?.addPeriodicTimeObserver(forInterval: interval, queue: queue, using: block) as AnyObject?
 
                 let duration = self.player!.currentItem!.asset.duration
                 self.configureRemoteView(duration: duration)
@@ -218,25 +218,25 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         }
     }
 
-    func configureRemoteView(duration duration: CMTime) {
+    func configureRemoteView(duration: CMTime) {
         remoteView.duration = duration
-        remoteView.rewindButton.addTarget(self, action: #selector(previousTrackCommand), forControlEvents: .TouchUpInside)
-        remoteView.playButton.addTarget(self, action: #selector(playButtonPressed(_:)), forControlEvents: .TouchUpInside)
-        remoteView.fastForwardButton.addTarget(self, action: #selector(nextTrackCommand), forControlEvents: .TouchUpInside)
+        remoteView.rewindButton.addTarget(self, action: #selector(previousTrackCommand), for: .touchUpInside)
+        remoteView.playButton.addTarget(self, action: #selector(playButtonPressed(_:)), for: .touchUpInside)
+        remoteView.fastForwardButton.addTarget(self, action: #selector(nextTrackCommand), for: .touchUpInside)
     }
 
-    func configureProgressSlider(duration duration:CMTime) {
+    func configureProgressSlider(duration:CMTime) {
         let progressSlider = remoteView.progressSlider
-        progressSlider.addTarget(self, action: #selector(progressSliderMoved(_:)), forControlEvents: .TouchDown)
-        progressSlider.addTarget(self, action: #selector(progressSliderDidChanged(_:)), forControlEvents: .TouchUpInside)
-        progressSlider.addTarget(self, action: #selector(progressSliderChanged(_:)), forControlEvents: .ValueChanged)
-        progressSlider.maximumValue = duration.floatValue
+        progressSlider?.addTarget(self, action: #selector(progressSliderMoved(_:)), for: .touchDown)
+        progressSlider?.addTarget(self, action: #selector(progressSliderDidChanged(_:)), for: .touchUpInside)
+        progressSlider?.addTarget(self, action: #selector(progressSliderChanged(_:)), for: .valueChanged)
+        progressSlider?.maximumValue = duration.floatValue
     }
 
     func configureCommandCenter() {
-        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+        UIApplication.shared.beginReceivingRemoteControlEvents()
 
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
+        let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.playCommand.addTarget(self, action: #selector(playCommand))
         commandCenter.pauseCommand.addTarget(self, action: #selector(pauseCommand))
         commandCenter.nextTrackCommand.addTarget(self, action: #selector(nextTrackCommand))
@@ -245,7 +245,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
 
     // MARK: - Actions
 
-    func playButtonPressed(sender: UIButton?) {
+    func playButtonPressed(_ sender: UIButton?) {
         guard let player = self.player else { return }
 
         if player.rate == 0.0 {
@@ -256,44 +256,48 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         }
     }
 
-    func progressSliderMoved(sender: PlayerRemoteProgressSlider) {
+    func progressSliderMoved(_ sender: PlayerRemoteProgressSlider) {
         self.remoteView.progressSlider.isMoving = true
     }
 
-    func progressSliderDidChanged(sender: PlayerRemoteProgressSlider) {
+    func progressSliderDidChanged(_ sender: PlayerRemoteProgressSlider) {
         guard let player = self.player else { return }
 
         let time = CMTimeMake(Int64(sender.value * 1000.0), 1000)
-        player.seekToTime(time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero) { (finished) in
+        player.seek(to: time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { (finished) in
             guard finished else { return }
             self.remoteView.progressSlider.isMoving = false
-        }
+        }) 
     }
 
-    func progressSliderChanged(sender: PlayerRemoteProgressSlider) {
+    func progressSliderChanged(_ sender: PlayerRemoteProgressSlider) {
         let time = CMTimeMake(Int64(sender.value * 1000.0), 1000)
         self.remoteView.currentTime = time
     }
 
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard let player = self.player else { return }
-        if object !== player || keyPath != "status" { return }
-        if player.status != .ReadyToPlay { playerError(player) }
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard
+            let player = self.player,
+            let concretObj = object as? AVPlayer
+        else { return }
+
+        if concretObj !== player || keyPath != "status" { return }
+        if player.status != .readyToPlay { playerError(player) }
 
         loadingHUD(show: false)
         player.play()
 
-        remoteView.rewindButton.enabled = true
-        remoteView.fastForwardButton.enabled = true
-        remoteView.playButton.enabled = true
-        remoteView.playButton.setImage(UIImage(named: "pause")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        remoteView.rewindButton.isEnabled = true
+        remoteView.fastForwardButton.isEnabled = true
+        remoteView.playButton.isEnabled = true
+        remoteView.playButton.setImage(UIImage(named: "pause")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
 
         if let asset = player.currentItem?.asset {
             if asset.availableChapterLocales.count > 0 {
-                let chapters = asset.chapterMetadataGroupsWithTitleLocale(asset.availableChapterLocales.first!, containingItemsWithCommonKeys: nil)
+                let chapters = asset.chapterMetadataGroups(withTitleLocale: asset.availableChapterLocales.first!, containingItemsWithCommonKeys: nil)
                 chaptersDataSource = ChapterTableViewDataSource(chapters: chapters)
                 tableView.dataSource = chaptersDataSource
-                tableView.scrollEnabled = true
+                tableView.isScrollEnabled = true
                 tableView.reloadData()
             }
         }
@@ -301,7 +305,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         let artist = episode?.podcast?.title ?? ""
         let title = episode?.title ?? ""
 
-        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = [
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
             MPMediaItemPropertyTitle: title,
             MPMediaItemPropertyArtist: artist,
             MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: (self.tableView.tableHeaderView as! UIImageView).image!),
@@ -309,26 +313,26 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         ]
     }
 
-    func playerError(player: AVPlayer) {
+    func playerError(_ player: AVPlayer) {
         switch player.status {
-        case .ReadyToPlay:
+        case .readyToPlay:
             print("PLAYER ERROR: staus = .ReadyToPlay")
-        case .Failed:
+        case .failed:
             print("PLAYER ERROR: staus = .Failed")
-        case .Unknown:
+        case .unknown:
             print("PLAYER ERROR: staus = .Unknown")
         }
     }
 
-    func doneButtonPressed(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func doneButtonPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
 
     func playCommand() {
         guard let player = self.player else { return }
 
         player.play()
-        remoteView.playButton.setImage(UIImage(named: "pause")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        remoteView.playButton.setImage(UIImage(named: "pause")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
         _setPopupItemButtonsWithTraitCollection(UITraitCollection())
     }
 
@@ -336,7 +340,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         guard let player = self.player else { return }
 
         player.pause()
-        remoteView.playButton.setImage(UIImage(named: "play")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        remoteView.playButton.setImage(UIImage(named: "play")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
         _setPopupItemButtonsWithTraitCollection(UITraitCollection())
     }
 
@@ -345,7 +349,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
 
         let currentTime = player.currentTime()
         let time = CMTimeMakeWithSeconds(CMTimeGetSeconds(currentTime) - 30, currentTime.timescale)
-        player.seekToTime(time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+        player.seek(to: time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
     }
 
     func nextTrackCommand() {
@@ -353,7 +357,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
 
         let currentTime = player.currentTime()
         let time = CMTimeMakeWithSeconds(CMTimeGetSeconds(currentTime) + 30, currentTime.timescale)
-        player.seekToTime(time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+        player.seek(to: time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
     }
 
     func timerButtonPressed() {
@@ -362,10 +366,10 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
 
     // MARK: - UITableViewDelegate
 
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let chaptersCount = self.chaptersDataSource?.chapters.count where chaptersCount > 0 else { return nil }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let chaptersCount = self.chaptersDataSource?.chapters.count , chaptersCount > 0 else { return nil }
         
-        let header = UIView(frame: CGRectMake(0, 0, 200, 100))
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
 
         let label = UILabel()
         label.text = "Chapters"
@@ -376,36 +380,36 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         return header
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return remoteViewHCsrt.constant
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let chaptersDataSource = self.chaptersDataSource else { return }
         guard let player = self.player else { return }
 
-        let chapter = chaptersDataSource.chapters[indexPath.row]
+        let chapter = chaptersDataSource.chapters[(indexPath as NSIndexPath).row]
         let chapterTime = chapter.timeRange.start
-        player.seekToTime(chapterTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero) { (finished) -> Void in
+        player.seek(to: chapterTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { (finished) -> Void in
             if finished {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.remoteView.currentTime = chapterTime
                 }
             }
-        }
+        }) 
     }
 
     // MARK: - PlayerRemoteViewDelegate
 
-    func playerRate(rate: Float) {
+    func playerRate(_ rate: Float) {
         guard let player = self.player else { return }
 
         player.rate = rate
@@ -414,9 +418,9 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
     func startSleepTimer(withDuration duration: PlayerSleepTimerDuration) {
         guard let sleepTimerButton = self.sleepTimerButton else { return }
 
-        if duration == .Off {
+        if duration == .off {
             sleepTimer.stop()
-            sleepTimerButton.hidden = true
+            sleepTimerButton.isHidden = true
             updateTimerButton(0)
         }
         else {
@@ -429,20 +433,20 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
                     guard let strongSelf = self else { return }
                     strongSelf.pauseCommand()
                     strongSelf.updateTimerButton(0)
-                    strongSelf.sleepTimerButton!.setTitleColor(UIColor.redColor(), forState: .Normal)
+                    strongSelf.sleepTimerButton!.setTitleColor(UIColor.red, for: UIControlState())
                 }
             )
-            sleepTimerButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-            sleepTimerButton.hidden = false
+            sleepTimerButton.setTitleColor(UIColor.black, for: UIControlState())
+            sleepTimerButton.isHidden = false
         }
     }
 
-    func updateTimerButton(seconds: Int) {
+    func updateTimerButton(_ seconds: Int) {
         guard let timerButton = self.sleepTimerButton else { return }
 
         let hours = Int(floor(Float(seconds) / 3600))
-        let minutes = Int(floor(Float(seconds) % 3600 / 60))
-        let seconds = Int(floor(Float(seconds) % 3600 % 60))
+        let minutes = Int(floor(Float(seconds).truncatingRemainder(dividingBy: 3600) / 60))
+        let seconds = Int(floor((Float(seconds).truncatingRemainder(dividingBy: 3600)).truncatingRemainder(dividingBy: 60)))
 
         var title: String!
         if hours > 0 {
@@ -452,7 +456,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
             title = String(format: "%i:%02i", minutes, seconds)
         }
 
-        timerButton.setTitle(title, forState: .Normal)
+        timerButton.setTitle(title, for: UIControlState())
     }
 
     func shareEpisode() -> Episode {

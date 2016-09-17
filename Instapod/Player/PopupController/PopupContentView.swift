@@ -20,7 +20,7 @@ class PopupContentView: UIVisualEffectView {
     ) {
         self.init(
             frame: frame,
-            popupBarStyle: .Default,
+            popupBarStyle: .default,
             popupInteractionGestureRecognizer: popupInteractionGestureRecognizer,
             popupCloseButton: popupCloseButton
         )

@@ -7,6 +7,6 @@
 //
 //
 protocol FeedUpdaterDelegate: class {
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithEpisode: Episode, ofPodcast podcast: Podcast)
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithNumberOfEpisodes numberOfEpisodes: Int)
+    func feedUpdater(_ feedupdater: FeedUpdater, didFinishWithEpisode: Episode, ofPodcast podcast: Podcast)
+    func feedUpdater(_ feedupdater: FeedUpdater, didFinishWithNumberOfEpisodes numberOfEpisodes: Int)
 }

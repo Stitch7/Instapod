@@ -34,8 +34,8 @@ class PopupController: PopupItemDelegate {
 
     var effectiveStatusBarUpdateController: UIViewController! // ???
 
-    var cachedDefaultFrame = CGRectZero
-    var cachedOpenPopupFrame = CGRectZero
+    var cachedDefaultFrame = CGRect.zero
+    var cachedOpenPopupFrame = CGRect.zero
 
     var tresholdToPassForStatusBarUpdate: CGFloat = 0.0
     var statusBarTresholdDir: CGFloat = 0.0
@@ -44,18 +44,18 @@ class PopupController: PopupItemDelegate {
 
     init(containerController: UIViewController) {
         self.containerController = containerController
-        popupControllerState = .Hidden
-        popupControllerTargetState = .Hidden
+        popupControllerState = .hidden
+        popupControllerTargetState = .hidden
     }
 
     var frameForOpenPopupBar: CGRect {
         let defaultFrame = containerController.defaultFrameForBottomDockingView
-        return CGRectMake(defaultFrame.origin.x, popupBar.frame.size.height * -1, containerController.view.bounds.size.width, popupBar.frame.size.height)
+        return CGRect(x: defaultFrame.origin.x, y: popupBar.frame.size.height * -1, width: containerController.view.bounds.size.width, height: popupBar.frame.size.height)
     }
 
     var frameForClosedPopupBar: CGRect {
         let defaultFrame =  containerController.defaultFrameForBottomDockingView
-        return CGRectMake(defaultFrame.origin.x, defaultFrame.origin.y - popupBar.frame.size.height, containerController.view.bounds.size.width, popupBar.frame.size.height)
+        return CGRect(x: defaultFrame.origin.x, y: defaultFrame.origin.y - popupBar.frame.size.height, width: containerController.view.bounds.size.width, height: popupBar.frame.size.height)
     }
 
     func repositionPopupContent() {
@@ -85,28 +85,28 @@ class PopupController: PopupItemDelegate {
         var popupCloseButtonFrame = popupContentView.popupCloseButton.frame
         popupCloseButtonFrame.origin.x = 12
 
-        let app = UIApplication.sharedApplication()
-        let yOffset = app.statusBarHidden ? 0 : app.statusBarFrame.size.height
+        let app = UIApplication.shared
+        let yOffset = app.isStatusBarHidden ? 0 : app.statusBarFrame.size.height
         popupCloseButtonFrame.origin.y = 12 + yOffset
 
         if let currentContentController = currentContentController as? UINavigationController {
-            if currentContentController.navigationBarHidden == false {
-                popupCloseButtonFrame.origin.y += CGRectGetHeight(currentContentController.navigationBar.bounds)
+            if currentContentController.isNavigationBarHidden == false {
+                popupCloseButtonFrame.origin.y += currentContentController.navigationBar.bounds.height
             }
         }
 
-        if CGRectEqualToRect(popupContentView.popupCloseButton.frame, popupCloseButtonFrame) == false {
-            UIView.animateWithDuration(0.2) {
+        if popupContentView.popupCloseButton.frame.equalTo(popupCloseButtonFrame) == false {
+            UIView.animate(withDuration: 0.2, animations: {
                 self.popupContentView.popupCloseButton.frame = popupCloseButtonFrame
-            }
+            }) 
         }
     }
 
-    func saturate(x: CGFloat) -> CGFloat {
+    func saturate(_ x: CGFloat) -> CGFloat {
         return max(0, min(1, x))
     }
 
-    func smoothstep(a a: CGFloat, b: CGFloat, x: CGFloat) -> CGFloat {
+    func smoothstep(a: CGFloat, b: CGFloat, x: CGFloat) -> CGFloat {
         let t = saturate((x - a) / (b - a))
         return t * t * (3.0 - (2.0 * t))
     }
@@ -119,13 +119,13 @@ class PopupController: PopupItemDelegate {
         return smoothstep(a: 0.05, b: 1.0, x: percentFromPopupBar)
     }
 
-    func setContentToState(state: PopupPresentationState) {
+    func setContentToState(_ state: PopupPresentationState) {
         var targetFrame = popupBar.frame
 
-        if state == .Open {
+        if state == .open {
             targetFrame = frameForOpenPopupBar
         }
-        else if state == .Closed {
+        else if state == .closed {
             targetFrame = frameForClosedPopupBar
         }
 
@@ -133,7 +133,7 @@ class PopupController: PopupItemDelegate {
 
         popupBar.frame = targetFrame
 
-        if state != .Transitioning {
+        if state != .transitioning {
             containerController.setNeedsStatusBarAppearanceUpdate()
         }
 
@@ -141,9 +141,9 @@ class PopupController: PopupItemDelegate {
 
     }
 
-    func transitionToState(state: PopupPresentationState, animated: Bool, completion completionBlock: (() -> Void)?, userOriginatedTransition: Bool) {
+    func transitionToState(_ state: PopupPresentationState, animated: Bool, completion completionBlock: (() -> Void)?, userOriginatedTransition: Bool) {
         if state == popupControllerState { return }
-        if userOriginatedTransition && popupControllerState == .Transitioning {
+        if userOriginatedTransition && popupControllerState == .transitioning {
             print("The popup controller is already in transition. Transition request will be ignored!")
             return
         }
@@ -152,17 +152,17 @@ class PopupController: PopupItemDelegate {
             return
         }
 
-        if popupControllerState == .Closed {
+        if popupControllerState == .closed {
             contentController.beginAppearanceTransition(true, animated: false)
             UIView.performWithoutAnimation {
                 contentController.view.frame = self.containerController.view.bounds
                 contentController.view.clipsToBounds = false
-                contentController.view.autoresizingMask = .None
+                contentController.view.autoresizingMask = UIViewAutoresizing()
 
-                if CGColorGetAlpha(contentController.view.backgroundColor!.CGColor) < 1.0 { // iOS8 Support
-                    let style = self.popupBar.barStyle == .Default
-                        ? UIBlurEffectStyle.ExtraLight
-                        : UIBlurEffectStyle.Dark
+                if contentController.view.backgroundColor!.cgColor.alpha < 1.0 { // iOS8 Support
+                    let style = self.popupBar.barStyle == .default
+                        ? UIBlurEffectStyle.extraLight
+                        : UIBlurEffectStyle.dark
                     let effect = UIBlurEffect(style: style)
                     self.popupContentView.setValue(effect, forKey: "effect")
                 }
@@ -171,7 +171,7 @@ class PopupController: PopupItemDelegate {
                 }
 
                 self.popupContentView.contentView.addSubview(contentController.view)
-                self.popupContentView.contentView.sendSubviewToBack(contentController.view)
+                self.popupContentView.contentView.sendSubview(toBack: contentController.view)
                 self.popupContentView.contentView.setNeedsLayout()
                 self.popupContentView.contentView.layoutIfNeeded()
             }
@@ -181,7 +181,7 @@ class PopupController: PopupItemDelegate {
             contentController.viewForPopupInteractionGestureRecognizer.addGestureRecognizer(popupContentView.popupInteractionGestureRecognizer)
         }
 
-        popupControllerState = .Transitioning
+        popupControllerState = .transitioning
         popupControllerTargetState = state
 
         var popupContentViewController: PopupContentViewController = containerController.popupContentViewController
@@ -192,7 +192,7 @@ class PopupController: PopupItemDelegate {
 //            }
         }
 
-        if state == .Closed {
+        if state == .closed {
             popupContentViewController.popupControllerWillHide()
         }
         else {
@@ -200,20 +200,20 @@ class PopupController: PopupItemDelegate {
         }
 
         let duration = animated ? 0.5 : 0.0
-        UIView.animateWithDuration(duration,
+        UIView.animate(withDuration: duration,
             delay: 0.0,
             usingSpringWithDamping: 500,
             initialSpringVelocity: 0,
             options: [],
             animations: { () -> Void in
-                if state == .Closed {
+                if state == .closed {
                     contentController.beginAppearanceTransition(true, animated: false)
                 }
                 
                 self.setContentToState(state)
             },
             completion: { (finished) -> Void in
-                if state == .Closed {
+                if state == .closed {
                     contentController.view.removeFromSuperview()
                     contentController.endAppearanceTransition()
 
@@ -221,7 +221,7 @@ class PopupController: PopupItemDelegate {
                     self.popupBar.addGestureRecognizer(self.popupContentView.popupInteractionGestureRecognizer)
                     popupContentViewController.popupControllerDidHide()
                 }
-                else if state == .Open {
+                else if state == .open {
                     popupContentViewController.popupControllerDidAppear()
                 }
                 
@@ -234,48 +234,48 @@ class PopupController: PopupItemDelegate {
         )
     }
 
-    @objc func popupBarLongPressGestureRecognized(gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func popupBarLongPressGestureRecognized(_ gestureRecognizer: UILongPressGestureRecognizer) {
         switch gestureRecognizer.state {
-        case .Began:
+        case .began:
             popupBar.highlighted = true
-        case .Cancelled:
+        case .cancelled:
             fallthrough
-        case .Ended:
+        case .ended:
             popupBar.highlighted = false
         default: break
         }
     }
 
-    @objc func popupBarTapGestureRecognized(gestureRecognizer: UITapGestureRecognizer) {
-        if gestureRecognizer.state == .Ended {
-            transitionToState(.Open, animated: true, completion: nil, userOriginatedTransition: false)
+    @objc func popupBarTapGestureRecognized(_ gestureRecognizer: UITapGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            transitionToState(.open, animated: true, completion: nil, userOriginatedTransition: false)
         }
     }
 
-    @objc func popupBarPresentationByUserPanGestureHandler(gestureRecognizer: UIPanGestureRecognizer) {
+    @objc func popupBarPresentationByUserPanGestureHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
         if dismissalOverride { return }
 
         switch gestureRecognizer.state {
-        case .Began:
+        case .began:
             lastSeenMovement = CACurrentMediaTime()
-            popupBarLongPressGestureRecognizer.enabled = false
-            popupBarLongPressGestureRecognizer.enabled = true
+            popupBarLongPressGestureRecognizer.isEnabled = false
+            popupBarLongPressGestureRecognizer.isEnabled = true
             lastPopupBarLocation = popupBar.center
 
-            statusBarTresholdDir = popupControllerState == .Open ? 1 : -1
+            statusBarTresholdDir = popupControllerState == .open ? 1 : -1
             tresholdToPassForStatusBarUpdate = -10
 
-            transitionToState(.Transitioning, animated: true, completion: nil, userOriginatedTransition: false)
+            transitionToState(.transitioning, animated: true, completion: nil, userOriginatedTransition: false)
 
             cachedDefaultFrame = containerController.defaultFrameForBottomDockingView
             cachedOpenPopupFrame = frameForOpenPopupBar
 
-        case .Changed:
-            var targetCenterY = min(lastPopupBarLocation.y + gestureRecognizer.translationInView(popupBar.superview).y, cachedDefaultFrame.origin.y - popupBar.frame.size.height / 2)
+        case .changed:
+            var targetCenterY = min(lastPopupBarLocation.y + gestureRecognizer.translation(in: popupBar.superview).y, cachedDefaultFrame.origin.y - popupBar.frame.size.height / 2)
             targetCenterY = max(targetCenterY, cachedOpenPopupFrame.origin.y + popupBar.frame.size.height / 2)
 
             let currentCenterY = popupBar.center.y
-            popupBar.center = CGPointMake(popupBar.center.x, targetCenterY)
+            popupBar.center = CGPoint(x: popupBar.center.x, y: targetCenterY)
             repositionPopupContent()
             lastSeenMovement = CACurrentMediaTime()
 
@@ -285,25 +285,25 @@ class PopupController: PopupItemDelegate {
                 statusBarTresholdDir = -statusBarTresholdDir
                 containerController.setNeedsStatusBarAppearanceUpdate()
             }
-        case .Cancelled:
+        case .cancelled:
             fallthrough
-        case .Ended:
+        case .ended:
             let panThreshold = (CACurrentMediaTime() - lastSeenMovement) <= PopupBarGesturePanThreshold
             let heightTreshold = percentFromPopupBar > PopupBarGestureHeightPercentThreshold
-            let isPanUp = gestureRecognizer.velocityInView(containerController.view).y < 0
-            let hasPassedOffset = gestureRecognizer.translationInView(popupBar.superview).y <= PopupBarGestureSnapOffset
+            let isPanUp = gestureRecognizer.velocity(in: containerController.view).y < 0
+            let hasPassedOffset = gestureRecognizer.translation(in: popupBar.superview).y <= PopupBarGestureSnapOffset
             let state: PopupPresentationState =
                 (panThreshold || heightTreshold) && (isPanUp || hasPassedOffset)
-                    ? .Open
-                    : .Closed
+                    ? .open
+                    : .closed
 
             transitionToState(state, animated: true, completion: nil, userOriginatedTransition: false)
         default: break
         }
     }
 
-    func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
-        return .Any
+    func positionForBar(_ bar: UIBarPositioning) -> UIBarPosition {
+        return .any
     }
 
     @objc func closePopupContent() {
@@ -354,8 +354,8 @@ class PopupController: PopupItemDelegate {
 
             newContentController.beginAppearanceTransition(true, animated: false)
             let coordinator = PopupTransitionCoordinator()
-            newContentController.willTransitionToTraitCollection(containerController.traitCollection, withTransitionCoordinator: coordinator)
-            newContentController.viewWillTransitionToSize(containerController.view.bounds.size, withTransitionCoordinator: coordinator)
+            newContentController.willTransition(to: containerController.traitCollection, with: coordinator)
+            newContentController.viewWillTransition(to: containerController.view.bounds.size, with: coordinator)
             newContentController.view.frame = oldContentViewFrame
             newContentController.view.clipsToBounds = false
             self.popupContentView.contentView.insertSubview(newContentController.view, belowSubview: currentContentController.view)
@@ -388,8 +388,8 @@ class PopupController: PopupItemDelegate {
         assert(bottomBar.superview != nil, "Bottom docking view must have a superview before presenting popup.")
         popupBar.removeFromSuperview()
         bottomBar.superview!.insertSubview(popupBar, belowSubview: bottomBar)
-        popupBar.superview!.bringSubviewToFront(popupBar)
-        popupBar.superview!.bringSubviewToFront(bottomBar)
+        popupBar.superview!.bringSubview(toFront: popupBar)
+        popupBar.superview!.bringSubview(toFront: bottomBar)
         popupBar.superview!.insertSubview(popupContentView, belowSubview: popupBar)
     }
 
@@ -401,9 +401,9 @@ class PopupController: PopupItemDelegate {
 
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(popupBarPresentationByUserPanGestureHandler(_:)))
 
-        let closeButton = PopupCloseButton(frame: CGRectZero)
+        let closeButton = PopupCloseButton(frame: CGRect.zero)
         closeButton.clipsToBounds = true
-        closeButton.addTarget(self, action: #selector(closePopupContent), forControlEvents: .TouchUpInside)
+        closeButton.addTarget(self, action: #selector(closePopupContent), for: .touchUpInside)
 
         _popupContentView = PopupContentView(
             frame: containerController.view.bounds,
@@ -421,27 +421,27 @@ class PopupController: PopupItemDelegate {
         return _popupContentView
     }
 
-    func presentPopupBarAnimated(animated: Bool, openPopup open: Bool, completion completionBlock: (() -> Void)?) {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: UIApplicationWillEnterForegroundNotification, object: nil)
+    func presentPopupBarAnimated(_ animated: Bool, openPopup open: Bool, completion completionBlock: (() -> Void)?) {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
 
         if let popupContentViewController = containerController.popupContentViewController {
             let coordinator = PopupTransitionCoordinator()
-            popupContentViewController.willTransitionToTraitCollection(containerController.traitCollection, withTransitionCoordinator: coordinator)
-            popupContentViewController.viewWillTransitionToSize(containerController.view.bounds.size, withTransitionCoordinator: coordinator)
+            popupContentViewController.willTransition(to: containerController.traitCollection, with: coordinator)
+            popupContentViewController.viewWillTransition(to: containerController.view.bounds.size, with: coordinator)
         }
 
-        if popupControllerTargetState == .Hidden {
+        if popupControllerTargetState == .hidden {
             dismissalOverride = false
 
-            self.popupControllerState = .Closed
-            self.popupControllerTargetState = .Closed
+            self.popupControllerState = .closed
+            self.popupControllerTargetState = .closed
 
             bottomBar = containerController.bottomDockingViewForPopup
 
-            popupBar = PopupBar(frame: CGRectZero)
-            popupBar.hidden = false
+            popupBar = PopupBar(frame: CGRect.zero)
+            popupBar.isHidden = false
 
             movePopupBarAndContentToBottomBarSuperview()
             configurePopupBarFromBottomBar()
@@ -459,17 +459,17 @@ class PopupController: PopupItemDelegate {
             popupBar.addGestureRecognizer(popupBarTapGestureRecognizer)
             popupBar.addGestureRecognizer(popupContentView.popupInteractionGestureRecognizer)
 
-            setContentToState(.Closed)
+            setContentToState(.closed)
             containerController.view.layoutIfNeeded()
             
             _reconfigureContent()
 
             let duration = animated ? 0.5 : 0.0
-            UIView.animateWithDuration(duration,
+            UIView.animate(withDuration: duration,
                 delay: 0.0,
                 usingSpringWithDamping: 500,
                 initialSpringVelocity: 0,
-                options: UIViewAnimationOptions.CurveEaseInOut,
+                options: UIViewAnimationOptions(),
                 animations: { () -> Void in
                     var barFrame = self.popupBar.frame
                     barFrame.size.height = self.popupBar.popupBarHeight
@@ -505,24 +505,24 @@ class PopupController: PopupItemDelegate {
         currentContentController = containerController.popupContentViewController
     }
 
-    func openPopupAnimated(animated: Bool, completion: (() -> Void)?) {
-        transitionToState(.Open, animated: animated, completion: completion, userOriginatedTransition: true)
+    func openPopupAnimated(_ animated: Bool, completion: (() -> Void)?) {
+        transitionToState(.open, animated: animated, completion: completion, userOriginatedTransition: true)
     }
 
-    func closePopupAnimated(animated: Bool, completion: (() -> Void)?) {
-        transitionToState(.Closed, animated: animated, completion: completion, userOriginatedTransition: true)
+    func closePopupAnimated(_ animated: Bool, completion: (() -> Void)?) {
+        transitionToState(.closed, animated: animated, completion: completion, userOriginatedTransition: true)
     }
 
-    func dismissPopupBarAnimated(animated: Bool, completion completionBlock: (() -> Void)?) {
-        if popupControllerState == .Hidden { return }
+    func dismissPopupBarAnimated(_ animated: Bool, completion completionBlock: (() -> Void)?) {
+        if popupControllerState == .hidden { return }
 
         let dismissalAnimationCompletionBlock: () -> Void = {
             let duration = animated ? 0.5 : 0.0
-            UIView.animateWithDuration(duration,
+            UIView.animate(withDuration: duration,
                 delay: 0.0,
                 usingSpringWithDamping: 500,
                 initialSpringVelocity: 0,
-                options: UIViewAnimationOptions.CurveEaseInOut,
+                options: UIViewAnimationOptions(),
                 animations: { () -> Void in
                     var barFrame = self.popupBar.frame
                     barFrame.size.height = 0
@@ -531,8 +531,8 @@ class PopupController: PopupItemDelegate {
                     PopupSupportFixInsetsForViewController(self.containerController, layout: true)
                 },
                 completion: { (finished) -> Void in
-                    self.popupControllerTargetState = .Hidden
-                    self.popupControllerState = .Hidden
+                    self.popupControllerTargetState = .hidden
+                    self.popupControllerState = .hidden
 
                     self.bottomBar.frame = self.containerController.defaultFrameForBottomDockingView
                     self.bottomBar = nil
@@ -550,9 +550,9 @@ class PopupController: PopupItemDelegate {
 
                     PopupSupportFixInsetsForViewController(self.containerController, layout: true)
 
-                    let notificationCenter = NSNotificationCenter.defaultCenter()
-                    notificationCenter.removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
-                    notificationCenter.removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
+                    let notificationCenter = NotificationCenter.default
+                    notificationCenter.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+                    notificationCenter.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
                     
                     self.currentContentController = nil
                     self.effectiveStatusBarUpdateController = nil // ???
@@ -564,12 +564,12 @@ class PopupController: PopupItemDelegate {
             )
         }
 
-        if popupControllerTargetState != .Closed {
-            popupBar.hidden = true
+        if popupControllerTargetState != .closed {
+            popupBar.isHidden = true
             dismissalOverride = true
-            popupContentView.popupInteractionGestureRecognizer.enabled = false
-            popupContentView.popupInteractionGestureRecognizer.enabled = true
-            transitionToState(.Closed, animated: animated, completion: dismissalAnimationCompletionBlock, userOriginatedTransition: false)
+            popupContentView.popupInteractionGestureRecognizer.isEnabled = false
+            popupContentView.popupInteractionGestureRecognizer.isEnabled = true
+            transitionToState(.closed, animated: animated, completion: dismissalAnimationCompletionBlock, userOriginatedTransition: false)
         }
         else {
             dismissalAnimationCompletionBlock()
@@ -578,7 +578,7 @@ class PopupController: PopupItemDelegate {
 
     // MARK: - PopupItemDelegate
 
-    func popupItem(popupItem: PopupItem, didChangeValueForKey key: String) {
+    func popupItem(_ popupItem: PopupItem, didChangeValueForKey key: String) {
 
         _reconfigure_title()
         _reconfigure_subtitle()
@@ -595,12 +595,12 @@ class PopupController: PopupItemDelegate {
 
     // MARK: - Application Events
 
-    @IBAction func applicationDidEnterBackground(application: UIApplication) {
+    @IBAction func applicationDidEnterBackground(_ application: UIApplication) {
 //        print("KTHXBYE!")
 //        popupBar.setTitleViewMarqueesPaused(true)
     }
 
-    @IBAction func applicationWillEnterForeground(application: UIApplication) {
+    @IBAction func applicationWillEnterForeground(_ application: UIApplication) {
 //        print("Huhu")        
 //        popupBar.setTitleViewMarqueesPaused(false)
     }

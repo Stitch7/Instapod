@@ -27,7 +27,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
         super.viewDidLoad()
 
         view.backgroundColor = ColorPalette.Background
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         automaticallyAdjustsScrollViewInsets = false
 
         configureSplitViewController()
@@ -37,30 +37,30 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
         configureToolBar()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Workaround for clearsSelectionOnViewWillAppear still buggy on gesture
 //        clearsSelectionOnViewWillAppear = splitViewController!.collapsed
         if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+            tableView.deselectRow(at: indexPath, animated: false)
         }
 
 //        navigationController?.view.tintColor = ColorPalette.Main
         navigationController?.navigationBar.barTintColor = ColorPalette.Main
 
         if let
-            appDelegate = UIApplication.sharedApplication().delegate,
-            window = appDelegate.window
+            appDelegate = UIApplication.shared.delegate,
+            let window = appDelegate.window
         {
             window!.tintColor = ColorPalette.Main
         }
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             guard let refreshControl = self.refreshControl else { return }
 
             refreshControl.beginRefreshing()
@@ -81,7 +81,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
         tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
         
-        tableView.registerNib(UINib(nibName: "PodcastTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        tableView.register(UINib(nibName: "PodcastTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.backgroundColor = ColorPalette.TableView.Background
         tableView.backgroundView = UIView()
     }
@@ -89,10 +89,10 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
     func configureRefreshControl() {
         let refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: refreshControlTitle)
-        refreshControl.addTarget(self, action: #selector(handleRefresh), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         self.refreshControl = refreshControl
         tableView.addSubview(refreshControl)
-        tableView.sendSubviewToBack(refreshControl)
+        tableView.sendSubview(toBack: refreshControl)
     }
 
     func configureSearchBar() {
@@ -105,11 +105,11 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 //        searchController.searchBar.placeholder = "Search"
         searchController.searchBar.backgroundColor = ColorPalette.TableView.Background
         searchController.searchBar.barTintColor = ColorPalette.TableView.Background
-        searchController.searchBar.setBackgroundImage(UIImage(), forBarPosition: .Any, barMetrics: .Default)
-        searchController.searchBar.searchBarStyle = .Minimal
+        searchController.searchBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+        searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.sizeToFit()
         tableView.tableHeaderView = searchController.searchBar
-        tableView.contentOffset = CGPointMake(0, CGRectGetHeight(searchController.searchBar.frame))
+        tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.height)
     }
 
     func configureToolBar() {
@@ -123,7 +123,7 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     // MARK: - Actions
 
-    func handleRefresh(refreshControl: UIRefreshControl) {
+    func handleRefresh(_ refreshControl: UIRefreshControl) {
         refreshControl.attributedTitle = NSAttributedString(string: "Searching for new episodes …") // TODO: i18n
         delegate?.updateFeeds()
     }
@@ -131,14 +131,14 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
     func updateSortIndizes() {
         guard let coordinator = coreDataContext.persistentStoreCoordinator else { return }
         do {
-            for (index, podcast) in podcasts.enumerate() {
+            for (index, podcast) in podcasts.enumerated() {
                 guard let
                     id = podcast.id,
-                    objectID = coordinator.managedObjectIDForURIRepresentation(id),
-                    managedPodcast = try coreDataContext.existingObjectWithID(objectID) as? PodcastManagedObject
+                    let objectID = coordinator.managedObjectID(forURIRepresentation: id as URL),
+                    let managedPodcast = try coreDataContext.existingObject(with: objectID) as? PodcastManagedObject
                 else { continue }
 
-                managedPodcast.sortIndex = index
+                managedPodcast.sortIndex = index as NSNumber?
             }
             try coreDataContext.save()
         } catch {
@@ -148,50 +148,50 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     // MARK: - UITableViewDelegate
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 67.0
     }
 
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.0
     }
 
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
     }
 
-    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "Unsubscribe" // TODO: i18n
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("ShowFeed", sender: indexPath)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "ShowFeed", sender: indexPath)
     }
 
-    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        if self.tableView.editing { return .Delete }
-        return .None
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if self.tableView.isEditing { return .delete }
+        return .none
     }
 
     // MARK: - UITableViewDataSource
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = podcasts.count
         podcastCountLabel.text = "\(count) Subscriptions" // TODO: i18n
         return count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! PodcastTableViewCell
-        let podcast = podcasts[indexPath.row]
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PodcastTableViewCell
+        let podcast = podcasts[(indexPath as NSIndexPath).row]
 
         var image: UIImage?
         if let thumbnailData = podcast.image?.thumbnail56 {
-            image = UIImage(data: thumbnailData)
+            image = UIImage(data: thumbnailData as Data)
         }
         else {
             image = UIImage(named: "defaultLogo56")
@@ -203,45 +203,45 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
         let episodesCount = podcast.episodes?.count ?? 0
         cell.unheardEpisodesLabel!.text = "\(episodesCount) Episodes" // TODO: i18n
 
-        let separatorLineView = UIView(frame: CGRectMake(0.0, cell.bounds.size.height - 1.0, cell.bounds.size.width, 0.5))
+        let separatorLineView = UIView(frame: CGRect(x: 0.0, y: cell.bounds.size.height - 1.0, width: cell.bounds.size.width, height: 0.5))
         separatorLineView.backgroundColor = ColorPalette.TableView.Cell.SeparatorLine
         cell.contentView.addSubview(separatorLineView)
 
         return cell
     }
 
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-        let itemToMove = podcasts[fromIndexPath.row]
-        podcasts.removeAtIndex(fromIndexPath.row)
-        podcasts.insert(itemToMove, atIndex: toIndexPath.row)
+    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
+        let itemToMove = podcasts[(fromIndexPath as NSIndexPath).row]
+        podcasts.remove(at: (fromIndexPath as NSIndexPath).row)
+        podcasts.insert(itemToMove, at: (toIndexPath as NSIndexPath).row)
         updateSortIndizes()
     }
 
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard editingStyle == .Delete else { return }
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
 
-        let deleted = podcasts.removeAtIndex(indexPath.row)
-        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        let deleted = podcasts.remove(at: (indexPath as NSIndexPath).row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
 
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
             let context = self.coreDataContext
             guard let
                 id = deleted.id,
-                coordinator = context.persistentStoreCoordinator,
-                objectID = coordinator.managedObjectIDForURIRepresentation(id)
+                let coordinator = context.persistentStoreCoordinator,
+                let objectID = coordinator.managedObjectID(forURIRepresentation: id as URL)
             else { return }
 
             do {
-                let objectToDelete = try context.existingObjectWithID(objectID)
-                context.deleteObject(objectToDelete)
+                let objectToDelete = try context.existingObject(with: objectID)
+                context.delete(objectToDelete)
                 try context.save()
             }
             catch {
@@ -250,14 +250,15 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
         })
     }
 
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchController.searchBar.setShowsCancelButton(false, animated: false)
     }
 
     // MARK: - UISearchResultsUpdating
 
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
-        let searchText = searchController.searchBar.text!.stringByTrimmingCharactersInSet(.whitespaceCharacterSet())
+    func updateSearchResults(for searchController: UISearchController) {
+//        let searchText = searchController.searchBar.text!.trimmingCharacters(in: .whitespaces())
+        let searchText = searchController.searchBar.text
         print(searchText)
 //        filteredBoxes = boxes.filter({ ( box: Box) -> Bool in
 //            let match = box.name.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
@@ -269,17 +270,17 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     // MARK: - FeedUpdaterDelegate
 
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: Episode, ofPodcast podcast: Podcast) {
+    func feedUpdater(_ feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: Episode, ofPodcast podcast: Podcast) {
         if let
             refreshControl = refreshControl,
-            feedTitle = podcast.title,
-            episodeTitle = foundEpisode.title
+            let feedTitle = podcast.title,
+            let episodeTitle = foundEpisode.title
         {
             refreshControl.attributedTitle = NSAttributedString(string: "Found \(feedTitle) - \(episodeTitle)") // TODO: i18n
         }
     }
 
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithNumberOfEpisodes numberOfEpisodes: Int) {
+    func feedUpdater(_ feedupdater: FeedUpdater, didFinishWithNumberOfEpisodes numberOfEpisodes: Int) {
         tableView.reloadData()
         tableView.layoutIfNeeded()
 
@@ -291,16 +292,16 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
 
     // MARK: - Segues
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        guard let segueIdentifier = segue.identifier where segueIdentifier == "ShowFeed" else { return }
-        guard let indexPath = sender as? NSIndexPath else { return }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let segueIdentifier = segue.identifier , segueIdentifier == "ShowFeed" else { return }
+        guard let indexPath = sender as? IndexPath else { return }
 
-        let podcast = podcasts[indexPath.row]
-        let navigationController = segue.destinationViewController as! UINavigationController
+        let podcast = podcasts[(indexPath as NSIndexPath).row]
+        let navigationController = segue.destination as! UINavigationController
         let episodesTVC = navigationController.topViewController as! EpisodesViewController
         episodesTVC.podcast = podcast
 
-        episodesTVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        episodesTVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         episodesTVC.navigationItem.leftItemsSupplementBackButton = true
     }
 }

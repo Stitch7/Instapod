@@ -9,8 +9,8 @@
 import Foundation
 
 enum PopupPresentationState: UInt {
-    case Hidden
-    case Closed
-    case Transitioning
-    case Open
+    case hidden
+    case closed
+    case transitioning
+    case open
 }

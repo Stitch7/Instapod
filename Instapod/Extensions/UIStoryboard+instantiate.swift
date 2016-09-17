@@ -10,6 +10,6 @@ import UIKit
 
 extension UIStoryboard {
     func instantiate<ViewController>() -> ViewController? {
-        return instantiateViewControllerWithIdentifier(String(ViewController)) as? ViewController
+        return instantiateViewController(withIdentifier: String(describing: ViewController.self)) as? ViewController
     }
 }

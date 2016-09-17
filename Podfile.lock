@@ -1,15 +1,24 @@
 PODS:
-  - AEXML (2.1.0)
+  - AEXML (4.0.0)
   - PKHUD (3.2.1)
 
 DEPENDENCIES:
-  - AEXML (~> 2.1.0)
-  - PKHUD
+  - AEXML (~> 4.0)
+  - PKHUD (from `https://github.com/toyship/PKHUD.git`)
+
+EXTERNAL SOURCES:
+  PKHUD:
+    :git: https://github.com/toyship/PKHUD.git
+
+CHECKOUT OPTIONS:
+  PKHUD:
+    :commit: 28fb970b41d63134e962f9da766b96670c0f55f0
+    :git: https://github.com/toyship/PKHUD.git
 
 SPEC CHECKSUMS:
-  AEXML: 0e2f657fdc67e17905682a06d55583a863d80803
+  AEXML: 6fc6433aa35bdc15dd8eb8d54eb7aa4520a010eb
   PKHUD: 001c11518f125a273ddf026bcc64918423744ea2
 
-PODFILE CHECKSUM: 7de2777788f6c4bec1dd5b847dd946e1c8d182ea
+PODFILE CHECKSUM: 44138fb96ff03a05329a5dd42ff69ed9f15e838e
 
 COCOAPODS: 1.1.0.beta.1

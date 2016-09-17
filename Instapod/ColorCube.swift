@@ -10,7 +10,7 @@ import UIKit
 
 extension UIImage {
     var colorCube: UIColor {
-        var color = UIColor.blackColor()
+        var color = UIColor.black
 
         let cube = ColorCube()
         let imageColors = cube.extractColorsFromImage(self, flags: [.AvoidWhite, .AvoidBlack])
@@ -22,14 +22,14 @@ extension UIImage {
     }
 }
 
-extension NSData {
+extension Data {
     var colorCube: UIColor {
-        guard let image = UIImage(data: self) else { return UIColor.blackColor() }
+        guard let image = UIImage(data: self) else { return UIColor.black }
         return image.colorCube
     }
 }
 
-struct ColorCubeFlags: OptionSetType {
+struct ColorCubeFlags: OptionSet {
     let rawValue: Int
     static let None               = ColorCubeFlags(rawValue: 0)
     static let OnlyBrightColors   = ColorCubeFlags(rawValue: 1 << 0)
@@ -140,24 +140,47 @@ final class ColorCube {
         [-1,-1,-1]
     ]
 
-    var cells = [ColorCubeCell](count: 27000, repeatedValue: ColorCubeCell())
+    var cells = [ColorCubeCell](repeating: ColorCubeCell(), count: 27000)
 
-    func cellIndexCreate(r: Int, _ g: Int, _ b: Int) -> Int {
+    func cellIndexCreate(_ r: Int, _ g: Int, _ b: Int) -> Int {
         return r + g * resolution + b * resolution * resolution
     }
 
-    func findLocalMaximaInImage(image: UIImage, flags: ColorCubeFlags) -> [ColorCubeLocalMaximum] {
+    func findLocalMaximaInImage(_ image: UIImage, flags: ColorCubeFlags) -> [ColorCubeLocalMaximum] {
         // We collect local maxima in here
         var localMaxima = [ColorCubeLocalMaximum]()
 
         // Reset all cells
         clearCells()
 
-        // Get raw pixel data from image
-        var pixelCount = 0
+//        guard let context = rawPixelDataFromImage(image, pixelCount: &pixelCount) else { return localMaxima }
+//        let rawData = UnsafeMutablePointer<UInt8>(context.data)
+//        let rawData: UnsafeMutablePointer<CGImage> = context.data!
 
-        guard let context = rawPixelDataFromImage(image, pixelCount: &pixelCount) else { return localMaxima }
-        let rawData = UnsafeMutablePointer<UInt8>(CGBitmapContextGetData(context))
+        let cgImage = image.cgImage!
+        let width = cgImage.width
+        let height = cgImage.height
+
+        // Allocate storage for the pixel data
+        let rawDataSize = height * width * 4
+        let rawData: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer.allocate(capacity: rawDataSize)
+
+        // Create the color space
+        let colorSpace = CGColorSpaceCreateDeviceRGB();
+
+        // Set some metrics
+        let bytesPerPixel = 4
+        let bytesPerRow = bytesPerPixel * width
+        let bitsPerComponent = 8
+        let bitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Big.rawValue | CGImageAlphaInfo.premultipliedLast.rawValue).rawValue
+
+        // Create context using the storage
+        _ = CGContext(data: rawData, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo)
+
+//        rawData.deallocate(bytes: rawDataSize, alignedTo: MemoryLayout<UIImage>.alignment)
+//        rawData.deallocate(capacity: rawDataSize)
+
+        let pixelCount = width * height
 
         // Helper vars
         var red, green, blue: Double
@@ -197,8 +220,8 @@ final class ColorCube {
         }
         
         // Deallocate raw pixel data memory
-        rawData.destroy()
-        rawData.dealloc(0)
+        rawData.deinitialize()
+        rawData.deallocate(capacity: rawDataSize)
 
         // Find local maxima in the grid
         for r in 0 ..< resolution {
@@ -256,11 +279,11 @@ final class ColorCube {
             }
         }
 
-        let sorttedMaxima = localMaxima.sort { $0.hitCount > $1.hitCount }
+        let sorttedMaxima = localMaxima.sorted { $0.hitCount > $1.hitCount }
         return sorttedMaxima
     }
 
-    func findAndSortMaximaInImage(image: UIImage, flags: ColorCubeFlags) -> [ColorCubeLocalMaximum] {
+    func findAndSortMaximaInImage(_ image: UIImage, flags: ColorCubeFlags) -> [ColorCubeLocalMaximum] {
         // First get local maxima of image
         var sortedMaxima = findLocalMaximaInImage(image, flags: flags)
 
@@ -282,7 +305,7 @@ final class ColorCube {
 
     // MARK: - Filtering and sorting
 
-    func filterDistinctMaxima(maxima: [ColorCubeLocalMaximum], threshold: CGFloat) -> [ColorCubeLocalMaximum] {
+    func filterDistinctMaxima(_ maxima: [ColorCubeLocalMaximum], threshold: CGFloat) -> [ColorCubeLocalMaximum] {
         var filteredMaxima = [ColorCubeLocalMaximum]()
 
         // Check for each maximum
@@ -322,9 +345,9 @@ final class ColorCube {
         return filteredMaxima
     }
 
-    func filterMaxima(maxima: [ColorCubeLocalMaximum], tooCloseToColor color: UIColor) -> [ColorCubeLocalMaximum] {
+    func filterMaxima(_ maxima: [ColorCubeLocalMaximum], tooCloseToColor color: UIColor) -> [ColorCubeLocalMaximum] {
         // Get color components
-        let components = CGColorGetComponents(color.CGColor)
+        let components = color.cgColor.components
 
         var filteredMaxima = [ColorCubeLocalMaximum]()
 
@@ -334,9 +357,9 @@ final class ColorCube {
             let max1 = maxima[k]
 
             // Compute delta components
-            let redDelta   = max1.red - Double(components[0])
-            let greenDelta = max1.green - Double(components[1])
-            let blueDelta  = max1.blue - Double(components[2])
+            let redDelta   = max1.red - Double((components?[0])!)
+            let greenDelta = max1.green - Double((components?[1])!)
+            let blueDelta  = max1.blue - Double((components?[2])!)
 
             // Compute delta in color space distance
             let delta = sqrt(redDelta * redDelta + greenDelta * greenDelta + blueDelta * blueDelta)
@@ -350,15 +373,15 @@ final class ColorCube {
         return filteredMaxima
     }
 
-    func orderByBrightness(maxima: [ColorCubeLocalMaximum]) -> [ColorCubeLocalMaximum] {
-        return maxima.sort { $0.brightness > $1.brightness }
+    func orderByBrightness(_ maxima: [ColorCubeLocalMaximum]) -> [ColorCubeLocalMaximum] {
+        return maxima.sorted { $0.brightness > $1.brightness }
     }
 
-    func orderByDarkness(maxima: [ColorCubeLocalMaximum]) -> [ColorCubeLocalMaximum] {
-        return maxima.sort { $0.brightness < $1.brightness }
+    func orderByDarkness(_ maxima: [ColorCubeLocalMaximum]) -> [ColorCubeLocalMaximum] {
+        return maxima.sorted { $0.brightness < $1.brightness }
     }
 
-    func performAdaptiveDistinctFilteringForMaxima(maxima: [ColorCubeLocalMaximum], count: Int) -> [ColorCubeLocalMaximum] {
+    func performAdaptiveDistinctFilteringForMaxima(_ maxima: [ColorCubeLocalMaximum], count: Int) -> [ColorCubeLocalMaximum] {
         var tempMaxima = maxima
 
         // If the count of maxima is higher than the requested count, perform distinct thresholding
@@ -392,7 +415,7 @@ final class ColorCube {
 
     // MARK: - Maximum to color conversion
 
-    func colorsFromMaxima(maxima: [ColorCubeLocalMaximum]) -> [UIColor] {
+    func colorsFromMaxima(_ maxima: [ColorCubeLocalMaximum]) -> [UIColor] {
         // Build the resulting color array
         var colorArray = [UIColor]()
 
@@ -412,7 +435,7 @@ final class ColorCube {
 
     // MARK: - Default maxima extraction and filtering
 
-    func extractAndFilterMaximaFromImage(image: UIImage, flags: ColorCubeFlags) -> [ColorCubeLocalMaximum] {
+    func extractAndFilterMaximaFromImage(_ image: UIImage, flags: ColorCubeFlags) -> [ColorCubeLocalMaximum] {
         // Get maxima
         var sortedMaxima = findAndSortMaximaInImage(image, flags: flags)
 
@@ -434,7 +457,7 @@ final class ColorCube {
 
     // MARK: - Public methods
 
-    func extractColorsFromImage(image: UIImage, flags: ColorCubeFlags) -> [UIColor] {
+    func extractColorsFromImage(_ image: UIImage, flags: ColorCubeFlags) -> [UIColor] {
         // Get maxima
         let sortedMaxima = extractAndFilterMaximaFromImage(image, flags: flags)
 
@@ -442,7 +465,7 @@ final class ColorCube {
         return colorsFromMaxima(sortedMaxima)
     }
 
-    func extractColorsFromImage(image: UIImage, flags: ColorCubeFlags, avoidColor: UIColor) -> [UIColor] {
+    func extractColorsFromImage(_ image: UIImage, flags: ColorCubeFlags, avoidColor: UIColor) -> [UIColor] {
         // Get maxima
         var sortedMaxima = extractAndFilterMaximaFromImage(image, flags: flags)
 
@@ -453,7 +476,7 @@ final class ColorCube {
         return colorsFromMaxima(sortedMaxima)
     }
 
-    func extractBrightColorsFromImage(image: UIImage, avoidColor: UIColor, count: Int) -> [UIColor] {
+    func extractBrightColorsFromImage(_ image: UIImage, avoidColor: UIColor, count: Int) -> [UIColor] {
         // Get maxima (bright only)
         var sortedMaxima = findAndSortMaximaInImage(image, flags: .OnlyBrightColors)
 
@@ -467,7 +490,7 @@ final class ColorCube {
         return colorsFromMaxima(sortedMaxima)
     }
 
-    func extractDarkColorsFromImage(image: UIImage, avoidColor: UIColor, count: Int) -> [UIColor] {
+    func extractDarkColorsFromImage(_ image: UIImage, avoidColor: UIColor, count: Int) -> [UIColor] {
         // Get maxima (bright only)
         var sortedMaxima = findAndSortMaximaInImage(image, flags: .OnlyDarkColors)
 
@@ -481,7 +504,7 @@ final class ColorCube {
         return colorsFromMaxima(sortedMaxima)
     }
 
-    func extractColorsFromImage(image: UIImage, flags: ColorCubeFlags, count: Int) -> [UIColor] {
+    func extractColorsFromImage(_ image: UIImage, flags: ColorCubeFlags, count: Int) -> [UIColor] {
         // Get maxima
         var sortedMaxima = extractAndFilterMaximaFromImage(image, flags: flags)
 
@@ -506,15 +529,17 @@ final class ColorCube {
 
     // MARK: - Pixel data extraction
 
-    func rawPixelDataFromImage(image: UIImage, inout pixelCount: Int) -> CGContext? {
+    func rawPixelDataFromImage(_ image: UIImage, pixelCount: inout Int) -> CGContext? {
         // Get cg image and its size
-        let cgImage = image.CGImage
-        let width = CGImageGetWidth(cgImage)
-        let height = CGImageGetHeight(cgImage)
+        guard let cgImage = image.cgImage else { return nil }
+        let width = cgImage.width
+        let height = cgImage.height
 
         // Allocate storage for the pixel data
         let rawDataSize = height * width * 4
-        let rawData = UnsafeMutablePointer<Void>.alloc(rawDataSize)
+//        let rawData = UnsafeMutableRawPointer.allocate(capacity: rawDataSize)
+//        let rawData = UnsafeMutableRawPointer.allocate(bytes: rawDataSize, alignedTo: MemoryLayout<UIImage>.alignment)
+        let rawData: UnsafeMutablePointer<CGImage> = UnsafeMutablePointer.allocate(capacity: rawDataSize)
 
         // Create the color space
         let colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -523,16 +548,16 @@ final class ColorCube {
         let bytesPerPixel = 4
         let bytesPerRow = bytesPerPixel * width
         let bitsPerComponent = 8
-        let bitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.ByteOrder32Big.rawValue | CGImageAlphaInfo.PremultipliedLast.rawValue).rawValue
+        let bitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Big.rawValue | CGImageAlphaInfo.premultipliedLast.rawValue).rawValue
 
         // Create context using the storage
-        let context = CGBitmapContextCreate(rawData, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo)
+        let context = CGContext(data: rawData, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo)
 
-        rawData.destroy()
-//        rawData.dealloc(rawDataSize)
+//        rawData.deallocate(bytes: rawDataSize, alignedTo: MemoryLayout<UIImage>.alignment)
+        rawData.deallocate(capacity: rawDataSize)
 
         // Draw the image into the storage
-        CGContextDrawImage(context, CGRectMake(0, 0, CGFloat(width), CGFloat(height)), cgImage)
+        context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: CGFloat(width), height: CGFloat(height)))
 
         // Write pixel count to passed pointer
         pixelCount = width * height

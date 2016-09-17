@@ -18,18 +18,18 @@ class ShownotesView: ViewFromNib {
 
             injectContent(episode)
 
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateStyle = .ShortStyle
-            dateFormatter.timeStyle = .ShortStyle
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short
+            dateFormatter.timeStyle = .short
             dateFormatter.doesRelativeDateFormatting = true
 
             episodeLabel.text = episode.title
             podcastLabel.text = episode.podcast?.title
-            pubDateLabel.text = dateFormatter.stringFromDate(episode.pubDate ?? NSDate())
+            pubDateLabel.text = dateFormatter.string(from: episode.pubDate as Date? ?? Date())
             durationLabel.text = episode.duration
 
             if let thumbnailData = episode.image?.thumbnail72 ?? episode.podcast?.image?.thumbnail72 {
-                logoImageView?.image = UIImage(data: thumbnailData)
+                logoImageView?.image = UIImage(data: thumbnailData as Data)
             }
             else {
                 logoImageView?.image = UIImage(named: "defaultLogo72")
@@ -68,25 +68,25 @@ class ShownotesView: ViewFromNib {
         webView.scrollView.contentInset = UIEdgeInsetsMake(topView.bounds.size.height, 0, 0, 0)
         view.backgroundColor = ColorPalette.Background
 
-        webView.opaque = false
-        webView.backgroundColor = UIColor.clearColor()
+        webView.isOpaque = false
+        webView.backgroundColor = UIColor.clear
     }
 
     func configureTopView() {
-        topView.backgroundColor = ColorPalette.Background.colorWithAlphaComponent(0.9)
-        topViewBottomContainerView.backgroundColor = UIColor.clearColor()
+        topView.backgroundColor = ColorPalette.Background.withAlphaComponent(0.9)
+        topViewBottomContainerView.backgroundColor = UIColor.clear
 
         episodeLabel.numberOfLines = 0
         podcastLabel.numberOfLines = 0
     }
 
-    func injectContent(episode: Episode) {
+    func injectContent(_ episode: Episode) {
         let content = episode.content ?? episode.desc ?? episode.summary ?? ""
 
         do {
-            let path = NSBundle.mainBundle().pathForResource("shownotes", ofType: "html")
-            var html = try String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
-            html = html.stringByReplacingOccurrencesOfString("##CONTENT##", withString: content)
+            let path = Bundle.main.path(forResource: "shownotes", ofType: "html")
+            var html = try String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+            html = html.replacingOccurrences(of: "##CONTENT##", with: content)
             webView.loadHTMLString(html, baseURL: nil)
         } catch {
             print("Error: Could not load content")

@@ -19,18 +19,17 @@ enum PodcastListViewMode: Int, EnumIteratable {
         case .collectionView: image = UIImage(named: "podcastViewModeCollectionView")!
         }
 
-        return image.imageWithRenderingMode(.AlwaysTemplate)
+        return image.withRenderingMode(.alwaysTemplate)
     }
 
-    mutating func nextValue() -> Int {
+    mutating func nextValue() {
         let sorted = PodcastListViewMode.values()
-        let currentIndex = sorted.indexOf(self)!
+        let currentIndex = sorted.index(of: self)!
         var nextIndex = currentIndex + 1
         if sorted.count <= nextIndex {
             nextIndex = 0
         }
 
         self = sorted[nextIndex]
-        return rawValue
     }
 }

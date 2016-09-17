@@ -10,7 +10,7 @@ import UIKit
 
 class PopupItem: NSObject {
 
-    let observationContext: UnsafeMutablePointer<Void> = nil
+    let observationContext: UnsafeMutableRawPointer? = nil
 
     var _title: String?
     var title: String? {
@@ -29,11 +29,11 @@ class PopupItem: NSObject {
 
     var progress: Float = 0.0 {
         didSet {
-            willChangeValueForKey(NSStringFromSelector(Selector("progress")))
+            willChangeValue(forKey: NSStringFromSelector(#selector(getter: ProgressReporting.progress)))
             if progress > 1.0  {
                 progress = 1.0
             }
-            didChangeValueForKey(NSStringFromSelector(Selector("progress")))
+            didChangeValue(forKey: NSStringFromSelector(#selector(getter: ProgressReporting.progress)))
         }
     }
 
@@ -61,7 +61,7 @@ class PopupItem: NSObject {
         removeObserver(self, forKeyPath: "rightBarButtonItems", context: observationContext)
     }
 
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if context == observationContext {
             itemDelegate?.popupItem(self, didChangeValueForKey:keyPath!)
         }

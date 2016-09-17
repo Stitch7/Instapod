@@ -17,8 +17,8 @@ class PlayerRemoteView: ViewFromNib {
 
     weak var delegate: PlayerRemoteViewDelegate?
     
-    var playerRate = PlayerRates.Normal
-    var sleepTimerDuration = PlayerSleepTimerDuration.Off
+    var playerRate = PlayerRates.normal
+    var sleepTimerDuration = PlayerSleepTimerDuration.off
 
     var duration: CMTime? {
         didSet {
@@ -37,8 +37,10 @@ class PlayerRemoteView: ViewFromNib {
     @IBOutlet weak var progressSlider: PlayerRemoteProgressSlider!
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var pendingTimeLabel: UILabel!
-    @IBOutlet weak var titleLabel: MarqueeLabel!
-    @IBOutlet weak var authorLabel: MarqueeLabel!
+//    @IBOutlet weak var titleLabel: MarqueeLabel!
+//    @IBOutlet weak var authorLabel: MarqueeLabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var rewindButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var fastForwardButton: UIButton!
@@ -54,7 +56,7 @@ class PlayerRemoteView: ViewFromNib {
         alpha = 0.9
 
         configureProgressSlider()
-        configureMarquees()
+//        configureMarquees()
         configurePlaybackButtons()
         configureVolumeView()
         configureActionToolbar()
@@ -63,69 +65,69 @@ class PlayerRemoteView: ViewFromNib {
     func configureProgressSlider() {
         progressSlider.value = 0.0
         progressSlider.minimumValue = 0.0
-        progressSlider.minimumTrackTintColor = UIColor.darkGrayColor()
-        progressSlider.maximumTrackTintColor = UIColor.lightGrayColor()
-        let thumbImage = UIImage(named: "progressSliderThumb")?.imageWithRenderingMode(.AlwaysTemplate)
-        progressSlider.setThumbImage(thumbImage, forState: .Normal)
+        progressSlider.minimumTrackTintColor = UIColor.darkGray
+        progressSlider.maximumTrackTintColor = UIColor.lightGray
+        let thumbImage = UIImage(named: "progressSliderThumb")?.withRenderingMode(.alwaysTemplate)
+        progressSlider.setThumbImage(thumbImage, for: UIControlState())
 
         currentTimeLabel.text = ""
-        currentTimeLabel.textAlignment = .Left
+        currentTimeLabel.textAlignment = .left
         pendingTimeLabel.text = ""
-        pendingTimeLabel.textAlignment = .Left
+        pendingTimeLabel.textAlignment = .left
     }
 
-    func configureMarquees() {
-        titleLabel.type = .Continuous
-        titleLabel.speed = .Duration(15)
-        titleLabel.animationCurve = .EaseInOut
-        titleLabel.fadeLength = 10.0
-        titleLabel.trailingBuffer = 50.0
-
-        authorLabel.type = .Continuous
-        authorLabel.speed = .Duration(15)
-        authorLabel.animationCurve = .EaseInOut
-        authorLabel.fadeLength = 10.0
-        authorLabel.trailingBuffer = 50.0
-    }
+//    func configureMarquees() {
+//        titleLabel.type = .continuous
+//        titleLabel.speed = .duration(15)
+//        titleLabel.animationCurve = .easeInOut
+//        titleLabel.fadeLength = 10.0
+//        titleLabel.trailingBuffer = 50.0
+//
+//        authorLabel.type = .continuous
+//        authorLabel.speed = .duration(15)
+//        authorLabel.animationCurve = .easeInOut
+//        authorLabel.fadeLength = 10.0
+//        authorLabel.trailingBuffer = 50.0
+//    }
 
     func configurePlaybackButtons() {
-        let previousTrackImage = UIImage(named: "previousTrack")?.imageWithRenderingMode(.AlwaysTemplate)
-        rewindButton.setImage(previousTrackImage, forState: .Normal)
-        rewindButton.enabled = false
+        let previousTrackImage = UIImage(named: "previousTrack")?.withRenderingMode(.alwaysTemplate)
+        rewindButton.setImage(previousTrackImage, for: UIControlState())
+        rewindButton.isEnabled = false
 
-        let playImage = UIImage(named: "play")?.imageWithRenderingMode(.AlwaysTemplate)
-        playButton.setImage(playImage, forState: .Normal)
-        playButton.enabled = false
+        let playImage = UIImage(named: "play")?.withRenderingMode(.alwaysTemplate)
+        playButton.setImage(playImage, for: UIControlState())
+        playButton.isEnabled = false
 
-        let nextTrackImage = UIImage(named: "nextTrack")?.imageWithRenderingMode(.AlwaysTemplate)
-        fastForwardButton.setImage(nextTrackImage, forState: .Normal)
-        fastForwardButton.enabled = false
+        let nextTrackImage = UIImage(named: "nextTrack")?.withRenderingMode(.alwaysTemplate)
+        fastForwardButton.setImage(nextTrackImage, for: UIControlState())
+        fastForwardButton.isEnabled = false
     }
 
     func configureVolumeView() {
-        volumeView.setVolumeThumbImage(UIImage(named: "volumeSliderThumb"), forState: .Normal)
+        volumeView.setVolumeThumbImage(UIImage(named: "volumeSliderThumb"), for: UIControlState())
         volumeView.showsRouteButton = false
 
-        volumeMinImageView.image = volumeMinImageView.image?.imageWithRenderingMode(.AlwaysTemplate)
-        volumeMaxImageView.image = volumeMaxImageView.image?.imageWithRenderingMode(.AlwaysTemplate)
+        volumeMinImageView.image = volumeMinImageView.image?.withRenderingMode(.alwaysTemplate)
+        volumeMaxImageView.image = volumeMaxImageView.image?.withRenderingMode(.alwaysTemplate)
 
-        volumeMinImageView.tintColor = UIColor.lightGrayColor()
-        volumeMaxImageView.tintColor = UIColor.lightGrayColor()
+        volumeMinImageView.tintColor = UIColor.lightGray
+        volumeMaxImageView.tintColor = UIColor.lightGray
     }
 
     func toolbarSpacer() -> UIBarButtonItem {
-        return UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        return UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     }
 
     func configureActionToolbar() {
         actionsToolbar.clipsToBounds = true
-        actionsToolbar.barTintColor = UIColor.whiteColor()
+        actionsToolbar.barTintColor = UIColor.white
 
-        let airplayButton = UIBarButtonItem(image: UIImage(named: "airplay"), style: .Plain, target: self, action: #selector(airplayButtonPressed(_:)))
-        let rateButton = UIBarButtonItem(image: playerRate.image, style: .Plain, target: self, action: #selector(rateButtonPressed(_:)))
-        let sleepTimerButton = UIBarButtonItem(image: sleepTimerDuration.image, style: .Plain, target: self, action: #selector(sleepTimerButtonPressed(_:)))
-        let bookmarkButton = UIBarButtonItem(barButtonSystemItem: .Bookmarks, target: self, action: #selector(bookmarkButtonPressed(_:)))
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(shareButtonPressed(_:)))
+        let airplayButton = UIBarButtonItem(image: UIImage(named: "airplay"), style: .plain, target: self, action: #selector(airplayButtonPressed(_:)))
+        let rateButton = UIBarButtonItem(image: playerRate.image, style: .plain, target: self, action: #selector(rateButtonPressed(_:)))
+        let sleepTimerButton = UIBarButtonItem(image: sleepTimerDuration.image, style: .plain, target: self, action: #selector(sleepTimerButtonPressed(_:)))
+        let bookmarkButton = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(bookmarkButtonPressed(_:)))
+        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonPressed(_:)))
 
         var actionItems = [UIBarButtonItem]()
         actionItems.append(airplayButton)
@@ -143,55 +145,56 @@ class PlayerRemoteView: ViewFromNib {
 
     // MARK: - Actions
 
-    func airplayButtonPressed(sender: UIBarButtonItem) {
+    func airplayButtonPressed(_ sender: UIBarButtonItem) {
         print("PLAY AIR!")
     }
 
-    func rateButtonPressed(sender: UIBarButtonItem) {
-        delegate?.playerRate(playerRate.nextValue())
+    func rateButtonPressed(_ sender: UIBarButtonItem) {
+        playerRate.nextValue()
+        delegate?.playerRate(playerRate.rawValue)
         configureActionToolbar()
     }
 
-    func sleepTimerButtonPressed(sender: UIBarButtonItem) {
+    func sleepTimerButtonPressed(_ sender: UIBarButtonItem) {
         sleepTimerDuration.nextValue()
         delegate?.startSleepTimer(withDuration: sleepTimerDuration)
         configureActionToolbar()
     }
 
-    func formatDurationWithSeconds(fromDate fromDate: NSDate, toDate: NSDate) -> String {
+    func formatDurationWithSeconds(fromDate: Date, toDate: Date) -> String {
         var durationLabelText: String
-        let components = NSCalendar.currentCalendar().components([.Hour, .Minute, .Second], fromDate: fromDate, toDate: toDate, options: [])
+        let components = (Calendar.current as NSCalendar).components([.hour, .minute, .second], from: fromDate, to: toDate, options: [])
 
         if components.minute == 0 {
-            durationLabelText = String(components.second) + "s" //TODO: i18n
+            durationLabelText = String(describing: components.second) + "s" //TODO: i18n
         }
         else if components.hour == 0 {
-            durationLabelText = String(components.minute) + "m " + String(components.second) + "s" //TODO: i18n
+            durationLabelText = String(describing: components.minute) + "m " + String(describing: components.second) + "s" //TODO: i18n
         }
         else {
-            durationLabelText = String(components.hour) + "h " + String(components.minute) + "m " + String(components.second) + "s" //TODO: i18n
+            durationLabelText = String(describing: components.hour) + "h " + String(describing: components.minute) + "m " + String(describing: components.second) + "s" //TODO: i18n
         }
 
         return durationLabelText
     }
 
-    func bookmarkButtonPressed(sender: UIBarButtonItem) {
+    func bookmarkButtonPressed(_ sender: UIBarButtonItem) {
         var tempTextField: UITextField?
         // TODO: i18n
         let alertController = UIAlertController(
             title: "Add Bookmark",
             message: "Please enter a bookmark title.",
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
 
-        alertController.addTextFieldWithConfigurationHandler { (textField) in
+        alertController.addTextField { (textField) in
             tempTextField = textField
             textField.placeholder = ""
         }
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        let okAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-            guard let title = tempTextField?.text where title.characters.count > 0 else { return }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            guard let title = tempTextField?.text , title.characters.count > 0 else { return }
         }
 
         alertController.addAction(cancelAction)
@@ -202,26 +205,26 @@ class PlayerRemoteView: ViewFromNib {
 
     }
 
-    func shareButtonPressed(sender: UIBarButtonItem) {
+    func shareButtonPressed(_ sender: UIBarButtonItem) {
         let episode = self.delegate?.shareEpisode()
         let text = "Check out this awesome Podcast:"
         let url = episode!.audioFile!.url! // TODO: We need the episode url here
-        let activityItems = [text, url]
+        let activityItems = [text, url] as [Any]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
 
         // Delegate to controller
         presentVC(activityViewController)
     }
 
-    func presentVC(vc: UIViewController) {
-        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
+    func presentVC(_ vc: UIViewController) {
+        var topVC = UIApplication.shared.keyWindow?.rootViewController
         while topVC?.presentedViewController != nil {
             topVC = topVC?.presentedViewController
         }
-        topVC?.presentViewController(vc, animated: true, completion: nil)
+        topVC?.present(vc, animated: true, completion: nil)
     }
 
-    private func updateProgressSlider() {
+    fileprivate func updateProgressSlider() {
         guard let currentTime = self.currentTime else { return }
         guard let duration = self.duration else { return }
 

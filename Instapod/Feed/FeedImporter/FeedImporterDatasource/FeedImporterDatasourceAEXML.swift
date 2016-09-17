@@ -11,18 +11,18 @@ import AEXML
 
 struct FeedImporterDatasourceAEXML: FeedImporterDatasource {
 
-    var urls: [NSURL]?
+    var urls: [URL]?
 
     // MARK: - FeedImporterDatasource
 
-    init(data: NSData) {
+    init(data: Data) {
         do {
-            let xml = try AEXMLDocument(xmlData: data)
-            urls = [NSURL]()
+            let xml = try AEXMLDocument(xml: data)
+            urls = [URL]()
             if let outlines = xml.root["body"]["outline"].all {
                 for outline in outlines {
                     guard let urlString = outline.attributes["xmlUrl"] else { continue }
-                    guard let url = NSURL(string: urlString) else { continue }
+                    guard let url = URL(string: urlString) else { continue }
 
                     urls!.append(url)
                 }

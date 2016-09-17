@@ -15,7 +15,7 @@ class FeedParserAEXMLTests: XCTestCase {
 
     let parser: FeedParser = FeedParserAEXML()
     var feed: Podcast?
-    var feedData: NSData!
+    var feedData: Data!
 
     // MARK: - XCTestCase
 
@@ -25,13 +25,13 @@ class FeedParserAEXMLTests: XCTestCase {
         setUpFeed()
     }
 
-    private func setUpFeed() {
+    fileprivate func setUpFeed() {
         do {
-            let url = NSURL(string: "http://cre.fm/feed/m4a")!
-            let bundle = NSBundle(forClass: self.dynamicType)
-            let path = bundle.pathForResource("cre", ofType: "xml")
-            feedData = try NSData(contentsOfFile: path!, options: .DataReadingMappedIfSafe)
-            feed = try parser.parseFeed(url: url, xmlData: feedData)
+            let url = URL(string: "http://cre.fm/feed/m4a")!
+            let bundle = Bundle(for: type(of: self))
+            let path = bundle.path(forResource: "cre", ofType: "xml")
+            feedData = try Data(contentsOf: URL(fileURLWithPath: path!), options: .mappedIfSafe)
+            feed = try parser.parseFeed(uuid: "abc", url: url, xmlData: feedData)
         }
         catch {
             print(error)

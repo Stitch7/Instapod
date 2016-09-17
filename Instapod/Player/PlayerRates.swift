@@ -9,41 +9,40 @@
 import UIKit
 
 enum PlayerRates: Float, EnumIteratable {
-    case Half = 0.5
-    case Normal = 1.0
-    case OneAndAHalf = 1.5
-    case Double = 2.0
-    case Triple = 3.0
+    case half = 0.5
+    case normal = 1.0
+    case oneAndAHalf = 1.5
+    case double = 2.0
+    case triple = 3.0
 
     var sorted: [PlayerRates] {
         return [
-            .Half,
-            .Normal,
-            .OneAndAHalf,
-            .Double,
-            .Triple
+            .half,
+            .normal,
+            .oneAndAHalf,
+            .double,
+            .triple
         ]
     }
 
     var image: UIImage {
         switch self {
-        case .Half:        return UIImage(named: "playerRateHalf")!
-        case .Normal:      return UIImage(named: "playerRateNormal")!
-        case .OneAndAHalf: return UIImage(named: "playerRateOneAndAHalf")!
-        case .Double:      return UIImage(named: "playerRateDouble")!
-        case .Triple:      return UIImage(named: "playerRateTriple")!
+        case .half:        return UIImage(named: "playerRateHalf")!
+        case .normal:      return UIImage(named: "playerRateNormal")!
+        case .oneAndAHalf: return UIImage(named: "playerRateOneAndAHalf")!
+        case .double:      return UIImage(named: "playerRateDouble")!
+        case .triple:      return UIImage(named: "playerRateTriple")!
         }
     }
 
-    mutating func nextValue() -> Float {
+    mutating func nextValue() {
         let sorted = self.sorted
-        let currentIndex = sorted.indexOf(self)!
+        let currentIndex = sorted.index(of: self)!
         var nextIndex = currentIndex + 1
         if sorted.count <= nextIndex {
             nextIndex = 0
         }
 
         self = sorted[nextIndex]
-        return rawValue
     }
 }

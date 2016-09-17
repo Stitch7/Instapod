@@ -9,7 +9,7 @@
 import CoreData
 
 extension NSManagedObjectContext {
-    func createEntityWithName(name: String) -> NSManagedObject {
-        return NSEntityDescription.insertNewObjectForEntityForName(name, inManagedObjectContext: self)
+    func createEntityWithName(_ name: String) -> NSManagedObject {
+        return NSEntityDescription.insertNewObject(forEntityName: name, into: self)
     }
 }

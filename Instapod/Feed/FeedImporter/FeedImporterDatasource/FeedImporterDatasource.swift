@@ -9,5 +9,5 @@
 import UIKit
 
 protocol FeedImporterDatasource {
-    var urls: [NSURL]? { get }
+    var urls: [URL]? { get }
 }

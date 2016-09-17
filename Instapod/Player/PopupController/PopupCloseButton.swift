@@ -30,7 +30,7 @@ class PopupCloseButton: UIButton {
     }
 
     func initialize() {
-        setTitleColor(UIColor.blackColor(), forState: .Normal)
+        setTitleColor(UIColor.black, for: UIControlState())
         configureLayer()
         configureBackground()
         configureImage()
@@ -38,27 +38,27 @@ class PopupCloseButton: UIButton {
     }
 
     func configureLayer() {
-        layer.shadowColor = UIColor.blackColor().CGColor
+        layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.1
         layer.shadowRadius = 3.0
-        layer.shadowOffset = CGSizeMake(0, 0)
+        layer.shadowOffset = CGSize(width: 0, height: 0)
         layer.masksToBounds = false
     }
 
     func configureBackground() {
-        let blurEffect = UIBlurEffect(style: .ExtraLight)
+        let blurEffect = UIBlurEffect(style: .extraLight)
         backgroundView = UIVisualEffectView(effect: blurEffect)
-        backgroundView.userInteractionEnabled = false
+        backgroundView.isUserInteractionEnabled = false
         addSubview(backgroundView)
 
-        let vibrancyEffect = UIVibrancyEffect(forBlurEffect: blurEffect)
+        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
         let highlightEffectView = UIVisualEffectView(effect: vibrancyEffect)
-        highlightEffectView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        highlightEffectView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         highlightEffectView.frame = backgroundView.contentView.bounds
 
         highlightView = UIView(frame: highlightEffectView.contentView.bounds)
-        highlightView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
-        highlightView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        highlightView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        highlightView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         highlightView.alpha = 0.0
 
         highlightEffectView.contentView.addSubview(highlightView)
@@ -66,18 +66,18 @@ class PopupCloseButton: UIButton {
     }
 
     func configureImage() {
-        let bundle = NSBundle(forClass: self.dynamicType)
-        let image = UIImage(named: "DismissChevron", inBundle: bundle, compatibleWithTraitCollection: nil)
-        setImage(image, forState: .Normal)
+        let bundle = Bundle(for: type(of: self))
+        let image = UIImage(named: "DismissChevron", in: bundle, compatibleWith: nil)
+        setImage(image, for: UIControlState())
     }
 
     func configureEvents() {
-        addTarget(self, action: #selector(didTouchDown), forControlEvents: .TouchDown)
-        addTarget(self, action: #selector(didTouchDragExit), forControlEvents: .TouchDragExit)
-        addTarget(self, action: #selector(didTouchDragEnter), forControlEvents: .TouchDragEnter)
-        addTarget(self, action: #selector(didTouchUp), forControlEvents: .TouchUpInside)
-        addTarget(self, action: #selector(didTouchUp), forControlEvents: .TouchUpOutside)
-        addTarget(self, action: #selector(didTouchCancel), forControlEvents: .TouchCancel)
+        addTarget(self, action: #selector(didTouchDown), for: .touchDown)
+        addTarget(self, action: #selector(didTouchDragExit), for: .touchDragExit)
+        addTarget(self, action: #selector(didTouchDragEnter), for: .touchDragEnter)
+        addTarget(self, action: #selector(didTouchUp), for: .touchUpInside)
+        addTarget(self, action: #selector(didTouchUp), for: .touchUpOutside)
+        addTarget(self, action: #selector(didTouchCancel), for: .touchCancel)
     }
 
     // MARK: - Events
@@ -102,15 +102,15 @@ class PopupCloseButton: UIButton {
         highlighted(false, animated: true)
     }
 
-    func highlighted(highlighted: Bool, animated: Bool) {
-        let alphaBlock: dispatch_block_t = { [weak self] in
+    func highlighted(_ highlighted: Bool, animated: Bool) {
+        let alphaBlock: ()->() = { [weak self] in
             guard let popupCloseButton = self else { return }
             popupCloseButton.highlightView.alpha = highlighted ? 1.0 : 0.0;
             popupCloseButton.highlightView.alpha = highlighted ? 1.0 : 0.0;
         }
 
         if animated {
-            UIView.animateWithDuration(0.47) { alphaBlock() }
+            UIView.animate(withDuration: 0.47, animations: { alphaBlock() }) 
         }
         else {
             alphaBlock()
@@ -122,16 +122,16 @@ class PopupCloseButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        sendSubviewToBack(backgroundView)
+        sendSubview(toBack: backgroundView)
 
         let minSideSize = min(self.bounds.size.width, self.bounds.size.height)
 
         backgroundView.frame = bounds
 
         let maskLayer = CAShapeLayer()
-        maskLayer.rasterizationScale = 2.0 * UIScreen.mainScreen().nativeScale
+        maskLayer.rasterizationScale = 2.0 * UIScreen.main.nativeScale
         maskLayer.shouldRasterize = true
-        maskLayer.path = CGPathCreateWithRoundedRect(bounds, minSideSize / 2, minSideSize / 2, nil)
+        maskLayer.path = CGPath(roundedRect: bounds, cornerWidth: minSideSize / 2, cornerHeight: minSideSize / 2, transform: nil)
         backgroundView.layer.mask = maskLayer
 
         var imageFrame = imageView!.frame
@@ -139,7 +139,7 @@ class PopupCloseButton: UIButton {
         imageView!.frame = imageFrame
     }
 
-    override func sizeThatFits(size: CGSize) -> CGSize {
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
         var sizeThatFits = super.sizeThatFits(size)
         sizeThatFits.width += 14
         sizeThatFits.height += 2

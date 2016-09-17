@@ -9,20 +9,20 @@
 import UIKit
 
 extension UIImage {
-    func createThumbnail(size baseSize: CGFloat) -> NSData? {
-        let length = UIScreen.mainScreen().scale * baseSize
-        let size = CGSizeMake(length, length)
+    func createThumbnail(size baseSize: CGFloat) -> Data? {
+        let length = UIScreen.main.scale * baseSize
+        let size = CGSize(width: length, height: length)
 
         UIGraphicsBeginImageContext(size)
-        self.drawInRect(CGRectMake(0.0, 0.0, size.width, size.height))
+        self.draw(in: CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height))
         let thumbnailImage = UIGraphicsGetImageFromCurrentImageContext()
 
-        var thumbnailData: NSData?
-        if let png = UIImagePNGRepresentation(thumbnailImage) {
-            thumbnailData = NSData(data: png)
+        var thumbnailData: Data?
+        if let png = UIImagePNGRepresentation(thumbnailImage!) {
+            thumbnailData = NSData(data: png) as Data
         }
-        else if let jpeg = UIImageJPEGRepresentation(thumbnailImage, 1.0) {
-            thumbnailData = NSData(data: jpeg)
+        else if let jpeg = UIImageJPEGRepresentation(thumbnailImage!, 1.0) {
+            thumbnailData = NSData(data: jpeg) as Data
         }
         UIGraphicsEndImageContext()
 

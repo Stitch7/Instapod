@@ -9,36 +9,36 @@
 import UIKit
 
 enum PlayerRemoteProgressSliderScrubbingSpeed: Float {
-    case High = 1.0
-    case Half = 0.5
-    case Slow = 0.25
-    case Fine = 0.1
+    case high = 1.0
+    case half = 0.5
+    case slow = 0.25
+    case fine = 0.1
 
     var allValues: [PlayerRemoteProgressSliderScrubbingSpeed] {
         return [
-            High,
-            Half,
-            Slow,
-            Fine,
+            .high,
+            .half,
+            .slow,
+            .fine,
         ]
     }
 
     var stringValue: String {
         // TODO: i18n
         switch self {
-        case .High: return "High-Speed Scrubbing"
-        case .Half: return "Half-Speed Scrubbing"
-        case .Slow: return "Quarter-Speed Scrubbing"
-        case .Fine: return "Fine Scrubbing"
+        case .high: return "High-Speed Scrubbing"
+        case .half: return "Half-Speed Scrubbing"
+        case .slow: return "Quarter-Speed Scrubbing"
+        case .fine: return "Fine Scrubbing"
         }
     }
 
     var offset: Float {
         switch self {
-        case .High: return 0.0
-        case .Half: return 50.0
-        case .Slow: return 150.0
-        case .Fine: return 225.0
+        case .high: return 0.0
+        case .half: return 50.0
+        case .slow: return 150.0
+        case .fine: return 225.0
         }
     }
 
@@ -53,7 +53,7 @@ enum PlayerRemoteProgressSliderScrubbingSpeed: Float {
 
     func lowerScrubbingSpeed(forOffset offset: CGFloat) -> PlayerRemoteProgressSliderScrubbingSpeed? {
         var lowerScrubbingSpeedIndex: Int?
-        for (i, scrubbingSpeedOffset) in self.offsets.enumerate() {
+        for (i, scrubbingSpeedOffset) in self.offsets.enumerated() {
             if Float(offset) > scrubbingSpeedOffset {
                 lowerScrubbingSpeedIndex = i
             }

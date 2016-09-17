@@ -10,10 +10,10 @@ import UIKit
 
 extension UIColor {
     var hexString: String {
-        let components = CGColorGetComponents(self.CGColor)
-        let r = Float(components[0])
-        let g = Float(components[1])
-        let b = Float(components[2])
+        let components = self.cgColor.components
+        let r = Float((components?[0])!)
+        let g = Float((components?[1])!)
+        let b = Float((components?[2])!)
 
         return String(NSString(format: "#%02lX%02lX%02lX",
             lroundf(r * 255.0),

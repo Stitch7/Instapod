@@ -26,11 +26,11 @@ class PodcastTableViewCell: UITableViewCell {
     }
 
     func initialize() {
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
         preservesSuperviewLayoutMargins = false
         backgroundColor = ColorPalette.TableView.Cell.Background
-        accessoryType = .DisclosureIndicator
+        accessoryType = .disclosureIndicator
     }
 
     override func awakeFromNib() {

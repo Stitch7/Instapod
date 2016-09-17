@@ -19,7 +19,7 @@ var PopupControllerObjectHandle: UInt8 = 0
 var PopupItemObjectHandle: UInt8 = 0
 var BottomBarSupportObjectHandle: UInt8 = 0
 
-func PopupSupportFixInsetsForViewController(controller: UIViewController, layout: Bool) {
+func PopupSupportFixInsetsForViewController(_ controller: UIViewController, layout: Bool) {
     for childViewController in controller.childViewControllers {
         PopupSupportFixInsetsForViewController(childViewController, layout: false)
     }
@@ -50,15 +50,15 @@ class PopupContentViewController: UIViewController, PopupContentDelegate {
 
 extension UIViewController {
 
-    override public class func initialize() {
+    override open class func initialize() {
         super.initialize()
 
         _popup_load()
     }
 
     class func _popup_load() {
-        var onceToken: dispatch_once_t = 0
-        dispatch_once(&onceToken) {
+//        var onceToken: Int = 0
+//        dispatch_once(&onceToken) {
             var m1 = class_getInstanceMethod(UIViewController.self, #selector(UIViewController.viewDidLayoutSubviews))
             var m2 = class_getInstanceMethod(UIViewController.self, #selector(UIViewController._popup_viewDidLayoutSubviews))
             method_exchangeImplementations(m1, m2)
@@ -67,21 +67,21 @@ extension UIViewController {
             m2 = class_getInstanceMethod(UIViewController.self, #selector(UIViewController._popup_setNeedsStatusBarAppearanceUpdate))
             method_exchangeImplementations(m1, m2)
 
-            m1 = class_getInstanceMethod(UIViewController.self, #selector(UIViewController.childViewControllerForStatusBarStyle))
-            m2 = class_getInstanceMethod(UIViewController.self, Selector("_popup_childViewControllerForStatusBarStyle"))
+            m1 = class_getInstanceMethod(UIViewController.self, #selector(getter: UIViewController.childViewControllerForStatusBarStyle))
+            m2 = class_getInstanceMethod(UIViewController.self, #selector(getter: UIViewController._popup_childViewControllerForStatusBarStyle))
             method_exchangeImplementations(m1, m2)
 
-            m1 = class_getInstanceMethod(UIViewController.self, #selector(UIViewController.childViewControllerForStatusBarHidden))
-            m2 = class_getInstanceMethod(UIViewController.self, Selector("_popup_childViewControllerForStatusBarHidden"))
+            m1 = class_getInstanceMethod(UIViewController.self, #selector(getter: UIViewController.childViewControllerForStatusBarHidden))
+            m2 = class_getInstanceMethod(UIViewController.self, #selector(getter: UIViewController._popup_childViewControllerForStatusBarHidden))
             method_exchangeImplementations(m1, m2)
 
             let vCUSBBase64 = "X3ZpZXdDb250cm9sbGVyVW5kZXJsYXBzU3RhdHVzQmFy" // _viewControllerUnderlapsStatusBar
-            let data = NSData(base64EncodedString: vCUSBBase64, options: [])!
-            let selName = String(data: data, encoding: NSUTF8StringEncoding)!
+            let data = Data(base64Encoded: vCUSBBase64, options: [])!
+            let selName = String(data: data, encoding: String.Encoding.utf8)!
             m1 = class_getInstanceMethod(UIViewController.self, NSSelectorFromString(selName))
-            m2 = class_getInstanceMethod(UIViewController.self, Selector("_vCUSB"))
+            m2 = class_getInstanceMethod(UIViewController.self, #selector(getter: UIViewController._vCUSB))
             method_exchangeImplementations(m1, m2)
-        }
+//        }
     }
 
     func _popup_setNeedsStatusBarAppearanceUpdate() {
@@ -93,17 +93,17 @@ extension UIViewController {
         }
     }
 
-    func _popup_viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    func _popup_viewWillTransitionToSize(_ size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         if _popupController_nocreate != nil {
-            popupContentViewController.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+            popupContentViewController.viewWillTransition(to: size, with: coordinator)
         }
 
         _popup_viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
     }
 
-    func _popup_willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    func _popup_willTransitionToTraitCollection(_ newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         if _popupController_nocreate != nil {
-            popupContentViewController.willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
+            popupContentViewController.willTransition(to: newCollection, with: coordinator)
         }
 
         _popup_willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
@@ -112,7 +112,7 @@ extension UIViewController {
     var _popup_common_childViewControllerForStatusBarHidden: UIViewController? {
         guard let popupController = _popupController_nocreate else { return _popup_childViewControllerForStatusBarHidden }
 
-        if popupController.popupControllerTargetState.rawValue > PopupPresentationState.Closed.rawValue &&
+        if popupController.popupControllerTargetState.rawValue > PopupPresentationState.closed.rawValue &&
            popupController.popupBar.center.y < -10
         {
             return self.popupContentViewController
@@ -124,7 +124,7 @@ extension UIViewController {
     var _popup_common_childViewControllerForStatusBarStyle: UIViewController? {
         guard let popupController = _popupController_nocreate else { return _popup_childViewControllerForStatusBarStyle }
 
-        if popupController.popupControllerTargetState.rawValue > PopupPresentationState.Closed.rawValue &&
+        if popupController.popupControllerTargetState.rawValue > PopupPresentationState.closed.rawValue &&
            popupController.popupBar.center.y < -10
         {
             return popupContentViewController
@@ -142,21 +142,21 @@ extension UIViewController {
         return _popup_common_childViewControllerForStatusBarStyle
     }
 
-    func eIFCVC(controller: UIViewController, iAA absolute: Bool) -> UIEdgeInsets {
-        return UIEdgeInsetsZero
+    func eIFCVC(_ controller: UIViewController, iAA absolute: Bool) -> UIEdgeInsets {
+        return UIEdgeInsets.zero
     }
 
-    func _popup_common_eIFCVC(controller: UIViewController, iAA absolute: Bool) -> UIEdgeInsets {
+    func _popup_common_eIFCVC(_ controller: UIViewController, iAA absolute: Bool) -> UIEdgeInsets {
         var insets = eIFCVC(controller, iAA: absolute)
 
         if controller == popupContentViewController {
-            insets.top = controller.prefersStatusBarHidden() == false ? UIApplication.sharedApplication().statusBarFrame.size.height : 0
+            insets.top = controller.prefersStatusBarHidden == false ? UIApplication.shared.statusBarFrame.size.height : 0
             insets.bottom = 0.0
 
             return insets
         }
 
-        if _popupController.popupControllerState != .Hidden {
+        if _popupController.popupControllerState != .hidden {
             insets.bottom += _popupController_nocreate!.popupBar.frame.size.height
         }
 
@@ -165,8 +165,8 @@ extension UIViewController {
 
     var _vCUSB: Bool {
         if popupPresentationContainerViewController != nil {
-            let statusBarVC = childViewControllerForStatusBarHidden() ?? self
-            return statusBarVC.prefersStatusBarHidden() == false
+            let statusBarVC = childViewControllerForStatusBarHidden ?? self
+            return statusBarVC.prefersStatusBarHidden == false
         }
 
         return self._vCUSB
@@ -178,19 +178,19 @@ extension UIViewController {
         if bottomDockingViewForPopup_nocreate != nil {
             if bottomDockingViewForPopup == _bottomBarSupport  {
                 _bottomBarSupport.frame = defaultFrameForBottomDockingView
-                view.bringSubviewToFront(self._bottomBarSupport)
+                view.bringSubview(toFront: self._bottomBarSupport)
             }
             else {
-                _bottomBarSupport.hidden = true
+                _bottomBarSupport.isHidden = true
             }
     
-            if _popupController_nocreate != nil && _popupController_nocreate!.popupControllerState != .Hidden {
+            if _popupController_nocreate != nil && _popupController_nocreate!.popupControllerState != .hidden {
                 _popupController_nocreate!.setContentToState(_popupController_nocreate!.popupControllerState)
             }
         }
     } 
 
-    func presentPopupBarWithContentViewController(controller: PopupContentViewController, openPopup: Bool, animated: Bool, completion completionBlock: (() -> Void)?) {
+    func presentPopupBarWithContentViewController(_ controller: PopupContentViewController, openPopup: Bool, animated: Bool, completion completionBlock: (() -> Void)?) {
         popupContentViewController = controller
         popupContentViewController.popupPresentationContainerViewController = self
 
@@ -215,15 +215,15 @@ extension UIViewController {
         }
     }
 
-    func openPopupAnimated(animated: Bool, completion: (() -> Void)? = nil) {
+    func openPopupAnimated(_ animated: Bool, completion: (() -> Void)? = nil) {
         _popupController.openPopupAnimated(animated, completion: completion)
     }
 
-    func closePopupAnimated(animated: Bool, completion: (() -> Void)? = nil) {
+    func closePopupAnimated(_ animated: Bool, completion: (() -> Void)? = nil) {
         _popupController.closePopupAnimated(animated, completion: completion)
     }
 
-    func dismissPopupBarAnimated(animated: Bool, completion: (() -> Void)? = nil) {
+    func dismissPopupBarAnimated(_ animated: Bool, completion: (() -> Void)? = nil) {
         _popupController.dismissPopupBarAnimated(animated) {
             if let completion = completion {
                 completion()
@@ -283,7 +283,7 @@ extension UIViewController {
     var _bottomBarSupport: PopupBottomBarSupport {
         var rv = _bottomBarSupport_nocreate
         if rv == nil {
-            let frame = CGRectMake(0, view.bounds.size.height, view.bounds.size.width, 0)
+            let frame = CGRect(x: 0, y: view.bounds.size.height, width: view.bounds.size.width, height: 0)
             rv = PopupBottomBarSupport(frame: frame)
             objc_setAssociatedObject(self, &BottomBarSupportObjectHandle, rv, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             view.addSubview(rv!)
@@ -301,6 +301,6 @@ extension UIViewController {
     }
 
     var defaultFrameForBottomDockingView: CGRect {
-        return CGRectMake(0, view.bounds.size.height, view.bounds.size.width, 0);
+        return CGRect(x: 0, y: view.bounds.size.height, width: view.bounds.size.width, height: 0);
     }
 }

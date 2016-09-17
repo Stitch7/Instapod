@@ -12,19 +12,19 @@ struct Podcast {
 
     // MARK: - Properties
 
-    var id: NSURL?
+    var id: URL?
     let uuid: String
-    var nextPage: NSURL?
+    var nextPage: URL?
     
-    var url: NSURL
+    var url: URL
     var author: String?
     var category: String?
     var desc: String?
-    var explicit: NSNumber?
+    var explicit: Bool?
     var generator: String?
     var language: String?
-    var lastBuildDate: NSDate?
-    var pubDate: NSDate?
+    var lastBuildDate: Date?
+    var pubDate: Date?
     var sortIndex: NSNumber?
     var subtitle: String?
     var summary: String?
@@ -34,7 +34,7 @@ struct Podcast {
 
     // MARK: - Initializers
 
-    init(uuid: String, url: NSURL) {
+    init(uuid: String, url: URL) {
         self.uuid = uuid
         self.url = url
     }
@@ -55,7 +55,7 @@ struct Podcast {
 
     mutating func updateEpisode(with newEpisode: Episode) {
         if let episodes = self.episodes {
-            for (key, episode) in episodes.enumerate() {
+            for (key, episode) in episodes.enumerated() {
                 if episode.title == newEpisode.title && episode.desc == newEpisode.desc {
                     self.episodes![key] = newEpisode
                 }
@@ -68,7 +68,7 @@ struct Podcast {
         podcast.author = author
         podcast.category = category
         podcast.desc = desc
-        podcast.explicit = explicit
+        podcast.explicit = explicit as NSNumber?
         podcast.generator = generator
         podcast.language = language
         podcast.lastBuildDate = lastBuildDate
@@ -92,18 +92,18 @@ struct Podcast {
 
 extension Podcast {
     init(managedObject: PodcastManagedObject) {
-        id = managedObject.objectID.URIRepresentation()
-        uuid = NSUUID().UUIDString
+        id = managedObject.objectID.uriRepresentation()
+        uuid = UUID().uuidString
 
-        url = NSURL(string: managedObject.url!)!
+        url = URL(string: managedObject.url!)!
         author = managedObject.author
         category = managedObject.category
         desc = managedObject.desc
-        explicit = managedObject.explicit
+        explicit = managedObject.explicit as Bool?
         generator = managedObject.generator
         language = managedObject.language
-        lastBuildDate = managedObject.lastBuildDate
-        pubDate = managedObject.pubDate
+        lastBuildDate = managedObject.lastBuildDate as Date?
+        pubDate = managedObject.pubDate as Date?
         sortIndex = managedObject.sortIndex
         subtitle = managedObject.subtitle
         summary = managedObject.summary

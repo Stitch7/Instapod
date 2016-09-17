@@ -13,21 +13,21 @@ class ImageOperation: AsynchronousOperation {
     // MARK: - Properties
 
     var image: Image
-    var task: NSURLSessionTask!
+    var task: URLSessionTask!
     var podcast: Podcast
     var episode: Episode?
     var delegate: ImageOperationDelegate?
 
     // MARK: - Initializer
 
-    init(image: Image, session: NSURLSession, podcast: Podcast, episode: Episode?) {
+    init(image: Image, session: URLSession, podcast: Podcast, episode: Episode?) {
         self.image = image
         self.podcast = podcast
         self.episode = episode
 
         super.init()
 
-        task = session.dataTaskWithURL(image.url) { [weak self] (data, response, error) in
+        task = session.dataTask(with: image.url, completionHandler: { [weak self] (data, response, error) in
             guard let strongSelf = self else { return }
 
             defer {
@@ -39,7 +39,7 @@ class ImageOperation: AsynchronousOperation {
                 return
             }
             guard let imageData = data else {
-                let domain = NSBundle.mainBundle().bundleIdentifier!
+                let domain = Bundle.main.bundleIdentifier!
                 let error = NSError(domain: domain,
                                     code: 23,
                                     userInfo: [NSLocalizedDescriptionKey: "No image data"])
@@ -47,7 +47,7 @@ class ImageOperation: AsynchronousOperation {
                 return
             }
             guard let tempImage = UIImage(data: imageData) else {
-                let domain = NSBundle.mainBundle().bundleIdentifier!
+                let domain = Bundle.main.bundleIdentifier!
                 let error = NSError(domain: domain,
                                     code: 42,
                                     userInfo: [NSLocalizedDescriptionKey: "Could not generate image"])
@@ -78,7 +78,7 @@ class ImageOperation: AsynchronousOperation {
                                                 didFinishWithImage: strongSelf.image,
                                                 ofPodcast: strongSelf.podcast,
                                                 episode: strongSelf.episode)
-        }
+        }) 
     }
 
     // MARK: - NSOperation Entry Point

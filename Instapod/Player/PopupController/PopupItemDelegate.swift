@@ -9,5 +9,5 @@
 import Foundation
 
 protocol PopupItemDelegate {
-    func popupItem(popupItem: PopupItem, didChangeValueForKey key: String)
+    func popupItem(_ popupItem: PopupItem, didChangeValueForKey key: String)
 }

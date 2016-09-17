@@ -20,15 +20,14 @@ enum PodcastListEditingMode: Int, EnumIteratable {
         }
     }
 
-    mutating func nextValue() -> Int {
+    mutating func nextValue() {
         let sorted = PodcastListEditingMode.values()
-        let currentIndex = sorted.indexOf(self)!
+        let currentIndex = sorted.index(of: self)!
         var nextIndex = currentIndex + 1
         if sorted.count <= nextIndex {
             nextIndex = 0
         }
 
         self = sorted[nextIndex]
-        return rawValue
     }
 }

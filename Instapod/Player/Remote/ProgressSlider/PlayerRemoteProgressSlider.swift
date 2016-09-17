@@ -15,36 +15,36 @@ class PlayerRemoteProgressSlider: UISlider {
     // MARK: - Properties
 
     var isMoving = false
-    var scrubbingSpeed = PlayerRemoteProgressSliderScrubbingSpeed.High
+    var scrubbingSpeed = PlayerRemoteProgressSliderScrubbingSpeed.high
     var realPositionValue: Float = 0.0
     var beganTrackingLocation = CGPoint(x: 0.0, y: 0.0)
 
     // MARK: - Touch tracking
 
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
-        let beginTracking = super.beginTrackingWithTouch(touch, withEvent: event)
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let beginTracking = super.beginTracking(touch, with: event)
 
         if beginTracking  {
             // Set the beginning tracking location to the centre of the current
             // position of the thumb. This ensures that the thumb is correctly re-positioned
             // when the touch position moves back to the track after tracking in one
             // of the slower tracking zones.
-            let thumbRect = thumbRectForBounds(bounds, trackRect: trackRectForBounds(bounds), value: value)
+            let thumbRect = self.thumbRect(forBounds: bounds, trackRect: trackRect(forBounds: bounds), value: value)
 
             let x = thumbRect.origin.x + thumbRect.size.width / 2.0
             let y = thumbRect.origin.y + thumbRect.size.height / 2.0
-            beganTrackingLocation = CGPointMake(x, y)
+            beganTrackingLocation = CGPoint(x: x, y: y)
             realPositionValue = value
         }
 
         return beginTracking
     }
 
-    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
-        guard tracking else { return false }
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        guard isTracking else { return false }
 
-        let previousLocation = touch.previousLocationInView(self)
-        let currentLocation  = touch.locationInView(self)
+        let previousLocation = touch.previousLocation(in: self)
+        let currentLocation  = touch.location(in: self)
         let trackingOffset = currentLocation.x - previousLocation.x
 
         // Find the scrubbing speed that curresponds to the touch's vertical offset
@@ -52,16 +52,16 @@ class PlayerRemoteProgressSlider: UISlider {
 
         if let lowerScrubbingSpeed = scrubbingSpeed.lowerScrubbingSpeed(forOffset: verticalOffset) {
             scrubbingSpeed = lowerScrubbingSpeed
-            if scrubbingSpeed == .High {
+            if scrubbingSpeed == .high {
                 HUD.hide(animated: true)
             }
             else {
                 HUD.allowsInteraction = true
-                HUD.show(.Label(scrubbingSpeed.stringValue))
+                HUD.show(.label(scrubbingSpeed.stringValue))
             }
         }
 
-        let trackRect = trackRectForBounds(bounds)
+        let trackRect = self.trackRect(forBounds: bounds)
         realPositionValue = realPositionValue + (maximumValue - minimumValue) * Float(trackingOffset / trackRect.size.width)
 
         let valueAdjustment: Float = scrubbingSpeed.rawValue * (maximumValue - minimumValue) * Float(trackingOffset / trackRect.size.width)
@@ -72,25 +72,25 @@ class PlayerRemoteProgressSlider: UISlider {
         }
         value += valueAdjustment + thumbAdjustment
 
-        if continuous {
-            sendActionsForControlEvents(.ValueChanged)
+        if isContinuous {
+            sendActions(for: .valueChanged)
         }
 
         return true
     }
 
-    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
-        guard tracking else { return }
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        guard isTracking else { return }
 
-        scrubbingSpeed = .High
-        sendActionsForControlEvents(.TouchUpInside)
+        scrubbingSpeed = .high
+        sendActions(for: .touchUpInside)
         HUD.hide(animated: true)
     }
 
     // MARK: - Styling
 
-    override func trackRectForBounds(bounds: CGRect) -> CGRect {
-        var trackRect = super.trackRectForBounds(bounds)
+    override func trackRect(forBounds bounds: CGRect) -> CGRect {
+        var trackRect = super.trackRect(forBounds: bounds)
         trackRect.size.width = bounds.width
         trackRect.origin.x = 0
         trackRect.origin.y = 0
@@ -99,8 +99,8 @@ class PlayerRemoteProgressSlider: UISlider {
         return trackRect
     }
 
-    override func thumbRectForBounds(bounds: CGRect, trackRect rect: CGRect, value: Float) -> CGRect {
-        var rect = super.thumbRectForBounds(bounds, trackRect: rect, value: value)
+    override func thumbRect(forBounds bounds: CGRect, trackRect rect: CGRect, value: Float) -> CGRect {
+        var rect = super.thumbRect(forBounds: bounds, trackRect: rect, value: value)
 
         let x = rect.origin.x - 4
         let y = rect.origin.y + 6

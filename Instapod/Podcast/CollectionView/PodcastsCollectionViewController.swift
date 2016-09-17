@@ -33,47 +33,47 @@ class PodcastsCollectionViewController: UICollectionViewController, UICollection
         collectionView?.backgroundColor = ColorPalette.Background
         collectionView?.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
         let nib = UINib(nibName: "PodcastCollectionViewCell", bundle: nil)
-        collectionView?.registerNib(nib, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView?.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
     }
 
     func configureRefreshControl() {
         let refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: refreshControlTitle)
-        refreshControl.addTarget(self, action: #selector(handleRefresh), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         self.refreshControl = refreshControl
         collectionView?.addSubview(refreshControl)
-        collectionView?.sendSubviewToBack(refreshControl)
+        collectionView?.sendSubview(toBack: refreshControl)
     }
 
     // MARK: - Actions
 
-    func handleRefresh(refreshControl: UIRefreshControl) {
+    func handleRefresh(_ refreshControl: UIRefreshControl) {
         refreshControl.attributedTitle = NSAttributedString(string: "Searching for new episodes …") // TODO: i18n
         delegate?.updateFeeds()
     }
 
     // MARK: - UICollectionViewDelegate
 
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("ShowFeed", sender: indexPath)
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "ShowFeed", sender: indexPath)
     }
 
     // MARK: - UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return podcasts.count
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! PodcastCollectionViewCell
-        let podcast = podcasts[indexPath.row]
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PodcastCollectionViewCell
+        let podcast = podcasts[(indexPath as NSIndexPath).row]
 
         cell.layer.shouldRasterize = true
-        cell.layer.rasterizationScale = UIScreen.mainScreen().scale
+        cell.layer.rasterizationScale = UIScreen.main.scale
         cell.imageData = podcast.image?.thumbnail
 
         return cell
@@ -81,27 +81,27 @@ class PodcastsCollectionViewController: UICollectionViewController, UICollection
 
     // MARK: - UICollectionViewDelegateFlowLayout
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 100, height: 100)
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     }
 
     // MARK: - FeedUpdaterDelegate
 
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: Episode, ofPodcast podcast: Podcast) {
+    func feedUpdater(_ feedupdater: FeedUpdater, didFinishWithEpisode foundEpisode: Episode, ofPodcast podcast: Podcast) {
         if let
             refreshControl = refreshControl,
-            feedTitle = podcast.title,
-            episodeTitle = foundEpisode.title
+            let feedTitle = podcast.title,
+            let episodeTitle = foundEpisode.title
         {
             refreshControl.attributedTitle = NSAttributedString(string: "Found \(feedTitle) - \(episodeTitle)") // TODO: i18n
         }
     }
 
-    func feedUpdater(feedupdater: FeedUpdater, didFinishWithNumberOfEpisodes numberOfEpisodes: Int) {
+    func feedUpdater(_ feedupdater: FeedUpdater, didFinishWithNumberOfEpisodes numberOfEpisodes: Int) {
         collectionView?.reloadData()
         collectionView?.layoutIfNeeded()
 
@@ -113,18 +113,18 @@ class PodcastsCollectionViewController: UICollectionViewController, UICollection
 
     // MARK: - Segues
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard
-            let segueIdentifier = segue.identifier where segueIdentifier == "ShowFeed",
-            let indexPath = sender as? NSIndexPath
+            let segueIdentifier = segue.identifier , segueIdentifier == "ShowFeed",
+            let indexPath = sender as? IndexPath
         else { return }
 
-        let podcast = podcasts[indexPath.row]
-        let navigationController = segue.destinationViewController as! UINavigationController
+        let podcast = podcasts[(indexPath as NSIndexPath).row]
+        let navigationController = segue.destination as! UINavigationController
         let episodesTVC = navigationController.topViewController as! EpisodesViewController
         episodesTVC.podcast = podcast
 
-        episodesTVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        episodesTVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         episodesTVC.navigationItem.leftItemsSupplementBackButton = true
     }
 }

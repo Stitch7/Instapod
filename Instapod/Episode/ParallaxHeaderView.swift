@@ -35,18 +35,18 @@ class ParallaxHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        kDefaultHeaderFrame = CGRectMake(0, 0, frame.size.width, frame.size.height)
+        kDefaultHeaderFrame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
     }
 
     convenience init(image: UIImage, forSize headerSize: CGSize) {
-        self.init(frame: CGRectMake(0, 0, headerSize.width, headerSize.height))
+        self.init(frame: CGRect(x: 0, y: 0, width: headerSize.width, height: headerSize.height))
 
         headerImage = image
         initialSetupForDefaultHeader()
     }
 
     convenience init(subView: UIView) {
-        self.init(frame: CGRectMake(0, 0, subView.frame.size.width, subView.frame.size.height))
+        self.init(frame: CGRect(x: 0, y: 0, width: subView.frame.size.width, height: subView.frame.size.height))
 
         initialSetupForCustomSubView(subView)
     }
@@ -66,7 +66,7 @@ class ParallaxHeaderView: UIView {
         }
     }
 
-    func layoutHeaderViewForScrollViewOffset(offset: CGPoint) {
+    func layoutHeaderViewForScrollViewOffset(_ offset: CGPoint) {
         if offset.y > 0 {
             var frame = imageScrollView.frame
             frame.origin.y = max(offset.y * kParallaxDeltaFactor, 0)
@@ -92,7 +92,7 @@ class ParallaxHeaderView: UIView {
 
     func refreshBlurViewForNewImage() {
         let radius: CGFloat = 5
-        let tintColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
+        let tintColor = UIColor.white.withAlphaComponent(0.2)
 
         if let bluredImage = headerImage.applyBlurWithRadius(radius,
                                                              tintColor: tintColor,
@@ -105,18 +105,18 @@ class ParallaxHeaderView: UIView {
 
     // MARK: - Private
 
-    private func initialSetupForDefaultHeader() {
+    fileprivate func initialSetupForDefaultHeader() {
         imageScrollView = UIScrollView(frame: bounds)
         imageView = UIImageView(frame: imageScrollView.bounds)
         imageView.autoresizingMask = [
-            .FlexibleLeftMargin,
-            .FlexibleRightMargin,
-            .FlexibleTopMargin,
-            .FlexibleBottomMargin,
-            .FlexibleHeight,
-            .FlexibleWidth
+            .flexibleLeftMargin,
+            .flexibleRightMargin,
+            .flexibleTopMargin,
+            .flexibleBottomMargin,
+            .flexibleHeight,
+            .flexibleWidth
         ]
-        imageView.contentMode = .ScaleAspectFill
+        imageView.contentMode = .scaleAspectFill
         imageView.image = headerImage
         imageScrollView.addSubview(imageView)
 
@@ -132,32 +132,32 @@ class ParallaxHeaderView: UIView {
         imageScrollView.addSubview(bluredImageView)
 
         headerTitleLabel = UILabel(frame: labelRect)
-        headerTitleLabel.textAlignment = .Center
+        headerTitleLabel.textAlignment = .center
         headerTitleLabel.numberOfLines = 0
-        headerTitleLabel.lineBreakMode = .ByWordWrapping
+        headerTitleLabel.lineBreakMode = .byWordWrapping
         headerTitleLabel.autoresizingMask = imageView.autoresizingMask
         headerTitleLabel.alpha = 0.0
-        headerTitleLabel.textColor = headerImage.averageColor().isBright() ? UIColor.blackColor() : UIColor.whiteColor()
-        headerTitleLabel.font = UIFont.systemFontOfSize(23.0)
+        headerTitleLabel.textColor = headerImage.averageColor().isBright() ? UIColor.black : UIColor.white
+        headerTitleLabel.font = UIFont.systemFont(ofSize: 23.0)
         imageScrollView.addSubview(headerTitleLabel)
 
-        headerTitleLabel.hidden = true
+        headerTitleLabel.isHidden = true
 
         addSubview(imageScrollView)
         refreshBlurViewForNewImage()
     }
 
-    private func initialSetupForCustomSubView(subView: UIView) {
+    fileprivate func initialSetupForCustomSubView(_ subView: UIView) {
         let scrollView = UIScrollView(frame: bounds)
         imageScrollView = scrollView
         self.subView = subView
         subView.autoresizingMask = [
-            .FlexibleLeftMargin,
-            .FlexibleRightMargin,
-            .FlexibleTopMargin,
-            .FlexibleBottomMargin,
-            .FlexibleHeight,
-            .FlexibleWidth
+            .flexibleLeftMargin,
+            .flexibleRightMargin,
+            .flexibleTopMargin,
+            .flexibleBottomMargin,
+            .flexibleHeight,
+            .flexibleWidth
         ]
         imageScrollView.addSubview(subView)
 

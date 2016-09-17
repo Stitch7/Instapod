@@ -7,6 +7,6 @@
 //
 
 protocol FeedImporterDelegate: class {
-    func feedImporter(feedImporter: FeedImporter, didFinishWithFeed feed: Podcast)
-    func feedImporterDidFinishWithAllFeeds(feedImporter: FeedImporter)
+    func feedImporter(_ feedImporter: FeedImporter, didFinishWithFeed feed: Podcast)
+    func feedImporterDidFinishWithAllFeeds(_ feedImporter: FeedImporter)
 }

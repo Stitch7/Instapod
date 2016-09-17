@@ -8,9 +8,9 @@
 
 import AEXML
 
-extension AEXMLElement {
-    var string: String? {
-        if name == AEXMLElement.errorElementName { return nil }
-        return stringValue
-    }
-}
+//extension AEXMLElement {
+//    var string: String? {
+//        if name == AEXMLElement.errorElementName { return nil }
+//        return stringValue
+//    }
+//}

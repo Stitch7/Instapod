@@ -17,14 +17,14 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
     var podcast: Podcast? {
         didSet {
             if let episodes = podcast?.episodes {
-                self.episodes = episodes.sort {
-                    $0.pubDate?.compare($1.pubDate!) == NSComparisonResult.OrderedDescending
+                self.episodes = episodes.sorted {
+                    $0.pubDate?.compare($1.pubDate! as Date) == ComparisonResult.orderedDescending
                 }
             }
             
             if let imageData = podcast?.image?.data {
                 if let podcastColor = podcast?.image?.color {
-                    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     appDelegate.window?.tintColor = podcastColor
                     view.tintColor = podcastColor
                     tableView.tintColor = podcastColor
@@ -32,9 +32,9 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
 //                    navigationController?.navigationBar.tintColor = podcastColor
                 }
 
-                if let headerImage = UIImage(data: imageData) {
+                if let headerImage = UIImage(data: imageData as Data) {
                     let length = view.frame.size.width
-                    let headerView = ParallaxHeaderView(image: headerImage, forSize: CGSizeMake(length, length))
+                    let headerView = ParallaxHeaderView(image: headerImage, forSize: CGSize(width: length, height: length))
                     headerView.headerTitleLabel.text = podcast?.title
                     tableView.tableHeaderView = headerView
                 }
@@ -44,7 +44,7 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
     
     var episodes: [Episode]?
 
-    let dateFormatter = NSDateFormatter()
+    let dateFormatter = DateFormatter()
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -58,29 +58,29 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
 
         configureTableView()
 
-        dateFormatter.dateStyle = .ShortStyle
-        dateFormatter.timeStyle = .ShortStyle
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
         dateFormatter.doesRelativeDateFormatting = true
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Clears selection on swipe back
         if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+            tableView.deselectRow(at: indexPath, animated: false)
         }
 
         if let
             podcastColor = podcast?.image?.color,
-            navigationController = self.navigationController {
+            let navigationController = self.navigationController {
 //                navigationController.view.tintColor = podcastColor
 //                navigationController.navigationBar.tintColor = podcastColor
                 navigationController.navigationBar.barTintColor = podcastColor
         }
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         if let parallaxHeaderView = tableView.tableHeaderView as? ParallaxHeaderView {
@@ -88,17 +88,17 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
 
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return false
     }
 
-    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-        return .Slide
+    override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
+        return .slide
     }
 
     // MARK: - UISCrollViewDelegate
 
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard scrollView == self.tableView else { return }
         guard let parallaxHeaderView = tableView.tableHeaderView as? ParallaxHeaderView else { return }
 
@@ -110,33 +110,33 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.registerNib(UINib(nibName: "EpisodeTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
+        tableView.register(UINib(nibName: "EpisodeTableViewCell", bundle: nil), forCellReuseIdentifier: "Cell")
         tableView.backgroundColor = ColorPalette.TableView.Background
         tableView.rowHeight = UITableViewAutomaticDimension
     }
 
     // MARK: - Table view data source
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let episodes = self.episodes { return episodes.count }
         return 0
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! EpisodeTableViewCell
-        guard let episode = episodes?[indexPath.row] else { return cell }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! EpisodeTableViewCell
+        guard let episode = episodes?[(indexPath as NSIndexPath).row] else { return cell }
 
         cell.hearedView.color = tableView.tintColor
 
@@ -155,7 +155,7 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
             let length = 140
             var summary = episodeSummary
             if summary.characters.count > length {
-                summary = summary.substringToIndex(summary.startIndex.advancedBy(length)) + "…"
+                summary = summary.substring(to: summary.characters.index(summary.startIndex, offsetBy: length)) + "…"
             }
 
             let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
@@ -167,43 +167,43 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         }
 
         if let pubDate = episode.pubDate {
-            cell.pubDateLabel?.text = dateFormatter.stringFromDate(pubDate)
+            cell.pubDateLabel?.text = dateFormatter.string(from: pubDate as Date)
         }
 
         cell.durationLabel?.text = episode.duration
 
-        cell.playButton.tag = indexPath.row
+        cell.playButton.tag = (indexPath as NSIndexPath).row
         cell.playButton.tintColor = tableView.tintColor
-        cell.playButton.addTarget(self, action: #selector(playListButtonPressed(_:)), forControlEvents: .TouchUpInside)
+        cell.playButton.addTarget(self, action: #selector(playListButtonPressed(_:)), for: .touchUpInside)
 
         return cell
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("ShowShownotes", sender: indexPath)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "ShowShownotes", sender: indexPath)
     }
 
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard editingStyle == .Delete else { return }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
 
-        let deleted = self.episodes!.removeAtIndex(indexPath.row)
-        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        let deleted = self.episodes!.remove(at: (indexPath as NSIndexPath).row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
 
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async(execute: {
             let context = self.coreDataContext
             guard let
                 id = deleted.id,
-                coordinator = context.persistentStoreCoordinator,
-                objectID = coordinator.managedObjectIDForURIRepresentation(id)
+                let coordinator = context.persistentStoreCoordinator,
+                let objectID = coordinator.managedObjectID(forURIRepresentation: id as URL)
             else { return }
 
             do {
-                let objectToDelete = try context.existingObjectWithID(objectID)
-                context.deleteObject(objectToDelete)
+                let objectToDelete = try context.existingObject(with: objectID)
+                context.delete(objectToDelete)
                 try context.save()
             }
             catch {
@@ -212,11 +212,11 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
         })
     }
 
-    func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "Delete" // TODO: i18n
     }
 
-    func playListButtonPressed(sender: UIButton) {
+    func playListButtonPressed(_ sender: UIButton) {
         var targetViewController: UIViewController = self
         if let navigationController = self.navigationController {
             targetViewController = navigationController
@@ -233,29 +233,29 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
 
     // MARK: - Segues
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let segueIdentifier = segue.identifier else { return }
 
         switch segueIdentifier {
         case "ShowShownotes":
-            guard let indexPath = sender as? NSIndexPath else { return }
+            guard let indexPath = sender as? IndexPath else { return }
 
-            let shownotesViewController = segue.destinationViewController as! ShownotesViewController
-            shownotesViewController.episode = episodes![indexPath.row]
+            let shownotesViewController = segue.destination as! ShownotesViewController
+            shownotesViewController.episode = episodes![(indexPath as NSIndexPath).row]
         case "ShowPlayer":
-            guard let indexPath = sender as? NSIndexPath else { return }
+            guard let indexPath = sender as? IndexPath else { return }
 
-            let playerViewController = segue.destinationViewController as! PlayerViewController
-            playerViewController.episode = episodes![indexPath.row]
+            let playerViewController = segue.destination as! PlayerViewController
+            playerViewController.episode = episodes![(indexPath as NSIndexPath).row]
         case "ShowDefaultPlayer":
             guard let
                 indexPath = tableView.indexPathForSelectedRow,
-                episode = episodes?[indexPath.row],
-                url = episode.audioFile?.url,
-                destination = segue.destinationViewController as? AVPlayerViewController
+                let episode = episodes?[(indexPath as NSIndexPath).row],
+                let url = episode.audioFile?.url,
+                let destination = segue.destination as? AVPlayerViewController
             else { return }
 
-            let player = AVPlayer(URL: url)
+            let player = AVPlayer(url: url as URL)
             destination.player = player
             player.play()
 

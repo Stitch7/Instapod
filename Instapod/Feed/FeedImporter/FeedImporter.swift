@@ -16,15 +16,15 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     var delegates = MulticastDelegate<FeedImporterDelegate>()
     var podcasts = [String: Podcast]()
 
-    private var operationsCount = 0
-    private var parserErrors = [String: ErrorType]()
+    fileprivate var operationsCount = 0
+    fileprivate var parserErrors = [String: Error]()
 
-    private var _queue: NSOperationQueue?
-    private var queue: NSOperationQueue {
+    fileprivate var _queue: OperationQueue?
+    fileprivate var queue: OperationQueue {
         if let queue = _queue { return queue }
 
-        let queue = NSOperationQueue()
-        queue.qualityOfService = .UserInitiated
+        let queue = OperationQueue()
+        queue.qualityOfService = .userInitiated
         queue.maxConcurrentOperationCount = 5
         _queue = queue
         return queue
@@ -37,21 +37,21 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     }
 
     func start() {
-        _ = datasource.urls?.map { createFeedOperation(uuid: NSUUID().UUIDString, url: $0) }
+        _ = datasource.urls?.map { createFeedOperation(uuid: UUID().uuidString, url: $0 as URL) }
     }
 
-    func createFeedOperation(uuid uuid: String, url: NSURL) {
+    func createFeedOperation(uuid: String, url: URL) {
         let operation = FeedOperation(uuid: uuid, url: url, parser: FeedParserAEXML())
         operation.delegate = self
         operationsCount += 1
         queue.addOperation(operation)
     }
 
-    func createImageOperation(image image: Image?, podcast: Podcast, episode: Episode? = nil) {
+    func createImageOperation(image: Image?, podcast: Podcast, episode: Episode? = nil) {
         guard let img = image else { return }
 
         let imageOperation = ImageOperation(image: img,
-                                            session: NSURLSession.sharedSession(),
+                                            session: URLSession.shared,
                                             podcast: podcast,
                                             episode: episode)
         imageOperation.delegate = self
@@ -62,7 +62,7 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
     
     // MARK: - FeedOperationDelegate
 
-    func feedOperation(feedOperation: FeedOperation, didFinishWithPodcast podcast: Podcast) {
+    func feedOperation(_ feedOperation: FeedOperation, didFinishWithPodcast podcast: Podcast) {
         if podcasts[podcast.uuid] != nil {
             if let newEpisodes = podcast.episodes {
                 for episode in newEpisodes {
@@ -76,11 +76,11 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
 
         if let nextPage = podcast.nextPage {
             operationsCount -= 1
-            createFeedOperation(uuid: podcast.uuid, url: nextPage)
+            createFeedOperation(uuid: podcast.uuid, url: nextPage as URL)
             return
         }
 
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             print("📦✅: \(podcast.url)")
             self.createImageOperation(image: podcast.image,
                                       podcast: self.podcasts[podcast.uuid]!)
@@ -100,7 +100,7 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
 
     // MARK: - ImageOperationDelegate
 
-    func feedOperation(feedOperation: FeedOperation, didFinishWithError error: ErrorType?) {
+    func feedOperation(_ feedOperation: FeedOperation, didFinishWithError error: Error?) {
         if let err = error {
             print("💣💣💣 Feed Parser Error:")
             print(feedOperation.url)
@@ -111,8 +111,8 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
         finishEventually()
     }
 
-    func imageOperation(imageOperation: ImageOperation, didFinishWithImage image: Image, ofPodcast podcast: Podcast, episode: Episode?) {
-        dispatch_async(dispatch_get_main_queue()) {
+    func imageOperation(_ imageOperation: ImageOperation, didFinishWithImage image: Image, ofPodcast podcast: Podcast, episode: Episode?) {
+        DispatchQueue.main.async {
             print("🖼✅: \(image.url.absoluteString)")
             guard self.podcasts[podcast.uuid] != nil else { return }
 
@@ -127,14 +127,14 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
                 self.delegates.invoke {
                     $0.feedImporter(self, didFinishWithFeed: self.podcasts[podcast.uuid]!)
                 }
-                self.podcasts.removeValueForKey(podcast.uuid)
+                self.podcasts.removeValue(forKey: podcast.uuid)
             }
 
             self.finishEventually()
         }
     }
 
-    func imageOperation(imageOperation: ImageOperation, didFinishWithError error: ErrorType?) {
+    func imageOperation(_ imageOperation: ImageOperation, didFinishWithError error: Error?) {
         if let err = error {
             let key = imageOperation.image.url.absoluteString
             parserErrors[key] = err
@@ -143,7 +143,7 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
         finishEventually()
     }
 
-    private func finishEventually() {
+    fileprivate func finishEventually() {
         operationsCount -= 1
         if 0 >= operationsCount {
             delegates.invoke {
@@ -153,7 +153,7 @@ class FeedImporter: FeedOperationDelegate, ImageOperationDelegate {
         }
     }
 
-    private func printSummary() {
+    fileprivate func printSummary() {
         print("👌👌👌👌👌 ALL FEEDS PARSED 👌👌👌👌👌")
         if parserErrors.count > 0 {
             print("💣💣💣 AEXMLDocument Error:")

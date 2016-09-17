@@ -19,7 +19,7 @@ extension EpisodeManagedObject {
     @NSManaged var desc: String?
     @NSManaged var duration: String?
     @NSManaged var link: String?
-    @NSManaged var pubDate: NSDate?
+    @NSManaged var pubDate: Date?
     @NSManaged var subtitle: String?
     @NSManaged var summary: String?
     @NSManaged var title: String?

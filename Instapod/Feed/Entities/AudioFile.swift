@@ -12,7 +12,7 @@ struct AudioFile {
 
     var length: String?
     var type: String?
-    var url: NSURL?
+    var url: URL?
 
     func createAudioFile(fromContext context: NSManagedObjectContext) -> AudioFileManagedObject {
         let audioFile = context.createEntityWithName("AudioFile") as! AudioFileManagedObject
@@ -28,6 +28,6 @@ extension AudioFile {
     init(managedObject: AudioFileManagedObject) {
         length = managedObject.length
         type = managedObject.type
-        url = NSURL(string: managedObject.url!)
+        url = URL(string: managedObject.url!)
     }
 }

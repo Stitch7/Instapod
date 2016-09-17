@@ -14,8 +14,8 @@ import CoreData
 
 extension AudioFileManagedObject {
 
-    @NSManaged var data: NSData?
-    @NSManaged var date: NSDate?
+    @NSManaged var data: Data?
+    @NSManaged var date: Date?
     @NSManaged var guid: String?
     @NSManaged var length: String?
     @NSManaged var type: String?

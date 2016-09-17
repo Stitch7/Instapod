@@ -15,7 +15,7 @@ class ShownotesViewController: UIViewController, UIWebViewDelegate {
 
     var episode: Episode?
 
-    private var targetViewController: UIViewController {
+    fileprivate var targetViewController: UIViewController {
         var targetViewController: UIViewController = self
         if let navigationController = self.navigationController {
             targetViewController = navigationController
@@ -31,7 +31,7 @@ class ShownotesViewController: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var contentView: ShownotesView!
 
-    @IBAction func playButtonPressed(sender: UIBarButtonItem) {
+    @IBAction func playButtonPressed(_ sender: UIBarButtonItem) {
         let playerViewController = targetViewController.popupContentViewController as! PlayerViewController
         playerViewController.episode = episode
         
@@ -50,35 +50,35 @@ class ShownotesViewController: UIViewController, UIWebViewDelegate {
         contentView.episode = episode
         contentView.webView.delegate = self
 
-        let playButton = UIBarButtonItem(barButtonSystemItem: .Play, target: self, action: #selector(playButtonPressed(_:)))
+        let playButton = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(playButtonPressed(_:)))
         let items = [playButton]
         contentView.toolbar.items = items
 
         switch targetViewController.popupPresentationState {
-        case .Closed:
+        case .closed:
             contentView.toolbarBottomCstr.constant = 40
-        case .Hidden:
+        case .hidden:
             contentView.toolbarBottomCstr.constant = 0
         default: break
         }
 
     }
 
-    func loadSafari(url url: NSURL) {
-        let safariViewController = SFSafariViewController(URL: url, entersReaderIfAvailable: true)
-        presentViewController(safariViewController, animated: true, completion: nil)
+    func loadSafari(url: URL) {
+        let safariViewController = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+        present(safariViewController, animated: true, completion: nil)
     }
 
     // MARK: - UIWebViewDelegate
 
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         print("Webview fail with error \(error)")
     }
 
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        guard let url = request.URL else { return false }
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        guard let url = request.url else { return false }
 
-        if navigationType == .LinkClicked {
+        if navigationType == .linkClicked {
             loadSafari(url: url)
             return false
         }

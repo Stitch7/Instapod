@@ -2,8 +2,8 @@ platform :ios, '9.0'
 use_frameworks!
 
 target 'Instapod' do
-    pod 'AEXML', '~> 2.1.0'
-    pod 'PKHUD'
+    pod 'AEXML', '~> 4.0'
+    pod 'PKHUD', :git => 'https://github.com/toyship/PKHUD.git'
 
     target 'InstapodTests' do
         inherit! :search_paths

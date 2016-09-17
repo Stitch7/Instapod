@@ -9,23 +9,23 @@
 import UIKit
 
 enum PlayerSleepTimerDuration: Int {
-    case Off = 0
-    case FiveMinutes = 5
-    case TenMinutes = 10
-    case FifteenMinutes = 15
-    case ThirtyMinutes = 30
-    case OneHour = 60
-    case TwoHours = 120
+    case off = 0
+    case fiveMinutes = 5
+    case tenMinutes = 10
+    case fifteenMinutes = 15
+    case thirtyMinutes = 30
+    case oneHour = 60
+    case twoHours = 120
 
     var sorted: [PlayerSleepTimerDuration] {
         return [
-            .Off,
-            .FiveMinutes,
-            .TenMinutes,
-            .FifteenMinutes,
-            .ThirtyMinutes,
-            .OneHour,
-            .TwoHours
+            .off,
+            .fiveMinutes,
+            .tenMinutes,
+            .fifteenMinutes,
+            .thirtyMinutes,
+            .oneHour,
+            .twoHours
         ]
     }
 
@@ -34,18 +34,21 @@ enum PlayerSleepTimerDuration: Int {
     }
 
     var image: UIImage {
-        return UIImage(named: "playerSleepTimerDuration\(self)")!
+        let selfChars = String(describing: self).characters
+        let first = String(selfChars.prefix(1)).capitalized
+        let other = String(selfChars.dropFirst())
+        let suffix = first + other
+        return UIImage(named: "playerSleepTimerDuration\(suffix)")!
     }
 
-    mutating func nextValue() -> Int {
+    mutating func nextValue() {
         let sorted = self.sorted
-        let currentIndex = sorted.indexOf(self)!
+        let currentIndex = sorted.index(of: self)!
         var nextIndex = currentIndex + 1
         if sorted.count <= nextIndex {
             nextIndex = 0
         }
 
         self = sorted[nextIndex]
-        return rawValue
     }
 }

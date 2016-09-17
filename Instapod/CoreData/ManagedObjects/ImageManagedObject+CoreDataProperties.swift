@@ -15,13 +15,13 @@ import CoreData
 extension ImageManagedObject {
 
     @NSManaged var color: NSObject?
-    @NSManaged var data: NSData?
-    @NSManaged var date: NSDate?
-    @NSManaged var thumbnail56: NSData?
-    @NSManaged var thumbnail72: NSData?
+    @NSManaged var data: Data?
+    @NSManaged var date: Date?
+    @NSManaged var thumbnail56: Data?
+    @NSManaged var thumbnail72: Data?
     @NSManaged var title: String?
     @NSManaged var url: String?
-    @NSManaged var thumbnail: NSData?
+    @NSManaged var thumbnail: Data?
     @NSManaged var episodes: Set<EpisodeManagedObject>?
     @NSManaged var podcast: PodcastManagedObject?
 

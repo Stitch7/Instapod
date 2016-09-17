@@ -13,7 +13,7 @@ protocol CoreDataContextInjectable { }
 
 extension CoreDataContextInjectable where Self: UIViewController {
     var coreDataContext: NSManagedObjectContext {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.coreDataStore.managedObjectContext
     }
 }

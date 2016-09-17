@@ -17,7 +17,7 @@ protocol EnumIteratable {
 extension EnumIteratable {
     static func values() -> [Enum] {
         var retval = [Enum]()
-        for item in iterateEnum(Enum) {
+        for item in iterateEnum(Enum.self) {
             retval.append(item)
         }
 
@@ -29,10 +29,12 @@ extension EnumIteratable {
     }
 }
 
-private func iterateEnum<T: Hashable>(_: T.Type) -> AnyGenerator<T> {
+func iterateEnum<T: Hashable>(_: T.Type) -> AnyIterator<T> {
     var i = 0
-    return AnyGenerator {
-        let next = withUnsafePointer(&i) { UnsafePointer<T>($0).memory }
+    return AnyIterator {
+        let next = withUnsafePointer(to: &i) {
+            $0.withMemoryRebound(to: T.self, capacity: 1) { $0.pointee }
+        }
         if next.hashValue != i { return nil }
         i += 1
         return next

@@ -21,52 +21,52 @@
 
 import Foundation
 
-class AsynchronousOperation: NSOperation {
+class AsynchronousOperation: Operation {
 
-    override var asynchronous: Bool { return true }
+    override var isAsynchronous: Bool { return true }
 
-    private var _executing: Bool = false
-    override var executing: Bool {
+    fileprivate var _executing: Bool = false
+    override var isExecuting: Bool {
         get {
             return _executing
         }
         set {
             if _executing == newValue { return }
 
-            willChangeValueForKey("isExecuting")
+            willChangeValue(forKey: "isExecuting")
             _executing = newValue
-            didChangeValueForKey("isExecuting")
+            didChangeValue(forKey: "isExecuting")
         }
     }
 
-    private var _finished: Bool = false
-    override var finished: Bool {
+    fileprivate var _finished: Bool = false
+    override var isFinished: Bool {
         get {
             return _finished
         }
         set {
             if _finished == newValue { return }
 
-            willChangeValueForKey("isFinished")
+            willChangeValue(forKey: "isFinished")
             _finished = newValue
-            didChangeValueForKey("isFinished")
+            didChangeValue(forKey: "isFinished")
         }
     }
 
     func completeOperation() {
-        if executing {
-            executing = false
-            finished = true
+        if isExecuting {
+            isExecuting = false
+            isFinished = true
         }
     }
 
     override func start() {
-        if cancelled {
-            finished = true
+        if isCancelled {
+            isFinished = true
             return
         }
 
-        executing = true
+        isExecuting = true
         main()
     }
 }

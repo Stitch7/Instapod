@@ -27,35 +27,35 @@ class ChapterTableViewDataSource: NSObject, UITableViewDataSource {
 
     // MARK: - UITableViewDataSource
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return chapters.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ChapterCell", forIndexPath: indexPath) as! ChapterTableViewCell
-        let chapter = chapters[indexPath.row]
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ChapterCell", for: indexPath) as! ChapterTableViewCell
+        let chapter = chapters[(indexPath as NSIndexPath).row]
 
         var titleWithHyphens = NSAttributedString()
         if let title = chapter.items.first?.value {
             titleWithHyphens = NSMutableAttributedString(
-                string: String(title),
+                string: String(describing: title),
                 attributes: [NSParagraphStyleAttributeName: multilineParagraphStyle]
             )
         }
 
-        cell.noLabel?.text = "\(indexPath.row + 1)."
+        cell.noLabel?.text = "\((indexPath as NSIndexPath).row + 1)."
         cell.titleLabel?.attributedText = titleWithHyphens
         cell.timeLabel?.text = chapter.timeRange.duration.shortStringValue
-        cell.separatorInset = UIEdgeInsetsZero
+        cell.separatorInset = UIEdgeInsets.zero
 
         return cell
     }
 
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if self.tableView(tableView, numberOfRowsInSection: section) == 0 { return nil }
         return "Chapters" // TODO: i18n
     }

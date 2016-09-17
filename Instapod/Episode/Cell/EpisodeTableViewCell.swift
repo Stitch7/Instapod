@@ -28,8 +28,8 @@ class EpisodeTableViewCell: UITableViewCell {
     }
 
     func initialize() {
-        separatorInset = UIEdgeInsetsZero
-        layoutMargins = UIEdgeInsetsZero
+        separatorInset = UIEdgeInsets.zero
+        layoutMargins = UIEdgeInsets.zero
         preservesSuperviewLayoutMargins = false
     }
 
@@ -39,12 +39,12 @@ class EpisodeTableViewCell: UITableViewCell {
         backgroundColor = ColorPalette.TableView.Cell.Background
 
         titleLabel.numberOfLines = 0
-        titleLabel.textColor = UIColor.darkGrayColor()
+        titleLabel.textColor = UIColor.darkGray
 
         summaryLabel.numberOfLines = 0
-        summaryLabel.textColor = UIColor.grayColor()
+        summaryLabel.textColor = UIColor.gray
 
-        pubDateLabel.textColor = UIColor.grayColor()
-        durationLabel.textColor = UIColor.grayColor()
+        pubDateLabel.textColor = UIColor.gray
+        durationLabel.textColor = UIColor.gray
     }
 }

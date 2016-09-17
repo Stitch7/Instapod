@@ -10,8 +10,8 @@ import Foundation
 import CoreData
 
 class ImageManagedObject: NSManagedObject {
-    var nsURL: NSURL? {
+    var nsURL: URL? {
         guard let urlString = self.url else { return nil }
-        return NSURL(string: urlString)
+        return URL(string: urlString)
     }
 }

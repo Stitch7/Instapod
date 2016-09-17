@@ -20,8 +20,8 @@ extension PodcastManagedObject {
     @NSManaged var explicit: NSNumber?
     @NSManaged var generator: String?
     @NSManaged var language: String?
-    @NSManaged var lastBuildDate: NSDate?
-    @NSManaged var pubDate: NSDate?
+    @NSManaged var lastBuildDate: Date?
+    @NSManaged var pubDate: Date?
     @NSManaged var sortIndex: NSNumber?
     @NSManaged var subtitle: String?
     @NSManaged var summary: String?

@@ -13,7 +13,7 @@ class CoreDataStore {
 
     // MARK: - Properties
 
-    let storeName: String!
+    let storeName: String
 
     // MARK: - Initializer
 
@@ -23,15 +23,15 @@ class CoreDataStore {
 
     // MARK: - Core Data stack
 
-    lazy var applicationDocumentsDirectory: NSURL = {
+    lazy var applicationDocumentsDirectory: URL = {
         // Save Core Data store file to the application's documents directory
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return urls[urls.count - 1]
     }()
 
     lazy var managedObjectModel: NSManagedObjectModel = {
-        let modelURL = NSBundle.mainBundle().URLForResource(self.storeName, withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
+        let modelURL = Bundle.main.url(forResource: self.storeName, withExtension: "momd")!
+        return NSManagedObjectModel(contentsOf: modelURL)!
     }()
 
     lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
@@ -41,7 +41,7 @@ class CoreDataStore {
             NSMigratePersistentStoresAutomaticallyOption: true,
             NSInferMappingModelAutomaticallyOption: true
         ]
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("\(self.storeName).sqlite")
+        let url = self.applicationDocumentsDirectory.appendingPathComponent("\(self.storeName).sqlite")
         print(url)
 
 //        if NSFileManager.defaultManager().fileExistsAtPath(url.path!) == false {
@@ -49,15 +49,15 @@ class CoreDataStore {
 //        }
 
         do {
-            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
+            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: options)
         } catch {
             // Report any error we got
             var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-            dict[NSLocalizedFailureReasonErrorKey] = "There was an error creating or loading the application's saved data."
+            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as AnyObject?
+            dict[NSLocalizedFailureReasonErrorKey] = "There was an error creating or loading the application's saved data." as AnyObject?
 
             dict[NSUnderlyingErrorKey] = error as NSError
-            let domain = NSBundle.mainBundle().bundleIdentifier
+            let domain = Bundle.main.bundleIdentifier
             let wrappedError = NSError(domain: domain!, code: 9999, userInfo: dict)
             // TODO: Replace this with code to handle the error appropriately.
             NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
@@ -69,47 +69,46 @@ class CoreDataStore {
 
     lazy var managedObjectContext: NSManagedObjectContext = {
         let coordinator = self.persistentStoreCoordinator
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
 
         return managedObjectContext
     }()
 
     func preloadDatabase() {
-        let mainBundle = NSBundle.mainBundle()
+        let mainBundle = Bundle.main
         let sourceURLs = [
-            mainBundle.URLForResource(storeName, withExtension: "sqlite")!,
-            mainBundle.URLForResource(storeName, withExtension: "sqlite-wal")!,
-            mainBundle.URLForResource(storeName, withExtension: "sqlite-shm")!
+            mainBundle.url(forResource: storeName, withExtension: "sqlite")!,
+            mainBundle.url(forResource: storeName, withExtension: "sqlite-wal")!,
+            mainBundle.url(forResource: storeName, withExtension: "sqlite-shm")!
         ]
 
         let destinationURLs = [
-            applicationDocumentsDirectory.URLByAppendingPathComponent("\(storeName).sqlite"),
-            applicationDocumentsDirectory.URLByAppendingPathComponent("\(storeName).sqlite-wal"),
-            applicationDocumentsDirectory.URLByAppendingPathComponent("\(storeName).sqlite-shm")
+            applicationDocumentsDirectory.appendingPathComponent("\(storeName).sqlite"),
+            applicationDocumentsDirectory.appendingPathComponent("\(storeName).sqlite-wal"),
+            applicationDocumentsDirectory.appendingPathComponent("\(storeName).sqlite-shm")
         ]
 
         for i in 0..<sourceURLs.count {
             do {
-                try NSFileManager.defaultManager().copyItemAtURL(sourceURLs[i], toURL: destinationURLs[i])
+                try FileManager.default.copyItem(at: sourceURLs[i], to: destinationURLs[i])
             } catch {
                 print("ERROR: copy failed")
             }
         }
     }
 
-    func deleteAllData(entity: String) {
+    func deleteAllData(_ entity: String) {
 
         print("truncating table \(entity) ...")
 
-        let fetchRequest = NSFetchRequest(entityName: entity)
+        let fetchRequest: NSFetchRequest<NSManagedObject> = NSFetchRequest(entityName: entity)
         fetchRequest.returnsObjectsAsFaults = false
 
         do {
-            let results = try managedObjectContext.executeFetchRequest(fetchRequest)
+            let results = try managedObjectContext.fetch(fetchRequest)
             for managedObject in results {
-                let managedObjectData = managedObject as! NSManagedObject
-                managedObjectContext.deleteObject(managedObjectData)
+                managedObjectContext.delete(managedObject)
             }
             try managedObjectContext.save()
             managedObjectContext.reset()

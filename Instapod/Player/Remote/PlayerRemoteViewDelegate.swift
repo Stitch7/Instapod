@@ -7,7 +7,7 @@
 //
 
 protocol PlayerRemoteViewDelegate: class {
-    func playerRate(rate: Float)
+    func playerRate(_ rate: Float)
     func startSleepTimer(withDuration duration: PlayerSleepTimerDuration)
     func shareEpisode() -> Episode
 }

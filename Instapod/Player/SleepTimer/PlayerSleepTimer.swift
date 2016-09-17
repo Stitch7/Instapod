@@ -11,21 +11,21 @@ import Foundation
 final class PlayerSleepTimer {
 
     var interval = 0
-    var timer = NSTimer()
-    var intervalHandler: ((interval: Int) -> ())?
+    var timer = Timer()
+    var intervalHandler: ((_ interval: Int) -> ())?
     var completionHandler: (() -> ())?
 
     func start(
         withDuration duration: PlayerSleepTimerDuration,
-        interval intervalHandler: (interval: Int) -> (),
-        completion completionHandler: () -> ()
+        interval intervalHandler: @escaping (_ interval: Int) -> (),
+        completion completionHandler: @escaping () -> ()
     ) {
         interval = duration.seconds
         self.intervalHandler = intervalHandler
         self.completionHandler = completionHandler
         
         stop()
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0,
+        timer = Timer.scheduledTimer(timeInterval: 1.0,
                                                        target: self,
                                                        selector: #selector(timerDuration),
                                                        userInfo: nil,
@@ -39,7 +39,7 @@ final class PlayerSleepTimer {
     @objc func timerDuration() {
         interval -= 1
         if let intervalHandler = self.intervalHandler {
-            intervalHandler(interval: interval)
+            intervalHandler(interval)
         }
 
         if interval <= 0 {
