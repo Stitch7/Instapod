@@ -8,4 +8,5 @@
 
 protocol PodcastListDelegate {
     func updateFeeds()
+    func podcastSelected(_ podcast: Podcast)
 }

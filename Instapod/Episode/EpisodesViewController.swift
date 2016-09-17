@@ -242,11 +242,13 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
 
             let shownotesViewController = segue.destination as! ShownotesViewController
             shownotesViewController.episode = episodes![(indexPath as NSIndexPath).row]
+
         case "ShowPlayer":
             guard let indexPath = sender as? IndexPath else { return }
 
             let playerViewController = segue.destination as! PlayerViewController
             playerViewController.episode = episodes![(indexPath as NSIndexPath).row]
+
         case "ShowDefaultPlayer":
             guard let
                 indexPath = tableView.indexPathForSelectedRow,
@@ -259,8 +261,6 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
             destination.player = player
             player.play()
 
-//            feedTableViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
-//            feedTableViewController.navigationItem.leftItemsSupplementBackButton = true
         default: break
         }
     }

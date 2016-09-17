@@ -179,7 +179,8 @@ class PopupBar: UIView {
         progressView.progress = 0.5
         toolbar.addSubview(progressView)
 
-        let views = Dictionary(dictionaryLiteral: ("progressView", progressView))
+        // TODO
+//        let views = Dictionary(dictionaryLiteral: ("progressView", progressView))
 //        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[progressView(1)]|", options: [], metrics: nil, views: views))
 //        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[progressView]|", options: [], metrics: nil, views: views))
 

@@ -40,25 +40,17 @@ class PodcastsViewController: UIViewController, UIPageViewControllerDelegate, UI
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard
+            let playerVC: PlayerViewController = UIStoryboard(name: "Main", bundle: nil).instantiate(),
+            let targetViewController = self.navigationController,
+            targetViewController.popupContentViewController == nil
+        else { return }
 
-        if let playerVC: PlayerViewController = storyboard.instantiate() {
-            var targetViewController: UIViewController = self
-            if let navigationController = self.navigationController {
-                targetViewController = navigationController
-                if let rootNavigationController = navigationController.navigationController {
-                    targetViewController = rootNavigationController
-                }
-            }
-
-            if targetViewController.popupContentViewController == nil {
-                targetViewController.presentPopupBarWithContentViewController(playerVC,
-                                                                              openPopup: false,
-                                                                              animated: false) {
-                targetViewController.closePopupAnimated(false)
-//                    targetViewController.dismissPopupBarAnimated(false)
-                }
-            }
+        targetViewController.presentPopupBarWithContentViewController(playerVC,
+                                                                      openPopup: false,
+                                                                      animated: false) {
+//            targetViewController.closePopupAnimated(false)
+//            targetViewController.dismissPopupBarAnimated(false)
         }
     }
 
@@ -215,6 +207,10 @@ class PodcastsViewController: UIViewController, UIPageViewControllerDelegate, UI
     func updateFeeds() {
         updater?.update()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+
+    func podcastSelected(_ podcast: Podcast) {
+        performSegue(withIdentifier: "ShowEpisodes", sender: podcast)
     }
 
     // MARK: - FeedUpdaterDelegate
@@ -415,5 +411,27 @@ class PodcastsViewController: UIViewController, UIPageViewControllerDelegate, UI
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         if viewController.isKind(of: PodcastsCollectionViewController.self) { return nil }
         return collectionViewController
+    }
+
+    // MARK: - Segues
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let podcast = sender as? Podcast else { return }
+        guard let episodesVC = segue.destination as? EpisodesViewController else { return }
+
+        episodesVC.hidesBottomBarWhenPushed = true
+        episodesVC.podcast = podcast
+    }
+
+    override var bottomDockingViewForPopup: UIView {
+        return navigationController!.toolbar
+    }
+
+    func defaultFrameForBottomDockingView() -> CGRect {
+        var bottomViewFrame = navigationController!.toolbar.frame
+        bottomViewFrame.origin = CGPoint(x: bottomViewFrame.origin.x,
+                                         y: view.bounds.size.height - bottomViewFrame.size.height)
+
+        return bottomViewFrame
     }
 }

@@ -165,7 +165,8 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "ShowFeed", sender: indexPath)
+        let podcast = podcasts[(indexPath as NSIndexPath).row]
+        self.delegate?.podcastSelected(podcast)
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
@@ -288,20 +289,5 @@ class PodcastsTableViewController: UITableViewController, UISearchBarDelegate, U
             refreshControl.endRefreshing()
             refreshControl.attributedTitle = NSAttributedString(string: refreshControlTitle)
         }
-    }
-
-    // MARK: - Segues
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let segueIdentifier = segue.identifier , segueIdentifier == "ShowFeed" else { return }
-        guard let indexPath = sender as? IndexPath else { return }
-
-        let podcast = podcasts[(indexPath as NSIndexPath).row]
-        let navigationController = segue.destination as! UINavigationController
-        let episodesTVC = navigationController.topViewController as! EpisodesViewController
-        episodesTVC.podcast = podcast
-
-        episodesTVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-        episodesTVC.navigationItem.leftItemsSupplementBackButton = true
     }
 }

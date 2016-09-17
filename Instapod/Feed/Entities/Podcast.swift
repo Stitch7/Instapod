@@ -15,7 +15,6 @@ struct Podcast {
     var id: URL?
     let uuid: String
     var nextPage: URL?
-    
     var url: URL
     var author: String?
     var category: String?
@@ -54,11 +53,11 @@ struct Podcast {
     }
 
     mutating func updateEpisode(with newEpisode: Episode) {
-        if let episodes = self.episodes {
-            for (key, episode) in episodes.enumerated() {
-                if episode.title == newEpisode.title && episode.desc == newEpisode.desc {
-                    self.episodes![key] = newEpisode
-                }
+        guard let episodes = self.episodes else { return }
+
+        for (key, episode) in episodes.enumerated() {
+            if episode.title == newEpisode.title && episode.desc == newEpisode.desc {
+                self.episodes![key] = newEpisode
             }
         }
     }

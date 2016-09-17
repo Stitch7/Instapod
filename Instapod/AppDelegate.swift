@@ -10,23 +10,22 @@ import UIKit
 import AVFoundation
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Properties
 
     var window: UIWindow?
     var coreDataStore: CoreDataStore!
-    var playerViewController: PlayerViewController!
+//    var playerViewController: PlayerViewController!
 
     // MARK: - UIApplicationDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         initCoreData()
         initAudioSession()
-        initSplitViewController()
 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        playerViewController = storyboard.instantiate()
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        playerViewController = storyboard.instantiate()
         // TODO: load last played episode
 //        playerViewController.episode = episode
 
@@ -60,32 +59,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         catch {
             print("Error: Unable to play audio in background")
         }
-    }
-
-    fileprivate func initSplitViewController() {
-        guard let window = self.window else { return }
-        guard let splitViewController = window.rootViewController as? UISplitViewController else { return }
-
-        let index = splitViewController.viewControllers.count - 1
-        if let
-            navigationController = splitViewController.viewControllers[index] as? UINavigationController,
-            let topViewController = navigationController.topViewController
-        {
-            topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
-            splitViewController.delegate = self
-        }
-    }
-
-    // MARK: - UISplitViewControllerDelegate
-
-    func splitViewController(
-        _ splitViewController: UISplitViewController,
-        collapseSecondary secondaryViewController: UIViewController,
-        onto primaryViewController: UIViewController
-    ) -> Bool {
-        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
-        guard let topAsDetailController = secondaryAsNavController.topViewController as? EpisodesViewController else { return false }
-
-        return topAsDetailController.podcast == nil
     }
 }

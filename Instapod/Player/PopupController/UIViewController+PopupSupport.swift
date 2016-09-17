@@ -48,6 +48,10 @@ class PopupContentViewController: UIViewController, PopupContentDelegate {
     func popupControllerDidAppear() { }
 }
 
+var swizzle: Void = {
+    print("YO")
+}()
+
 extension UIViewController {
 
     override open class func initialize() {
@@ -57,6 +61,7 @@ extension UIViewController {
     }
 
     class func _popup_load() {
+        print(swizzle)
 //        var onceToken: Int = 0
 //        dispatch_once(&onceToken) {
             var m1 = class_getInstanceMethod(UIViewController.self, #selector(UIViewController.viewDidLayoutSubviews))
@@ -301,6 +306,6 @@ extension UIViewController {
     }
 
     var defaultFrameForBottomDockingView: CGRect {
-        return CGRect(x: 0, y: view.bounds.size.height, width: view.bounds.size.width, height: 0);
+        return CGRect(x: 0, y: view.bounds.size.height, width: view.bounds.size.width, height: 0)
     }
 }
