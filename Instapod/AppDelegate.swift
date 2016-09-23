@@ -16,18 +16,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var coreDataStore: CoreDataStore!
-//    var playerViewController: PlayerViewController!
 
     // MARK: - UIApplicationDelegate
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         initCoreData()
         initAudioSession()
-
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        playerViewController = storyboard.instantiate()
-        // TODO: load last played episode
-//        playerViewController.episode = episode
 
         return true
     }
@@ -39,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     fileprivate func initCoreData() {
         coreDataStore = CoreDataStore(storeName: "Model")
-
 //        cleanDB()
     }
 
@@ -57,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try audioSession.setActive(true)
         }
         catch {
-            print("Error: Unable to play audio in background")
+            print("Error: Unable to play audio in background \(error)")
         }
     }
 }

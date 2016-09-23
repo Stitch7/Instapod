@@ -217,18 +217,14 @@ class EpisodesViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     func playListButtonPressed(_ sender: UIButton) {
-        var targetViewController: UIViewController = self
-        if let navigationController = self.navigationController {
-            targetViewController = navigationController
-            if let rootNavigationController = navigationController.navigationController {
-                targetViewController = rootNavigationController
-            }
-        }
+        guard
+            let selectedEpisode = episodes?[sender.tag],
+            let playerVC: PlayerViewController = UIStoryboard(name: "Main", bundle: nil).instantiate(),
+            let navVC = self.navigationController
+        else { return }
 
-        let playerViewController = targetViewController.popupContentViewController as! PlayerViewController
-        playerViewController.episode = episodes![sender.tag]
-
-        targetViewController._popupController.presentPopupBarAnimated(true, openPopup: true, completion: nil)
+        playerVC.episode = selectedEpisode
+        navVC.presentPopupBar(withContentViewController: playerVC, openPopup: true, animated: true)
     }
 
     // MARK: - Segues

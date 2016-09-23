@@ -51,3 +51,23 @@ struct Image {
         return image
     }
 }
+
+extension Image {
+    init?(episodeId episodeUrl: URL, coreDataContext context: NSManagedObjectContext) {
+        do {
+            if
+                let episodeId = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: episodeUrl),
+                let managedEpisode = try context.existingObject(with: episodeId) as? EpisodeManagedObject,
+                let managedImage = managedEpisode.image
+            {
+                self.init(managedObject: managedImage)
+            }
+            else {
+                return nil
+            }
+        } catch {
+            print("Can't find image from episode with id \(episodeUrl.absoluteString) - \(error)")
+            return nil
+        }
+    }
+}

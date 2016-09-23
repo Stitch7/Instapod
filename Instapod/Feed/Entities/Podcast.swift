@@ -28,8 +28,8 @@ struct Podcast {
     var subtitle: String?
     var summary: String?
     var title: String?
-    var episodes: [Episode]?
     var image: Image?
+    var episodes: [Episode]?
 
     // MARK: - Initializers
 
@@ -64,6 +64,7 @@ struct Podcast {
 
     func createPodcast(fromContext context: NSManagedObjectContext) -> PodcastManagedObject {
         let podcast = context.createEntityWithName("Podcast") as! PodcastManagedObject
+        podcast.url = url.absoluteString
         podcast.author = author
         podcast.category = category
         podcast.desc = desc
@@ -75,7 +76,6 @@ struct Podcast {
         podcast.subtitle = subtitle
         podcast.summary = summary
         podcast.title = title
-        podcast.url = url.absoluteString
         podcast.image = image?.createImage(fromContext: context)
 
         if let episodes = self.episodes {
@@ -108,15 +108,19 @@ extension Podcast {
         summary = managedObject.summary
         title = managedObject.title
 
+        if let managedImage = managedObject.image {
+            image = Image(managedObject: managedImage)
+        }
+
         episodes = [Episode]()
         if let managedEpisodes = managedObject.episodes {
             for managedEpisode in managedEpisodes {
-                episodes?.append(Episode(managedObject: managedEpisode))
+                var episode = Episode(managedObject: managedEpisode)
+                var podcast = self
+                podcast.episodes = nil
+                episode.podcast = podcast
+                episodes?.append(episode)
             }
-        }
-
-        if let managedImage = managedObject.image {
-            image = Image(managedObject: managedImage)
         }
     }
 }

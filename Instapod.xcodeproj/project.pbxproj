@@ -14,6 +14,15 @@
 		300988CB1CB023B9000686C1 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300988CA1CB023B9000686C1 /* Podcast.swift */; };
 		300988CD1CB02F1D000686C1 /* AEXMLElement+string.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300988CC1CB02F1D000686C1 /* AEXMLElement+string.swift */; };
 		300988CF1CB02F54000686C1 /* FeedOperationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300988CE1CB02F54000686C1 /* FeedOperationDelegate.swift */; };
+		300B928E1D8DF547006B1A27 /* __MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 300B927E1D8DF547006B1A27 /* __MarqueeLabel.m */; };
+		300B928F1D8DF547006B1A27 /* _LNWeakRef.m in Sources */ = {isa = PBXBuildFile; fileRef = 300B92801D8DF547006B1A27 /* _LNWeakRef.m */; };
+		300B92901D8DF547006B1A27 /* LNPopupBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 300B92821D8DF547006B1A27 /* LNPopupBar.m */; };
+		300B92911D8DF547006B1A27 /* LNPopupCloseButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 300B92831D8DF547006B1A27 /* LNPopupCloseButton.m */; };
+		300B92921D8DF547006B1A27 /* LNPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 300B92851D8DF547006B1A27 /* LNPopupController.m */; };
+		300B92931D8DF547006B1A27 /* LNPopupControllerLongPressGestureDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 300B92871D8DF547006B1A27 /* LNPopupControllerLongPressGestureDelegate.m */; };
+		300B92941D8DF547006B1A27 /* LNPopupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 300B92891D8DF547006B1A27 /* LNPopupItem.m */; };
+		300B92951D8DF547006B1A27 /* UIViewController+LNPopupSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 300B928A1D8DF547006B1A27 /* UIViewController+LNPopupSupport.m */; };
+		300B92961D8DF547006B1A27 /* UIViewController+LNPopupSupportPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 300B928C1D8DF547006B1A27 /* UIViewController+LNPopupSupportPrivate.m */; };
 		3013D6C51D0416200066B986 /* Dictionary+merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3013D6C41D0416200066B986 /* Dictionary+merge.swift */; };
 		302E62A31C8B83B200B58B30 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302E62A21C8B83B200B58B30 /* PlayerViewController.swift */; };
 		303C28551D861F4B0049714A /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C28541D861F4B0049714A /* MulticastDelegate.swift */; };
@@ -25,17 +34,6 @@
 		304C2D261D15B615003C8139 /* FeedParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304C2D251D15B615003C8139 /* FeedParser.swift */; };
 		304C2D281D15B632003C8139 /* FeedParserAEXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304C2D271D15B632003C8139 /* FeedParserAEXML.swift */; };
 		304D88C91CA42FAE00F3FB7C /* PlayerViewChaptersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88C81CA42FAE00F3FB7C /* PlayerViewChaptersDataSource.swift */; };
-		304D88D71CA91B7600F3FB7C /* PopupBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88CB1CA91B7600F3FB7C /* PopupBar.swift */; };
-		304D88D81CA91B7600F3FB7C /* PopupBarSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88CC1CA91B7600F3FB7C /* PopupBarSupport.swift */; };
-		304D88DA1CA91B7600F3FB7C /* PopupCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88CE1CA91B7600F3FB7C /* PopupCloseButton.swift */; };
-		304D88DB1CA91B7600F3FB7C /* PopupControllerLongPressGestureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88CF1CA91B7600F3FB7C /* PopupControllerLongPressGestureDelegate.swift */; };
-		304D88DC1CA91B7600F3FB7C /* PopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88D01CA91B7600F3FB7C /* PopupController.swift */; };
-		304D88DD1CA91B7600F3FB7C /* PopupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88D11CA91B7600F3FB7C /* PopupItem.swift */; };
-		304D88DE1CA91B7600F3FB7C /* PopupItemDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88D21CA91B7600F3FB7C /* PopupItemDelegate.swift */; };
-		304D88DF1CA91B7600F3FB7C /* PopupPresentationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88D31CA91B7600F3FB7C /* PopupPresentationState.swift */; };
-		304D88E01CA91B7600F3FB7C /* PopupTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88D41CA91B7600F3FB7C /* PopupTransitionCoordinator.swift */; };
-		304D88E11CA91B7600F3FB7C /* PopupContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88D51CA91B7600F3FB7C /* PopupContentView.swift */; };
-		304D88E21CA91B7600F3FB7C /* UIViewController+PopupSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304D88D61CA91B7600F3FB7C /* UIViewController+PopupSupport.swift */; };
 		30574F031D79A4740058B8E5 /* PodcastManagedObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30574F011D79A4740058B8E5 /* PodcastManagedObject+CoreDataProperties.swift */; };
 		30574F041D79A4740058B8E5 /* PodcastManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30574F021D79A4740058B8E5 /* PodcastManagedObject.swift */; };
 		30574F0B1D79A93D0058B8E5 /* ImageManagedObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30574F051D79A93D0058B8E5 /* ImageManagedObject+CoreDataProperties.swift */; };
@@ -56,7 +54,6 @@
 		306C3C311CA35D6B00EA247D /* UIColor+hexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306C3C301CA35D6B00EA247D /* UIColor+hexString.swift */; };
 		3070D2FC1D8870B4007DE926 /* PodcastListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3070D2FB1D8870B4007DE926 /* PodcastListDelegate.swift */; };
 		30753B091D291E6800FE47A7 /* FeedParserAEXMLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30753B081D291E6800FE47A7 /* FeedParserAEXMLTests.swift */; };
-		307D63011CA927AB00E15D19 /* UINavigationController+PopupSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307D63001CA927AB00E15D19 /* UINavigationController+PopupSupport.swift */; };
 		3081696B1CA00D6C002DBAAA /* shownotes.html in Resources */ = {isa = PBXBuildFile; fileRef = 3081696A1CA00D6C002DBAAA /* shownotes.html */; };
 		3081696D1CA0953D002DBAAA /* UIViewController+configureAppNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3081696C1CA0953D002DBAAA /* UIViewController+configureAppNavigationBar.swift */; };
 		3085B57B1C95A3B400CD0112 /* ShownotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3085B57A1C95A3B400CD0112 /* ShownotesViewController.swift */; };
@@ -95,7 +92,6 @@
 		30B0EF921C766F8700A1698F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30B0EF901C766F8700A1698F /* LaunchScreen.storyboard */; };
 		30B0EF9D1C766F8700A1698F /* InstapodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B0EF9C1C766F8700A1698F /* InstapodTests.swift */; };
 		30B0EFA81C766F8700A1698F /* InstapodUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B0EFA71C766F8700A1698F /* InstapodUITests.swift */; };
-		30B3E5101CC2DD660043AFEE /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B3E50F1CC2DD660043AFEE /* MarqueeLabel.swift */; };
 		30B3E5121CC3B0440043AFEE /* EffectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B3E5111CC3B0440043AFEE /* EffectButton.swift */; };
 		30B3E5141CC3D57C0043AFEE /* PlayerSleepTimerDuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B3E5131CC3D57C0043AFEE /* PlayerSleepTimerDuration.swift */; };
 		30B3E5171CC3E4400043AFEE /* PlayerSleepTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B3E5161CC3E4400043AFEE /* PlayerSleepTimer.swift */; };
@@ -141,6 +137,28 @@
 		300988CA1CB023B9000686C1 /* Podcast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
 		300988CC1CB02F1D000686C1 /* AEXMLElement+string.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AEXMLElement+string.swift"; sourceTree = "<group>"; };
 		300988CE1CB02F54000686C1 /* FeedOperationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedOperationDelegate.swift; sourceTree = "<group>"; };
+		300B92781D8DF547006B1A27 /* LNPopupBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LNPopupBar.h; sourceTree = "<group>"; };
+		300B92791D8DF547006B1A27 /* LNPopupCloseButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LNPopupCloseButton.h; sourceTree = "<group>"; };
+		300B927A1D8DF547006B1A27 /* LNPopupContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LNPopupContentView.h; sourceTree = "<group>"; };
+		300B927B1D8DF547006B1A27 /* LNPopupItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LNPopupItem.h; sourceTree = "<group>"; };
+		300B927D1D8DF547006B1A27 /* __MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = __MarqueeLabel.h; sourceTree = "<group>"; };
+		300B927E1D8DF547006B1A27 /* __MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = __MarqueeLabel.m; sourceTree = "<group>"; };
+		300B927F1D8DF547006B1A27 /* _LNWeakRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _LNWeakRef.h; sourceTree = "<group>"; };
+		300B92801D8DF547006B1A27 /* _LNWeakRef.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _LNWeakRef.m; sourceTree = "<group>"; };
+		300B92811D8DF547006B1A27 /* LNPopupBar+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LNPopupBar+Private.h"; sourceTree = "<group>"; };
+		300B92821D8DF547006B1A27 /* LNPopupBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LNPopupBar.m; sourceTree = "<group>"; };
+		300B92831D8DF547006B1A27 /* LNPopupCloseButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LNPopupCloseButton.m; sourceTree = "<group>"; };
+		300B92841D8DF547006B1A27 /* LNPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LNPopupController.h; sourceTree = "<group>"; };
+		300B92851D8DF547006B1A27 /* LNPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LNPopupController.m; sourceTree = "<group>"; };
+		300B92861D8DF547006B1A27 /* LNPopupControllerLongPressGestureDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LNPopupControllerLongPressGestureDelegate.h; sourceTree = "<group>"; };
+		300B92871D8DF547006B1A27 /* LNPopupControllerLongPressGestureDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LNPopupControllerLongPressGestureDelegate.m; sourceTree = "<group>"; };
+		300B92881D8DF547006B1A27 /* LNPopupItem+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LNPopupItem+Private.h"; sourceTree = "<group>"; };
+		300B92891D8DF547006B1A27 /* LNPopupItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LNPopupItem.m; sourceTree = "<group>"; };
+		300B928A1D8DF547006B1A27 /* UIViewController+LNPopupSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LNPopupSupport.m"; sourceTree = "<group>"; };
+		300B928B1D8DF547006B1A27 /* UIViewController+LNPopupSupportPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LNPopupSupportPrivate.h"; sourceTree = "<group>"; };
+		300B928C1D8DF547006B1A27 /* UIViewController+LNPopupSupportPrivate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LNPopupSupportPrivate.m"; sourceTree = "<group>"; };
+		300B928D1D8DF547006B1A27 /* UIViewController+LNPopupSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LNPopupSupport.h"; sourceTree = "<group>"; };
+		300B92C81D8DFB83006B1A27 /* Instapod-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Instapod-Bridging-Header.h"; sourceTree = "<group>"; };
 		3013D6C41D0416200066B986 /* Dictionary+merge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+merge.swift"; sourceTree = "<group>"; };
 		302E62A21C8B83B200B58B30 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		303C28541D861F4B0049714A /* MulticastDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
@@ -152,17 +170,6 @@
 		304C2D251D15B615003C8139 /* FeedParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedParser.swift; sourceTree = "<group>"; };
 		304C2D271D15B632003C8139 /* FeedParserAEXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedParserAEXML.swift; sourceTree = "<group>"; };
 		304D88C81CA42FAE00F3FB7C /* PlayerViewChaptersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewChaptersDataSource.swift; sourceTree = "<group>"; };
-		304D88CB1CA91B7600F3FB7C /* PopupBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupBar.swift; sourceTree = "<group>"; };
-		304D88CC1CA91B7600F3FB7C /* PopupBarSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupBarSupport.swift; sourceTree = "<group>"; };
-		304D88CE1CA91B7600F3FB7C /* PopupCloseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupCloseButton.swift; sourceTree = "<group>"; };
-		304D88CF1CA91B7600F3FB7C /* PopupControllerLongPressGestureDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupControllerLongPressGestureDelegate.swift; sourceTree = "<group>"; };
-		304D88D01CA91B7600F3FB7C /* PopupController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupController.swift; sourceTree = "<group>"; };
-		304D88D11CA91B7600F3FB7C /* PopupItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupItem.swift; sourceTree = "<group>"; };
-		304D88D21CA91B7600F3FB7C /* PopupItemDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupItemDelegate.swift; sourceTree = "<group>"; };
-		304D88D31CA91B7600F3FB7C /* PopupPresentationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupPresentationState.swift; sourceTree = "<group>"; };
-		304D88D41CA91B7600F3FB7C /* PopupTransitionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupTransitionCoordinator.swift; sourceTree = "<group>"; };
-		304D88D51CA91B7600F3FB7C /* PopupContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupContentView.swift; sourceTree = "<group>"; };
-		304D88D61CA91B7600F3FB7C /* UIViewController+PopupSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+PopupSupport.swift"; sourceTree = "<group>"; };
 		30574F011D79A4740058B8E5 /* PodcastManagedObject+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PodcastManagedObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		30574F021D79A4740058B8E5 /* PodcastManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastManagedObject.swift; sourceTree = "<group>"; };
 		30574F051D79A93D0058B8E5 /* ImageManagedObject+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageManagedObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -183,7 +190,6 @@
 		306C3C301CA35D6B00EA247D /* UIColor+hexString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+hexString.swift"; sourceTree = "<group>"; };
 		3070D2FB1D8870B4007DE926 /* PodcastListDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PodcastListDelegate.swift; sourceTree = "<group>"; };
 		30753B081D291E6800FE47A7 /* FeedParserAEXMLTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedParserAEXMLTests.swift; sourceTree = "<group>"; };
-		307D63001CA927AB00E15D19 /* UINavigationController+PopupSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+PopupSupport.swift"; sourceTree = "<group>"; };
 		3081696A1CA00D6C002DBAAA /* shownotes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = shownotes.html; sourceTree = "<group>"; };
 		3081696C1CA0953D002DBAAA /* UIViewController+configureAppNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+configureAppNavigationBar.swift"; sourceTree = "<group>"; };
 		3085B57A1C95A3B400CD0112 /* ShownotesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShownotesViewController.swift; sourceTree = "<group>"; };
@@ -228,7 +234,6 @@
 		30B0EFA31C766F8700A1698F /* InstapodUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstapodUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		30B0EFA71C766F8700A1698F /* InstapodUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstapodUITests.swift; sourceTree = "<group>"; };
 		30B0EFA91C766F8700A1698F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		30B3E50F1CC2DD660043AFEE /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabel.swift; sourceTree = "<group>"; };
 		30B3E5111CC3B0440043AFEE /* EffectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectButton.swift; sourceTree = "<group>"; };
 		30B3E5131CC3D57C0043AFEE /* PlayerSleepTimerDuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerSleepTimerDuration.swift; sourceTree = "<group>"; };
 		30B3E5161CC3E4400043AFEE /* PlayerSleepTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerSleepTimer.swift; sourceTree = "<group>"; };
@@ -287,7 +292,7 @@
 		30027EA51D31536A00080766 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				30B3E50F1CC2DD660043AFEE /* MarqueeLabel.swift */,
+				300B92771D8DF547006B1A27 /* LNPopupController */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -320,6 +325,42 @@
 				304A7D361CB84327002D529D /* ImageOperation */,
 			);
 			path = Feed;
+			sourceTree = "<group>";
+		};
+		300B92771D8DF547006B1A27 /* LNPopupController */ = {
+			isa = PBXGroup;
+			children = (
+				300B92781D8DF547006B1A27 /* LNPopupBar.h */,
+				300B92791D8DF547006B1A27 /* LNPopupCloseButton.h */,
+				300B927A1D8DF547006B1A27 /* LNPopupContentView.h */,
+				300B927B1D8DF547006B1A27 /* LNPopupItem.h */,
+				300B927C1D8DF547006B1A27 /* Private */,
+				300B928D1D8DF547006B1A27 /* UIViewController+LNPopupSupport.h */,
+			);
+			path = LNPopupController;
+			sourceTree = "<group>";
+		};
+		300B927C1D8DF547006B1A27 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				300B927D1D8DF547006B1A27 /* __MarqueeLabel.h */,
+				300B927E1D8DF547006B1A27 /* __MarqueeLabel.m */,
+				300B927F1D8DF547006B1A27 /* _LNWeakRef.h */,
+				300B92801D8DF547006B1A27 /* _LNWeakRef.m */,
+				300B92811D8DF547006B1A27 /* LNPopupBar+Private.h */,
+				300B92821D8DF547006B1A27 /* LNPopupBar.m */,
+				300B92831D8DF547006B1A27 /* LNPopupCloseButton.m */,
+				300B92841D8DF547006B1A27 /* LNPopupController.h */,
+				300B92851D8DF547006B1A27 /* LNPopupController.m */,
+				300B92861D8DF547006B1A27 /* LNPopupControllerLongPressGestureDelegate.h */,
+				300B92871D8DF547006B1A27 /* LNPopupControllerLongPressGestureDelegate.m */,
+				300B92881D8DF547006B1A27 /* LNPopupItem+Private.h */,
+				300B92891D8DF547006B1A27 /* LNPopupItem.m */,
+				300B928A1D8DF547006B1A27 /* UIViewController+LNPopupSupport.m */,
+				300B928B1D8DF547006B1A27 /* UIViewController+LNPopupSupportPrivate.h */,
+				300B928C1D8DF547006B1A27 /* UIViewController+LNPopupSupportPrivate.m */,
+			);
+			path = Private;
 			sourceTree = "<group>";
 		};
 		304A7D311CB82FD8002D529D /* FeedUpdater */ = {
@@ -375,25 +416,6 @@
 				304C2D271D15B632003C8139 /* FeedParserAEXML.swift */,
 			);
 			path = FeedParser;
-			sourceTree = "<group>";
-		};
-		304D88CA1CA91B5600F3FB7C /* PopupController */ = {
-			isa = PBXGroup;
-			children = (
-				304D88CB1CA91B7600F3FB7C /* PopupBar.swift */,
-				304D88CC1CA91B7600F3FB7C /* PopupBarSupport.swift */,
-				304D88CE1CA91B7600F3FB7C /* PopupCloseButton.swift */,
-				304D88D51CA91B7600F3FB7C /* PopupContentView.swift */,
-				304D88D01CA91B7600F3FB7C /* PopupController.swift */,
-				304D88CF1CA91B7600F3FB7C /* PopupControllerLongPressGestureDelegate.swift */,
-				304D88D11CA91B7600F3FB7C /* PopupItem.swift */,
-				304D88D21CA91B7600F3FB7C /* PopupItemDelegate.swift */,
-				304D88D31CA91B7600F3FB7C /* PopupPresentationState.swift */,
-				304D88D41CA91B7600F3FB7C /* PopupTransitionCoordinator.swift */,
-				307D63001CA927AB00E15D19 /* UINavigationController+PopupSupport.swift */,
-				304D88D61CA91B7600F3FB7C /* UIViewController+PopupSupport.swift */,
-			);
-			path = PopupController;
 			sourceTree = "<group>";
 		};
 		30574F171D79ACB60058B8E5 /* Entities */ = {
@@ -499,7 +521,6 @@
 			isa = PBXGroup;
 			children = (
 				300988C41CAFD20A000686C1 /* ChapterTableView */,
-				304D88CA1CA91B5600F3FB7C /* PopupController */,
 				308801C31C8CD68100894995 /* Remote */,
 				30B3E5151CC3D5B10043AFEE /* SleepTimer */,
 				308EB60D1CC15A82000D6B10 /* PlayerRates.swift */,
@@ -611,6 +632,7 @@
 				306C3C2E1CA323A600EA247D /* ColorCube.swift */,
 				308801BF1C8CD12D00894995 /* ColorPalette.swift */,
 				30B3E5111CC3B0440043AFEE /* EffectButton.swift */,
+				300B92C81D8DFB83006B1A27 /* Instapod-Bridging-Header.h */,
 				30D9C1831D7E37A700FE5C3F /* EnumIteratable.swift */,
 				303C28541D861F4B0049714A /* MulticastDelegate.swift */,
 				309B9A8B1C8C86D40001C80C /* ViewFromNib.swift */,
@@ -991,7 +1013,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				304D88E21CA91B7600F3FB7C /* UIViewController+PopupSupport.swift in Sources */,
 				30574F141D79AC210058B8E5 /* Episode.swift in Sources */,
 				304C2D241D15ACC6003C8139 /* FeedImporterDatasourceAEXML.swift in Sources */,
 				3085B57B1C95A3B400CD0112 /* ShownotesViewController.swift in Sources */,
@@ -1001,29 +1022,25 @@
 				30574F0E1D79A93D0058B8E5 /* AudioFileManagedObject.swift in Sources */,
 				30574F0D1D79A93D0058B8E5 /* AudioFileManagedObject+CoreDataProperties.swift in Sources */,
 				30E49C621D7A37A900247F1D /* PodcastCollectionViewCell.swift in Sources */,
-				30B3E5101CC2DD660043AFEE /* MarqueeLabel.swift in Sources */,
 				304C2D281D15B632003C8139 /* FeedParserAEXML.swift in Sources */,
 				30574F121D79AC1B0058B8E5 /* AudioFile.swift in Sources */,
-				307D63011CA927AB00E15D19 /* UINavigationController+PopupSupport.swift in Sources */,
-				304D88D71CA91B7600F3FB7C /* PopupBar.swift in Sources */,
 				308EB6101CC15AC6000D6B10 /* PlayerRemoteViewDelegate.swift in Sources */,
+				300B928F1D8DF547006B1A27 /* _LNWeakRef.m in Sources */,
+				300B92921D8DF547006B1A27 /* LNPopupController.m in Sources */,
 				308D71021C949F1C0039A5FF /* EpisodeTableViewCell.swift in Sources */,
+				300B92911D8DF547006B1A27 /* LNPopupCloseButton.m in Sources */,
 				30B02DC41CCD212200CECD69 /* UINavigationController+ childViewControllerForStatusBarHidden.swift in Sources */,
 				304A7D301CB82FBC002D529D /* FeedUpdaterDelegate.swift in Sources */,
 				30E49C5E1D7A30BA00247F1D /* PodcastsCollectionViewController.swift in Sources */,
 				300988CF1CB02F54000686C1 /* FeedOperationDelegate.swift in Sources */,
 				30AFBFC61C877DC000EF3492 /* EpisodesViewController.swift in Sources */,
-				304D88DD1CA91B7600F3FB7C /* PopupItem.swift in Sources */,
-				304D88DF1CA91B7600F3FB7C /* PopupPresentationState.swift in Sources */,
 				30574F031D79A4740058B8E5 /* PodcastManagedObject+CoreDataProperties.swift in Sources */,
 				306C3C311CA35D6B00EA247D /* UIColor+hexString.swift in Sources */,
 				30B3E5171CC3E4400043AFEE /* PlayerSleepTimer.swift in Sources */,
 				308801CA1C8F824700894995 /* CMTime+stringValue.swift in Sources */,
 				30E49C6B1D7CEC9800247F1D /* UIStoryboard+instantiate.swift in Sources */,
 				304D88C91CA42FAE00F3FB7C /* PlayerViewChaptersDataSource.swift in Sources */,
-				304D88DC1CA91B7600F3FB7C /* PopupController.swift in Sources */,
 				300988CD1CB02F1D000686C1 /* AEXMLElement+string.swift in Sources */,
-				304D88DE1CA91B7600F3FB7C /* PopupItemDelegate.swift in Sources */,
 				3070D2FC1D8870B4007DE926 /* PodcastListDelegate.swift in Sources */,
 				30E49C691D7B039700247F1D /* UIImage+createThumbnail.swift in Sources */,
 				30D9C1821D7E31B800FE5C3F /* PodcastListSortMode.swift in Sources */,
@@ -1033,8 +1050,6 @@
 				303C28551D861F4B0049714A /* MulticastDelegate.swift in Sources */,
 				300988C71CAFE25C000686C1 /* ImageOperation.swift in Sources */,
 				30574F101D79A93D0058B8E5 /* EpisodeManagedObject.swift in Sources */,
-				304D88DB1CA91B7600F3FB7C /* PopupControllerLongPressGestureDelegate.swift in Sources */,
-				304D88D81CA91B7600F3FB7C /* PopupBarSupport.swift in Sources */,
 				309B9A881C8C7F530001C80C /* PlayerRemoteView.swift in Sources */,
 				309C40B41CB977B900B29569 /* AsynchronousOperation.swift in Sources */,
 				308D70E41C941A810039A5FF /* Model.xcdatamodeld in Sources */,
@@ -1044,7 +1059,10 @@
 				30574F161D79AC330058B8E5 /* Image.swift in Sources */,
 				300988C91CAFEB3A000686C1 /* FeedOperation.swift in Sources */,
 				308D71071C94B3AB0039A5FF /* CircleView.swift in Sources */,
+				300B92961D8DF547006B1A27 /* UIViewController+LNPopupSupportPrivate.m in Sources */,
 				309B9A921C8CA2310001C80C /* PodcastTableViewCell.swift in Sources */,
+				300B928E1D8DF547006B1A27 /* __MarqueeLabel.m in Sources */,
+				300B92931D8DF547006B1A27 /* LNPopupControllerLongPressGestureDelegate.m in Sources */,
 				30B3E5141CC3D57C0043AFEE /* PlayerSleepTimerDuration.swift in Sources */,
 				30D712A71CB90B5C00452223 /* UIViewController+coreDataContext.swift in Sources */,
 				30D9C1841D7E37A700FE5C3F /* EnumIteratable.swift in Sources */,
@@ -1055,8 +1073,9 @@
 				309B9A8E1C8C99A30001C80C /* UIViewController+loadingHUD.swift in Sources */,
 				308EB6121CC28451000D6B10 /* PlayerRemoteProgressSliderScrubbingSpeed.swift in Sources */,
 				308D70FE1C942F5C0039A5FF /* NSManagedObjectContext+createEntityWithName.swift in Sources */,
-				304D88DA1CA91B7600F3FB7C /* PopupCloseButton.swift in Sources */,
 				304A7D331CB835E1002D529D /* FeedImporterDelegate.swift in Sources */,
+				300B92901D8DF547006B1A27 /* LNPopupBar.m in Sources */,
+				300B92941D8DF547006B1A27 /* LNPopupItem.m in Sources */,
 				306C3C291CA29C5E00EA247D /* FeedImporter.swift in Sources */,
 				30B3E5121CC3B0440043AFEE /* EffectButton.swift in Sources */,
 				306C3C2F1CA323A600EA247D /* ColorCube.swift in Sources */,
@@ -1064,7 +1083,6 @@
 				309B9A941C8CC6140001C80C /* UIImage+averageColor.swift in Sources */,
 				30B0EF881C766F8700A1698F /* PodcastsTableViewController.swift in Sources */,
 				30E49C641D7A4A6900247F1D /* PodcastsViewController.swift in Sources */,
-				304D88E11CA91B7600F3FB7C /* PopupContentView.swift in Sources */,
 				30574F041D79A4740058B8E5 /* PodcastManagedObject.swift in Sources */,
 				3081696D1CA0953D002DBAAA /* UIViewController+configureAppNavigationBar.swift in Sources */,
 				30D712A91CB9404000452223 /* ImageOperationDelegate.swift in Sources */,
@@ -1072,13 +1090,13 @@
 				308D70FD1C942F5C0039A5FF /* NSManagedObject+addObject.swift in Sources */,
 				30574F0C1D79A93D0058B8E5 /* ImageManagedObject.swift in Sources */,
 				30B0EF861C766F8700A1698F /* AppDelegate.swift in Sources */,
+				300B92951D8DF547006B1A27 /* UIViewController+LNPopupSupport.m in Sources */,
 				30574F0F1D79A93D0058B8E5 /* EpisodeManagedObject+CoreDataProperties.swift in Sources */,
 				30574F0B1D79A93D0058B8E5 /* ImageManagedObject+CoreDataProperties.swift in Sources */,
 				308EB60E1CC15A82000D6B10 /* PlayerRates.swift in Sources */,
 				3065B08D1CCC0A0E00004217 /* UIImage+imageEffects.swift in Sources */,
 				3085B57D1C95A46100CD0112 /* ShownotesView.swift in Sources */,
 				308801C81C8E387E00894995 /* CMTime+floatValue.swift in Sources */,
-				304D88E01CA91B7600F3FB7C /* PopupTransitionCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1239,7 +1257,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = re.reitz.instapod;
 				PRODUCT_NAME = Instapod;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Instapod/Instapod-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1259,7 +1278,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = re.reitz.instapod;
 				PRODUCT_NAME = Instapod;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Instapod/Instapod-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

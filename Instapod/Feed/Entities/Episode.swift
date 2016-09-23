@@ -56,10 +56,5 @@ extension Episode {
         subtitle = managedObject.subtitle
         summary = managedObject.summary
         title = managedObject.title
-//        if let managedImage = managedObject.image {
-//            image = Image(managedObject: managedImage)
-//        }
-//        audioFile = managedObject.audioFile
-
     }
 }

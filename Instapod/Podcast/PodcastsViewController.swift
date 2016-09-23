@@ -42,15 +42,12 @@ class PodcastsViewController: UIViewController, UIPageViewControllerDelegate, UI
     override func viewWillAppear(_ animated: Bool) {
         guard
             let playerVC: PlayerViewController = UIStoryboard(name: "Main", bundle: nil).instantiate(),
-            let targetViewController = self.navigationController,
-            targetViewController.popupContentViewController == nil
+            let navVC = self.navigationController,
+            navVC.popupContent == nil
         else { return }
 
-        targetViewController.presentPopupBarWithContentViewController(playerVC,
-                                                                      openPopup: false,
-                                                                      animated: false) {
-//            targetViewController.closePopupAnimated(false)
-//            targetViewController.dismissPopupBarAnimated(false)
+        navVC.presentPopupBar(withContentViewController: playerVC, openPopup: false, animated: false) {
+            navVC.dismissPopupBar(animated: false)
         }
     }
 
@@ -419,19 +416,7 @@ class PodcastsViewController: UIViewController, UIPageViewControllerDelegate, UI
         guard let podcast = sender as? Podcast else { return }
         guard let episodesVC = segue.destination as? EpisodesViewController else { return }
 
-        episodesVC.hidesBottomBarWhenPushed = true
+//        episodesVC.hidesBottomBarWhenPushed = true
         episodesVC.podcast = podcast
-    }
-
-    override var bottomDockingViewForPopup: UIView {
-        return navigationController!.toolbar
-    }
-
-    func defaultFrameForBottomDockingView() -> CGRect {
-        var bottomViewFrame = navigationController!.toolbar.frame
-        bottomViewFrame.origin = CGPoint(x: bottomViewFrame.origin.x,
-                                         y: view.bounds.size.height - bottomViewFrame.size.height)
-
-        return bottomViewFrame
     }
 }

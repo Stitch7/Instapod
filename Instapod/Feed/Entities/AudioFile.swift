@@ -31,3 +31,23 @@ extension AudioFile {
         url = URL(string: managedObject.url!)
     }
 }
+
+extension AudioFile {
+    init?(episodeId episodeUrl: URL, coreDataContext context: NSManagedObjectContext) {
+        do {
+            if
+                let episodeId = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: episodeUrl),
+                let managedEpisode = try context.existingObject(with: episodeId) as? EpisodeManagedObject,
+                let managedAudioFile = managedEpisode.audioFile
+            {
+                self.init(managedObject: managedAudioFile)
+            }
+            else {
+                return nil
+            }
+        } catch {
+            print("Can't find audiofile from episode with id \(episodeUrl.absoluteString) - \(error)")
+            return nil
+        }
+    }
+}

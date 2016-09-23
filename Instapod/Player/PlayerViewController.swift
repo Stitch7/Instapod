@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import MediaPlayer
 
-class PlayerViewController: PopupContentViewController, UITableViewDelegate, PlayerRemoteViewDelegate {
+class PlayerViewController: UIViewController, UITableViewDelegate, CoreDataContextInjectable, PlayerRemoteViewDelegate {
 
     // MARK: - Properties
 
@@ -18,52 +18,15 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         didSet {
             guard let episode = self.episode else { return }
 
-            let artist = episode.podcast?.title ?? ""
-            let title = episode.title ?? ""
-
-            remoteView.titleLabel.text = title
-            remoteView.authorLabel.text = artist
-
-            if let color = episode.image?.color {
-                view.tintColor = color
-                remoteView.tintColor = color
-                navigationController?.navigationBar.tintColor = color
+            if let id = episode.id {
+                self.episode?.audioFile = AudioFile(episodeId: id, coreDataContext: coreDataContext)
+                self.episode?.image = Image(episodeId: id, coreDataContext: coreDataContext) ?? episode.podcast?.image
             }
-
-            if let
-                imageData = episode.image?.data ?? episode.podcast?.image?.data,
-                let image = UIImage(data: imageData as Data)
-            {
-                if let tableHeaderView = self.tableView.tableHeaderView as? UIImageView {
-                    tableHeaderView.image = image
-                    self.tableView.reloadData()
-                }
-
-                MPNowPlayingInfoCenter.default().nowPlayingInfo = [
-                    MPMediaItemPropertyTitle: title,
-                    MPMediaItemPropertyArtist: artist,
-                    MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: image)
-                ]
-
-//                var statusBarStyle: UIStatusBarStyle = .Default
-////                if image.averageColor().isBright() {
-//                    statusBarStyle = .LightContent
-////                }
-//                UIApplication.sharedApplication().statusBarStyle = statusBarStyle
-//                self.setNeedsStatusBarAppearanceUpdate()
-            }
-
-            popupItem.title = "Now Playing"
-            popupItem.subtitle = "\(artist) - \(title)"
-//            popupItem.progress = 0.7
-
-            initPlayer()
         }
     }
     var chaptersDataSource: ChapterTableViewDataSource?
     var player: AVPlayer?
     var observer: AnyObject?
-
     var sleepTimer = PlayerSleepTimer()
     var sleepTimerButton: EffectButton?
 
@@ -83,9 +46,47 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
         automaticallyAdjustsScrollViewInsets = false
         extendedLayoutIncludesOpaqueBars = true
 
-        configureSleepTimerButton()
+        configureRemoteView()
         configureTableView()
-        remoteView.delegate = self
+        configureSleepTimerButton()
+
+
+        let artist = episode?.podcast?.title ?? ""
+        let title = episode?.title ?? ""
+
+        if
+            let imageData = episode?.image?.data ?? episode?.podcast?.image?.data,
+            let image = UIImage(data: imageData as Data)
+        {
+            if let tableHeaderView = self.tableView.tableHeaderView as? UIImageView {
+                tableHeaderView.image = image
+                self.tableView.reloadData()
+            }
+
+            let artwork = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { (size) -> UIImage in
+                return image
+            })
+
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+                MPMediaItemPropertyTitle: title,
+                MPMediaItemPropertyArtist: artist,
+//                MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: image)
+                MPMediaItemPropertyArtwork: artwork
+            ]
+
+//            var statusBarStyle: UIStatusBarStyle = .Default
+////            if image.averageColor().isBright() {
+//                statusBarStyle = .LightContent
+////            }
+//            UIApplication.sharedApplication().statusBarStyle = statusBarStyle
+//            self.setNeedsStatusBarAppearanceUpdate()
+        }
+
+        popupItem.title = "Now Playing"
+        popupItem.subtitle = "\(artist) - \(title)"
+//        popupItem.progress = 0.7
+
+        initPlayer()
     }
 
 //    override func viewWillAppear(animated: Bool) {
@@ -98,6 +99,10 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+
+    }
+
+    deinit {
         player?.removeObserver(self, forKeyPath: "status")
         if let observer = self.observer {
             player?.removeTimeObserver(observer)
@@ -109,7 +114,7 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
     // MARK: - UIViewController
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animateAlongsideTransition(in: popupPresentationContainerViewController!.view,
+        coordinator.animateAlongsideTransition(in: popupPresentationContainer!.view,
             animation: { (context) -> Void in
                 self._setPopupItemButtonsWithTraitCollection(newCollection)
             },
@@ -147,6 +152,18 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
     
     override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
         return .fade
+    }
+
+    func configureRemoteView() {
+        remoteView.delegate = self
+        remoteView.titleLabel.text = episode?.title
+        remoteView.authorLabel.text = episode?.podcast?.title
+
+        if let color = episode?.image?.color {
+            view.tintColor = color
+            remoteView.tintColor = color
+            navigationController?.navigationBar.tintColor = color
+        }
     }
 
     func configureSleepTimerButton() {
@@ -462,23 +479,4 @@ class PlayerViewController: PopupContentViewController, UITableViewDelegate, Pla
     func shareEpisode() -> Episode {
         return self.episode! // TODO
     }
-
-    // MARK: - PopupContentViewController
-
-//    override func popupControllerWillHide() {
-//        print("popupControllerWillHide")
-//    }
-//
-//    override func popupControllerDidHide() {
-//        print("popupControllerDidHide")
-//    }
-//
-//    override func popupControllerWillAppear() {
-//        print("popupControllerWillAppear")
-////        initPlayer()
-//    }
-//
-//    override func popupControllerDidAppear() {
-//        print("popupControllerDidAppear")
-//    }
 }

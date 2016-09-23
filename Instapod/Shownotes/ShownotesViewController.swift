@@ -32,12 +32,12 @@ class ShownotesViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var contentView: ShownotesView!
 
     @IBAction func playButtonPressed(_ sender: UIBarButtonItem) {
-        let playerViewController = targetViewController.popupContentViewController as! PlayerViewController
+        let playerViewController = targetViewController.popupContent as! PlayerViewController
         playerViewController.episode = episode
         
-        targetViewController._popupController.presentPopupBarAnimated(true, openPopup: true) {
-            self.contentView.toolbarBottomCstr.constant = 40
-        }
+//        targetViewController.tabBarController.presentPopupBarAnimated(true, openPopup: true) {
+//            self.contentView.toolbarBottomCstr.constant = 40
+//        }
     }
 
     // MARK: - UIViewController
